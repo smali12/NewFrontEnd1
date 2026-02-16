@@ -454,16 +454,16 @@ export function AFLGeneratorPage() {
 
     return (
       <AIMessage key={message.id} from={message.role}>
-        <div className="text-xs text-muted-foreground mb-1 flex items-center gap-2">
+        <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2 px-1">
           {message.role === 'user' ? (
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold" style={{ background: 'linear-gradient(135deg, #FEC00F 0%, #FFD740 100%)', color: '#212121' }}>
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold flex-shrink-0" style={{ background: 'linear-gradient(135deg, #FEC00F 0%, #FFD740 100%)', color: '#212121' }}>
               {userName.charAt(0).toUpperCase()}
             </span>
           ) : (
-            <img src={logo} alt="AI" className="w-6 h-6 rounded" />
+            <img src={logo} alt="Yang AI" className="w-6 h-6 rounded flex-shrink-0" />
           )}
-          <span>{message.role === 'user' ? userName : 'Yang'}</span>
-          {message.createdAt && <span className="text-muted-foreground">{'  '}{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
+          <span className="font-semibold text-foreground">{message.role === 'user' ? userName : 'Yang'}</span>
+          {message.createdAt && <span className="text-muted-foreground text-xs">• {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
           {msgIsStreaming && <Shimmer duration={1.5}>Streaming...</Shimmer>}
         </div>
 

@@ -78,8 +78,8 @@ export type MessageProps = HTMLAttributes<HTMLDivElement> & {
 export const Message = ({ className, from, ...props }: MessageProps) => (
   <div
     className={cn(
-      "group flex w-full max-w-[95%] flex-col gap-2",
-      from === "user" ? "is-user ml-auto justify-end" : "is-assistant",
+      "group flex w-full max-w-[95%] flex-col gap-3 py-2",
+      from === "user" ? "is-user ml-auto items-end justify-end" : "is-assistant items-start",
       className
     )}
     {...props}
@@ -95,9 +95,11 @@ export const MessageContent = ({
 }: MessageContentProps) => (
   <div
     className={cn(
-      "is-user:dark flex w-fit min-w-0 max-w-full flex-col gap-2 overflow-hidden text-sm",
-      "group-[.is-user]:ml-auto group-[.is-user]:rounded-lg group-[.is-user]:bg-secondary group-[.is-user]:px-4 group-[.is-user]:py-3 group-[.is-user]:text-foreground",
-      "group-[.is-assistant]:text-foreground",
+      "is-user:dark flex w-fit min-w-0 max-w-lg flex-col gap-2 overflow-hidden text-sm leading-relaxed",
+      // User message styling - right-aligned with yellow/gold bubble
+      "group-[.is-user]:ml-auto group-[.is-user]:rounded-2xl group-[.is-user]:rounded-tr-md group-[.is-user]:bg-yellow-500 group-[.is-user]:px-4 group-[.is-user]:py-3 group-[.is-user]:text-slate-900 group-[.is-user]:font-medium group-[.is-user]:shadow-sm",
+      // Assistant message styling - left-aligned with subtle background
+      "group-[.is-assistant]:rounded-2xl group-[.is-assistant]:rounded-tl-md group-[.is-assistant]:bg-slate-800/50 group-[.is-assistant]:px-4 group-[.is-assistant]:py-3 group-[.is-assistant]:text-foreground group-[.is-assistant]:border group-[.is-assistant]:border-slate-700/50",
       className
     )}
     {...props}

@@ -407,17 +407,17 @@ export function ChatPage() {
 
     return (
       <AIMessage key={message.id} from={message.role}>
-        {/* Timestamp label */}
-        <div className="text-xs text-muted-foreground mb-1 flex items-center gap-2">
+        {/* Timestamp label with enhanced styling */}
+        <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2 px-1">
           {message.role === 'user' ? (
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold" style={{ background: 'linear-gradient(135deg, #FEC00F 0%, #FFD740 100%)', color: '#212121' }}>
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold flex-shrink-0" style={{ background: 'linear-gradient(135deg, #FEC00F 0%, #FFD740 100%)', color: '#212121' }}>
               {userName.charAt(0).toUpperCase()}
             </span>
           ) : (
-            <img src={logo} alt="AI" className="w-6 h-6 rounded" />
+            <img src={logo} alt="Yang AI" className="w-6 h-6 rounded flex-shrink-0" />
           )}
-          <span>{message.role === 'user' ? userName : 'Yang'}</span>
-          {message.createdAt && <span className="text-muted-foreground">• {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
+          <span className="font-semibold text-foreground">{message.role === 'user' ? userName : 'Yang'}</span>
+          {message.createdAt && <span className="text-muted-foreground text-xs">• {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
           {msgIsStreaming && <Shimmer duration={1.5}>Streaming...</Shimmer>}
         </div>
 
@@ -1181,7 +1181,7 @@ export function ChatPage() {
         {/* AI Elements: Conversation with auto-scroll */}
         <div className="flex-1" style={{ minHeight: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
           <div data-scroll-container style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', backgroundColor: colors.background, color: colors.text } as React.CSSProperties}>
-            <div className="max-w-[900px] mx-auto px-6 py-8" style={{ color: colors.text }}>
+            <div className="max-w-[900px] mx-auto px-6 py-10" style={{ color: colors.text }}>
               {allMessages.length === 0 ? (
                 <ConversationEmptyState
                   icon={<img src={logo} alt="Logo" className="w-20 opacity-30" />}
@@ -1206,7 +1206,9 @@ export function ChatPage() {
                 </ConversationEmptyState>
               ) : (
                 <>
-                  {allMessages.map((msg, idx) => renderMessage(msg, idx))}
+                  <div className="space-y-1">
+                    {allMessages.map((msg, idx) => renderMessage(msg, idx))}
+                  </div>
 
                   {/* Display generated artifacts */}
                   {artifacts.length > 0 && (
@@ -1224,9 +1226,9 @@ export function ChatPage() {
                   {/* Submitted state — waiting for first token */}
                   {status === 'submitted' && allMessages.length > 0 && allMessages[allMessages.length - 1]?.role === 'user' && (
                     <AIMessage from="assistant">
-                      <div className="text-xs text-muted-foreground mb-1 flex items-center gap-2">
-                        <img src={logo} alt="AI" className="w-6 h-6 rounded" />
-                        <span>Assistant</span>
+                      <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2 px-1">
+                        <img src={logo} alt="Yang AI" className="w-6 h-6 rounded flex-shrink-0" />
+                        <span className="font-semibold text-foreground">Yang</span>
                       </div>
                       <MessageContent>
                         <Shimmer duration={1.5}>Thinking...</Shimmer>
