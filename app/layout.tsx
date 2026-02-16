@@ -21,7 +21,7 @@ const quicksand = Quicksand({
 
 export const metadata: Metadata = {
   title: 'Potomac Analyst Workbench',
-  description: 'Advanced AFL code generation and trading strategy analysis platform',
+  description: 'Advanced AFL code generation, trading strategy analysis, and iOS developer blueprint platform',
 };
 
 export default function RootLayout({
