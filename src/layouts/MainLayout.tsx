@@ -15,6 +15,7 @@ import {
   ChevronRight,
   Sparkles,
   Smartphone,
+  Monitor,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -31,6 +32,7 @@ const navItems = [
   { name: 'BACKTEST', href: '/backtest', icon: TrendingUp },
   { name: 'REVERSE ENGINEER', href: '/reverse-engineer', icon: Zap },
   { name: 'DEVELOPER', href: '/developer', icon: Smartphone },
+  { name: 'NON APPLE DEV', href: '/non-apple-developer', icon: Monitor },
   { name: 'SETTINGS', href: '/settings', icon: Settings },
 ];
 
