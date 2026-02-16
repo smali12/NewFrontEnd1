@@ -212,15 +212,15 @@ export function ContentChat({ colors, isDark }: ContentChatProps) {
                 {/* Message bubble */}
                 <div
                   style={{
-                    maxWidth: msg.role === 'user' ? '85%' : '100%',
-                    padding: '10px 16px',
-                    borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '2px 16px 16px 16px',
+                    maxWidth: msg.role === 'user' ? '75%' : '100%',
+                    padding: msg.role === 'user' ? '10px 16px' : '0 0 0 16px',
+                    borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '0',
                     backgroundColor: msg.role === 'user' ? '#FEC00F' : 'transparent',
+                    borderLeft: msg.role === 'assistant' ? '2px solid rgba(254, 192, 15, 0.4)' : 'none',
                     color: msg.role === 'user' ? '#1a1a1a' : colors.text,
                     fontSize: '14px',
                     lineHeight: 1.6,
                     fontWeight: msg.role === 'user' ? 500 : 400,
-                    paddingLeft: msg.role === 'assistant' ? '28px' : '16px',
                   }}
                 >
                   {msg.content}
