@@ -592,11 +592,11 @@ function ContentMockup({ colors }: { colors: Record<string, string> }) {
 // ─── Settings Screen ────────────────────────────────────────────────────
 function SettingsMockup({ colors }: { colors: Record<string, string> }) {
   const items = [
-    { icon: '👤', label: 'Profile', desc: 'Name, email, nickname' },
-    { icon: '🔑', label: 'API Keys', desc: 'Claude, Tavily keys' },
-    { icon: '🎨', label: 'Appearance', desc: 'Theme, colors, font' },
-    { icon: '🔔', label: 'Notifications', desc: 'Email & push alerts' },
-    { icon: '🛡️', label: 'Security', desc: 'Password, Face ID' },
+    { icon: Shield, label: 'Profile', desc: 'Name, email, nickname', color: '#3B82F6' },
+    { icon: Settings, label: 'API Keys', desc: 'Claude, Tavily keys', color: '#F97316' },
+    { icon: Paintbrush, label: 'Appearance', desc: 'Theme, colors, font', color: '#8B5CF6' },
+    { icon: Sparkles, label: 'Notifications', desc: 'Email & push alerts', color: '#22C55E' },
+    { icon: Eye, label: 'Security', desc: 'Password, Face ID', color: '#DC2626' },
   ]
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: colors.screenBg }}>
@@ -616,16 +616,21 @@ function SettingsMockup({ colors }: { colors: Record<string, string> }) {
       </div>
       {/* Items */}
       <div style={{ flex: 1, padding: '0 12px', display: 'flex', flexDirection: 'column', gap: '4px', overflow: 'hidden' }}>
-        {items.map((item) => (
-          <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', borderRadius: '12px', backgroundColor: '#1E1E1E', border: '1px solid #2E2E2E' }}>
-            <span style={{ fontSize: '16px' }}>{item.icon}</span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#E8E8E8' }}>{item.label}</div>
-              <div style={{ fontSize: '8px', color: '#757575', marginTop: '2px' }}>{item.desc}</div>
+        {items.map((item) => {
+          const Icon = item.icon
+          return (
+            <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', borderRadius: '12px', backgroundColor: '#1E1E1E', border: '1px solid #2E2E2E' }}>
+              <div style={{ width: '28px', height: '28px', borderRadius: '8px', backgroundColor: `${item.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Icon size={14} color={item.color} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: '11px', fontWeight: 600, color: '#E8E8E8' }}>{item.label}</div>
+                <div style={{ fontSize: '8px', color: '#757575', marginTop: '2px' }}>{item.desc}</div>
+              </div>
+              <ChevronRightIcon size={14} color="#555" />
             </div>
-            <ChevronRightIcon size={14} color="#555" />
-          </div>
-        ))}
+          )
+        })}
       </div>
       <div style={{ padding: '12px' }}>
         <div style={{ height: '38px', borderRadius: '12px', border: '1px solid rgba(220,38,38,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
