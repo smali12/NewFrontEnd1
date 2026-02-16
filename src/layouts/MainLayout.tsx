@@ -17,8 +17,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
-// Use logo from public directory
-const logo = '/yellowlogo.png';
+import { Logo } from '@/components/Logo';
 
 const navItems = [
   { name: 'DASHBOARD', href: '/dashboard', icon: LayoutDashboard },
@@ -136,36 +135,13 @@ export function MainLayout({ children }: MainLayoutProps) {
           zIndex: 100,
           transition: 'all 0.3s ease',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
-              overflow: 'hidden',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <img 
-                src={logo} 
-                alt="Analyst Logo" 
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'contain' 
-                }} 
-              />
-            </div>
-            <span style={{
-              fontFamily: "'Rajdhani', sans-serif",
-              fontWeight: 700,
-              fontSize: '18px',
-              color: colors.text,
-              letterSpacing: '1.5px',
-            }}>
-              ANALYST
-            </span>
-          </div>
+          <Logo
+            variant="icon"
+            theme={isDark ? 'dark' : 'light'}
+            size="medium"
+            showText={true}
+            style={{ color: colors.text }}
+          />
           
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -239,39 +215,13 @@ export function MainLayout({ children }: MainLayoutProps) {
             borderBottom: `1px solid ${colors.border}`,
             flexShrink: 0,
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <img 
-                  src={logo} 
-                  alt="Analyst Logo" 
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'contain' 
-                  }} 
-                />
-              </div>
-              {!collapsed && (
-                <span style={{
-                  fontFamily: "'Rajdhani', sans-serif",
-                  fontWeight: 700,
-                  fontSize: '20px',
-                  color: colors.text,
-                  letterSpacing: '2px',
-                  transition: 'color 0.3s ease',
-                }}>
-                  ANALYST
-                </span>
-              )}
-            </div>
+            <Logo
+              variant="icon"
+              theme={isDark ? 'dark' : 'light'}
+              size="medium"
+              showText={!collapsed}
+              style={{ color: colors.text }}
+            />
             
             <button
               onClick={() => setCollapsed(!collapsed)}
