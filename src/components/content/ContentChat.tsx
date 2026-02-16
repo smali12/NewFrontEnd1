@@ -179,7 +179,7 @@ export function ContentChat({ colors, isDark }: ContentChatProps) {
             </div>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '800px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '800px', margin: '0 auto' }}>
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -187,44 +187,44 @@ export function ContentChat({ colors, isDark }: ContentChatProps) {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                  gap: '4px',
                 }}
               >
+                {/* Sender label */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '12px',
+                  color: colors.textMuted,
+                  padding: '0 4px',
+                }}>
+                  {msg.role === 'assistant' && (
+                    <img src="/potomac-icon.png" alt="Yang AI" style={{ width: '18px', height: '18px', borderRadius: '4px' }} />
+                  )}
+                  <span style={{ fontWeight: 600, color: colors.text }}>
+                    {msg.role === 'user' ? 'You' : 'Yang'}
+                  </span>
+                  <span style={{ color: colors.textSecondary }}>
+                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+                {/* Message bubble */}
                 <div
                   style={{
-                    maxWidth: '85%',
-                    padding: '12px 16px',
-                    borderRadius:
-                      msg.role === 'user'
-                        ? '16px 16px 4px 16px'
-                        : '16px 16px 16px 4px',
-                    backgroundColor:
-                      msg.role === 'user'
-                        ? colors.primaryYellow
-                        : isDark
-                          ? '#262626'
-                          : '#f0f0f0',
-                    color:
-                      msg.role === 'user' ? colors.darkGray : colors.text,
+                    maxWidth: msg.role === 'user' ? '85%' : '100%',
+                    padding: '10px 16px',
+                    borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '2px 16px 16px 16px',
+                    backgroundColor: msg.role === 'user' ? '#FEC00F' : 'transparent',
+                    color: msg.role === 'user' ? '#1a1a1a' : colors.text,
                     fontSize: '14px',
                     lineHeight: 1.6,
                     fontWeight: msg.role === 'user' ? 500 : 400,
+                    paddingLeft: msg.role === 'assistant' ? '28px' : '16px',
                   }}
                 >
                   {msg.content}
                 </div>
-                <span
-                  style={{
-                    fontSize: '11px',
-                    color: colors.textSecondary,
-                    marginTop: '4px',
-                    padding: '0 4px',
-                  }}
-                >
-                  {msg.timestamp.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </span>
               </div>
             ))}
             {isLoading && (

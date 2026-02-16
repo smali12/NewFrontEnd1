@@ -454,17 +454,20 @@ export function AFLGeneratorPage() {
 
     return (
       <AIMessage key={message.id} from={message.role}>
-        <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2 px-1">
+        <div className={`flex items-center gap-2 text-xs ${message.role === 'user' ? 'justify-end' : ''}`}>
           {message.role === 'user' ? (
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold flex-shrink-0" style={{ background: 'linear-gradient(135deg, #FEC00F 0%, #FFD740 100%)', color: '#212121' }}>
-              {userName.charAt(0).toUpperCase()}
-            </span>
+            <>
+              <span className="font-medium text-muted-foreground">{userName}</span>
+              {message.createdAt && <span className="text-muted-foreground/60">{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
+            </>
           ) : (
-            <img src={logo} alt="Yang AI" className="w-6 h-6 rounded flex-shrink-0" />
+            <>
+              <img src={logo} alt="Yang AI" className="w-5 h-5 rounded flex-shrink-0" />
+              <span className="font-semibold text-foreground">Yang</span>
+              {message.createdAt && <span className="text-muted-foreground/60">{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
+              {msgIsStreaming && <Shimmer duration={1.5}>Streaming...</Shimmer>}
+            </>
           )}
-          <span className="font-semibold text-foreground">{message.role === 'user' ? userName : 'Yang'}</span>
-          {message.createdAt && <span className="text-muted-foreground text-xs">• {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
-          {msgIsStreaming && <Shimmer duration={1.5}>Streaming...</Shimmer>}
         </div>
 
         <MessageContent>
@@ -821,14 +824,16 @@ export function AFLGeneratorPage() {
                 </ConversationEmptyState>
               ) : (
                 <>
-                  {allMessages.map((msg, idx) => renderMessage(msg, idx))}
+                  <div className="flex flex-col gap-6">
+                    {allMessages.map((msg, idx) => renderMessage(msg, idx))}
+                  </div>
 
                   {/* Submitted state - waiting */}
                   {status === 'submitted' && allMessages.length > 0 && allMessages[allMessages.length - 1]?.role === 'user' && (
                     <AIMessage from="assistant">
-                      <div className="text-xs text-muted-foreground mb-1 flex items-center gap-2">
-                        <img src={logo} alt="AI" className="w-6 h-6 rounded" />
-                        <span>Assistant</span>
+                      <div className="flex items-center gap-2 text-xs">
+                        <img src={logo} alt="Yang AI" className="w-5 h-5 rounded flex-shrink-0" />
+                        <span className="font-semibold text-foreground">Yang</span>
                       </div>
                       <MessageContent>
                         <Shimmer duration={1.5}>Generating AFL code...</Shimmer>
