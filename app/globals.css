@@ -91,6 +91,9 @@
     color: var(--potomac-gray);
     letter-spacing: 0.5px;
   }
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: #f0f0f0;
+  }
   
   /* Enhanced button contrast */
   button, [role="button"] {
@@ -192,6 +195,22 @@
 .markdown-body h2 { font-size: 1.35em; }
 .markdown-body h3 { font-size: 1.15em; }
 .markdown-body h4 { font-size: 1.05em; }
+.markdown-dark h1,
+.markdown-dark h2,
+.markdown-dark h3,
+.markdown-dark h4,
+.markdown-dark h5,
+.markdown-dark h6 {
+  color: #f0f0f0;
+}
+.markdown-light h1,
+.markdown-light h2,
+.markdown-light h3,
+.markdown-light h4,
+.markdown-light h5,
+.markdown-light h6 {
+  color: #1a1a1a;
+}
 
 /* Paragraphs & lists */
 .markdown-body p {
