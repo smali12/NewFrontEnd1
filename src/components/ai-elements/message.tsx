@@ -78,10 +78,10 @@ export type MessageProps = HTMLAttributes<HTMLDivElement> & {
 export const Message = ({ className, from, ...props }: MessageProps) => (
   <div
     className={cn(
-      "group flex w-full flex-col",
+      "group flex w-full flex-col gap-1.5",
       from === "user"
-        ? "is-user ml-auto max-w-[75%] items-end gap-1"
-        : "is-assistant max-w-full items-start gap-2",
+        ? "is-user ml-auto max-w-[75%] items-end"
+        : "is-assistant items-start",
       className
     )}
     {...props}
@@ -98,12 +98,19 @@ export const MessageContent = ({
   <div
     className={cn(
       "flex min-w-0 flex-col gap-2 overflow-hidden text-sm leading-relaxed",
-      // User bubble: gold with dark text, compact pill shape
-      "group-[.is-user]:w-fit group-[.is-user]:max-w-full group-[.is-user]:rounded-2xl group-[.is-user]:rounded-br-sm group-[.is-user]:px-4 group-[.is-user]:py-2.5 group-[.is-user]:font-medium",
+      // User bubble: gold, compact, right-aligned
+      "group-[.is-user]:w-fit group-[.is-user]:max-w-full",
+      "group-[.is-user]:rounded-2xl group-[.is-user]:rounded-br-md",
       "group-[.is-user]:bg-[#FEC00F] group-[.is-user]:text-[#1a1a1a]",
-      // Assistant: clean open text with subtle left accent, no heavy background
-      "group-[.is-assistant]:w-full group-[.is-assistant]:max-w-none group-[.is-assistant]:text-foreground",
-      "group-[.is-assistant]:border-l-2 group-[.is-assistant]:border-l-[#FEC00F]/40 group-[.is-assistant]:pl-4",
+      "group-[.is-user]:px-4 group-[.is-user]:py-2.5 group-[.is-user]:font-medium",
+      "group-[.is-user]:shadow-[0_1px_3px_rgba(0,0,0,0.2)]",
+      // Yang bubble: subtle elevated surface, full-width, left-aligned
+      "group-[.is-assistant]:w-full group-[.is-assistant]:max-w-none",
+      "group-[.is-assistant]:rounded-2xl group-[.is-assistant]:rounded-bl-md",
+      "group-[.is-assistant]:bg-white/[0.04] group-[.is-assistant]:text-foreground",
+      "group-[.is-assistant]:px-5 group-[.is-assistant]:py-4",
+      "group-[.is-assistant]:ring-1 group-[.is-assistant]:ring-white/[0.08]",
+      "group-[.is-assistant]:shadow-[0_1px_3px_rgba(0,0,0,0.15)]",
       className
     )}
     {...props}

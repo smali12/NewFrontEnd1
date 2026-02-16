@@ -213,10 +213,11 @@ export function ContentChat({ colors, isDark }: ContentChatProps) {
                 <div
                   style={{
                     maxWidth: msg.role === 'user' ? '75%' : '100%',
-                    padding: msg.role === 'user' ? '10px 16px' : '0 0 0 16px',
-                    borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '0',
-                    backgroundColor: msg.role === 'user' ? '#FEC00F' : 'transparent',
-                    borderLeft: msg.role === 'assistant' ? '2px solid rgba(254, 192, 15, 0.4)' : 'none',
+                    padding: msg.role === 'user' ? '10px 16px' : '16px 20px',
+                    borderRadius: msg.role === 'user' ? '16px 16px 6px 16px' : '16px 16px 16px 6px',
+                    backgroundColor: msg.role === 'user' ? '#FEC00F' : 'rgba(255,255,255,0.04)',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.15)',
+                    outline: msg.role === 'assistant' ? '1px solid rgba(255,255,255,0.08)' : 'none',
                     color: msg.role === 'user' ? '#1a1a1a' : colors.text,
                     fontSize: '14px',
                     lineHeight: 1.6,
