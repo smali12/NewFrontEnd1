@@ -21,7 +21,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 
 // Use logo from public directory (not src/assets which doesn't work in Next.js)
-const logoSrc = '/yellowlogo.png';
+const logoSrc = '/potomac-icon.png';
 
 export function RegisterPage() {
   const router = useRouter();

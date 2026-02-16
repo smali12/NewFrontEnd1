@@ -13,7 +13,7 @@ import {
 import { useTheme } from '@/contexts/ThemeContext';
 
 // Use logo from public directory (Next.js serves from /public)
-const logo = '/yellowlogo.png';
+const logo = '/potomac-icon.png';
 
 export function ForgotPasswordPage() {
   const { resolvedTheme } = useTheme();

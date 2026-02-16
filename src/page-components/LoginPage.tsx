@@ -136,7 +136,7 @@ export function LoginPage() {
             overflow: 'hidden',
           }}>
             <img 
-              src="/yellowlogo.png" 
+              src="/potomac-icon.png" 
               alt="Analyst Logo" 
               style={{ 
                 width: '100%', 
