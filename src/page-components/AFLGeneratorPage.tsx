@@ -39,7 +39,7 @@ import {
 } from '@/components/generative-ui';
 import { InlineReactPreview, stripReactCodeBlocks } from '@/components/InlineReactPreview';
 
-const logo = '/yellowlogo.png';
+const logo = '/potomac-icon.png';
 
 // Component to display file attachments inside PromptInput
 function AttachmentsDisplay() {
@@ -462,7 +462,7 @@ export function AFLGeneratorPage() {
           ) : (
             <img src={logo} alt="AI" className="w-6 h-6 rounded" />
           )}
-          <span>{message.role === 'user' ? userName : 'Assistant'}</span>
+          <span>{message.role === 'user' ? userName : 'Yang'}</span>
           {message.createdAt && <span className="text-muted-foreground">{'  '}{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
           {msgIsStreaming && <Shimmer duration={1.5}>Streaming...</Shimmer>}
         </div>
