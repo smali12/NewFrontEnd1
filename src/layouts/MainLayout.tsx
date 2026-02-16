@@ -19,7 +19,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
 // Use logo from public directory
-const logo = '/yellowlogo.png';
+const logo = '/potomac-icon.png';
 
 const navItems = [
   { name: 'DASHBOARD', href: '/dashboard', icon: LayoutDashboard },
