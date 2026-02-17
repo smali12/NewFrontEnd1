@@ -31,6 +31,7 @@ import {
   ArrowRight as ArrowRightIcon,
   Laptop,
   ChevronLeft,
+  ChevronUp,
   Wifi,
   BatteryFull,
   Signal,
@@ -39,9 +40,9 @@ import {
   Tv,
   Mic,
   ClipboardCopy,
-  ChevronUp,
-  ChevronDown as ChevronDownIcon,
   Volume2,
+  Activity,
+  Bell,
 } from 'lucide-react'
 import { useTheme } from '@/contexts/ThemeContext'
 
@@ -939,7 +940,7 @@ function TizenHomeMockup({ colors, focusIndex = 0 }: { colors: Record<string, st
               <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#333', border: '1px solid #555' }} />
               <ChevronRightIcon size={8} color="#555" />
             </div>
-            <ChevronDownIcon size={8} color="#555" />
+            <ChevronDown size={8} color="#555" />
           </div>
         </div>
         <span style={{ fontSize: '8px', color: '#555' }}>D-pad navigation</span>
@@ -1247,7 +1248,11 @@ export function NonAppleDeveloperPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: colors.background, fontFamily: "'Quicksand', sans-serif", transition: 'background-color 0.3s ease' }}>
-      <style>{`@keyframes shimmer { 0% { left: -50%; } 100% { left: 100%; } }`}</style>
+      <style>{`
+  @keyframes shimmer { 0% { left: -50%; } 100% { left: 100%; } }
+  @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(254,192,15,0); } 50% { box-shadow: 0 0 12px 4px rgba(254,192,15,0.15); } }
+  @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+`}</style>
 
       {/* ── Hero Header ──────────────────────────────────────────────── */}
       <div style={{ background: isDark ? 'linear-gradient(135deg, #0A0A0B 0%, #1A1A1D 50%, #0A0A0B 100%)' : 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%)', borderBottom: `1px solid ${colors.border}`, padding: '48px 32px 40px', position: 'relative', overflow: 'hidden' }}>
@@ -1543,7 +1548,7 @@ export function NonAppleDeveloperPage() {
 │   ├── model/
 │   │   ├── User.kt                 // From AuthContext
 │   │   ├── Conversation.kt         // From types/api.ts
-│   │   ├── Document.kt             // Knowledge base types
+��   │   ├── Document.kt             // Knowledge base types
 │   │   └── BacktestResult.kt       // Backtest types
 │   ├── remote/
 │   │   ├── ApiService.kt           // Retrofit interface (replaces api.ts)
@@ -1577,7 +1582,7 @@ export function NonAppleDeveloperPage() {
 │   │   ├── ChatScreen.kt           // ChatPage.tsx -> Compose
 │   │   ├── ChatViewModel.kt
 │   │   └── MessageBubble.kt        // AI message rendering
-│   ├── afl/
+│   ���── afl/
 │   │   ├── AFLScreen.kt            // AFLGeneratorPage.tsx -> Compose
 │   │   └── AFLViewModel.kt
 │   ├── knowledge/
@@ -2040,7 +2045,7 @@ fun AnalystTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 
           {/* ════════════════════════════════════════════════════════════ */}
           {/* WINUI 3 GUIDE                                               */}
-          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ════════════���═══════════════════════════════════════════════ */}
           {activePlatform === 'winui' && (
             <>
               <CollapsibleSection title="1. PROJECT ARCHITECTURE" defaultOpen colors={colors} badge="FOUNDATION">
@@ -2399,7 +2404,7 @@ fun AnalystTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 
         {/* ── Footer ─────────────────────────────────────────────────── */}
         <footer style={{ padding: '32px 0', borderTop: `1px solid ${colors.border}`, textAlign: 'center' }}>
-          <p style={{ fontSize: '12px', color: colors.textMuted }}>Potomac Analyst Workbench - Non Apple Developer Blueprint v1.0</p>
+          <p style={{ fontSize: '12px', color: colors.textMuted }}>Potomac Analyst Workbench - Non-Apple Developer Blueprint v3.0 (Android, Windows, Samsung TV Tizen)</p>
         </footer>
       </div>
     </div>
