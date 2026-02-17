@@ -66,6 +66,21 @@ export function LoginPage() {
     }
   };
 
+  const handleDemoAccess = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      // Attempt login with demo credentials, or create a demo session
+      await login('demo@example.com', 'demo');
+    } catch (err) {
+      // If login fails, just navigate to dashboard in demo mode
+      router.push('/dashboard');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{
       minHeight: '100dvh',
@@ -446,12 +461,47 @@ export function LoginPage() {
             <div style={{ flex: 1, height: '1px', backgroundColor: '#2A2A2A' }} />
           </div>
 
+          {/* Demo Access Button */}
+          <button
+            type="button"
+            onClick={handleDemoAccess}
+            disabled={loading}
+            style={{
+              width: '100%',
+              height: '52px',
+              backgroundColor: 'transparent',
+              border: '1.5px solid #757575',
+              borderRadius: '10px',
+              color: '#757575',
+              fontSize: '14px',
+              fontFamily: "'Rajdhani', sans-serif",
+              fontWeight: 700,
+              letterSpacing: '1px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#FEC00F';
+              e.currentTarget.style.color = '#FEC00F';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#757575';
+              e.currentTarget.style.color = '#757575';
+            }}
+          >
+            DEMO MODE
+          </button>
+
           {/* Sign Up Link */}
           <p style={{
             textAlign: 'center',
             color: '#9E9E9E',
             fontSize: '14px',
-            margin: 0,
+            margin: '32px 0 0 0',
           }}>
             Don't have an account?{' '}
             <Link

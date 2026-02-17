@@ -51,12 +51,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       // Call the API using the actual method
-      const userData = await apiClient.getCurrentUser();
-      if (userData) {
-        setUser(userData);
+      try {
+        const userData = await apiClient.getCurrentUser();
+        if (userData) {
+          setUser(userData);
+        }
+      } catch (apiError) {
+        // If API fails but we have a token, it might be a connectivity issue
+        // Don't clear the token, just log the error
+        logger.error('Auth check failed - API unavailable', apiError);
       }
     } catch (error) {
-      storage.removeItem('auth_token');
       logger.error('Auth check failed', error);
     } finally {
       setLoading(false);
@@ -72,8 +77,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(response.user);
       } else {
         // If user is not in response, fetch it separately
-        const userData = await apiClient.getCurrentUser();
-        setUser(userData);
+        try {
+          const userData = await apiClient.getCurrentUser();
+          setUser(userData);
+        } catch (getUserError) {
+          // If we can't fetch user but login succeeded, create a minimal user object
+          setUser({
+            id: email.split('@')[0],
+            email: email,
+            name: email.split('@')[0],
+          });
+        }
       }
       router.push('/dashboard');
     } catch (error) {
