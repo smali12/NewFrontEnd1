@@ -878,7 +878,7 @@ function AppleWatchFrame({
   return (
     <div onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default', transition: 'all 0.3s ease', transform: isActive ? 'scale(1.04)' : 'scale(1)' }}>
       {/* Band top */}
-      <div style={{ width: '100px', height: '24px', margin: '0 auto', borderRadius: '6px 6px 0 0', background: 'linear-gradient(180deg, #333 0%, #2a2a2a 100%)', border: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderBottom: 'none' }} />
+      <div style={{ width: '100px', height: '24px', margin: '0 auto', borderRadius: '6px 6px 0 0', background: 'linear-gradient(180deg, #333 0%, #2a2a2a 100%)', borderTop: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderLeft: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderRight: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderBottom: 'none' }} />
       <div
         style={{
           width: '180px',
@@ -902,7 +902,7 @@ function AppleWatchFrame({
         </div>
       </div>
       {/* Band bottom */}
-      <div style={{ width: '100px', height: '24px', margin: '0 auto', borderRadius: '0 0 6px 6px', background: 'linear-gradient(180deg, #2a2a2a 0%, #333 100%)', border: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderTop: 'none' }} />
+      <div style={{ width: '100px', height: '24px', margin: '0 auto', borderRadius: '0 0 6px 6px', background: 'linear-gradient(180deg, #2a2a2a 0%, #333 100%)', borderBottom: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderLeft: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderRight: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderTop: 'none' }} />
       {label && (
         <p style={{ textAlign: 'center', marginTop: '10px', fontFamily: "'Rajdhani', sans-serif", fontSize: '12px', fontWeight: 600, letterSpacing: '1px', color: isActive ? '#FEC00F' : colors.textMuted }}>
           {label}
