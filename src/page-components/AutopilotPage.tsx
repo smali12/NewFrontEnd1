@@ -49,51 +49,92 @@ interface LogEntry {
 type AppKey = 'amibroker' | 'afl-editor' | 'optuma' | 'outlook' | 'excel' | 'edge' | 'word';
 
 /* ------------------------------------------------------------------ */
-/*  Expanded Demo Actions -- 33 steps                                  */
+/*  Comprehensive Expanded Demo Actions -- 55+ steps                   */
 /* ------------------------------------------------------------------ */
 
 const DEMO_ACTIONS: Omit<LogEntry, 'id'>[] = [
   { time: '00:01', action: 'Yang initialized -- scanning desktop environment', status: 'success' },
   { time: '00:03', action: 'Identified 7 applications to manage. Beginning workflow...', status: 'success' },
+  { time: '00:04', action: 'Analyzing user patterns from previous sessions', status: 'success' },
 
-  { time: '00:05', action: 'Opening AmiBroker -- loading Gold Index CDE workspace', status: 'active', app: 'amibroker' },
-  { time: '00:07', action: 'Applying DEMA overlay to candlestick chart', status: 'success', app: 'amibroker' },
-  { time: '00:09', action: 'Analyzing support/resistance at 69.40 and 81.20 levels', status: 'success', app: 'amibroker' },
+  // Phase 1: AmiBroker Chart Analysis
+  { time: '00:06', action: 'Opening AmiBroker -- loading Gold Index CDE workspace', status: 'active', app: 'amibroker' },
+  { time: '00:08', action: 'Applying DEMA overlay to candlestick chart', status: 'success', app: 'amibroker' },
+  { time: '00:10', action: 'Analyzing support/resistance at 69.40 and 81.20 levels', status: 'success', app: 'amibroker' },
+  { time: '00:12', action: 'Identifying bullish divergence on volume indicator', status: 'success', app: 'amibroker' },
+  { time: '00:14', action: 'Exporting chart snapshot as GoldIndex_2025.png', status: 'success', app: 'amibroker' },
 
-  { time: '00:11', action: 'Opening AFL Formula Editor in AmiBroker', status: 'active', app: 'afl-editor' },
-  { time: '00:13', action: 'Writing new strategy: Freddy & Marla Bull Trading Algorithm', status: 'active', app: 'afl-editor' },
-  { time: '00:15', action: 'Coding Buy = Cross(MACD(), Signal()) with optimized params', status: 'success', app: 'afl-editor' },
-  { time: '00:17', action: 'Adding risk management: PositionSize = -2 (% risk model)', status: 'success', app: 'afl-editor' },
-  { time: '00:19', action: 'Setting backtest range 2015-2025, verifying syntax...', status: 'success', app: 'afl-editor' },
+  // Phase 2: AFL Formula Development
+  { time: '00:16', action: 'Opening AFL Formula Editor in AmiBroker', status: 'active', app: 'afl-editor' },
+  { time: '00:18', action: 'Writing new strategy: Freddy & Marla Bull Trading Algorithm', status: 'active', app: 'afl-editor' },
+  { time: '00:20', action: 'Coding Buy = Cross(MACD(), Signal()) with optimized params', status: 'success', app: 'afl-editor' },
+  { time: '00:22', action: 'Adding risk management: PositionSize = -2 (% risk model)', status: 'success', app: 'afl-editor' },
+  { time: '00:24', action: 'Implementing trailing stop: ApplyStop(stopTypeTrailing, 3%)', status: 'success', app: 'afl-editor' },
+  { time: '00:26', action: 'Setting backtest range 2015-2025, verifying syntax...', status: 'success', app: 'afl-editor' },
+  { time: '00:28', action: 'Running backtest: 347 trades, 62% win rate, +142% return', status: 'success', app: 'afl-editor' },
+  { time: '00:30', action: 'Saving formula as FMBull_v1.afl to strategies folder', status: 'success', app: 'afl-editor' },
 
-  { time: '00:21', action: 'Switching to Optuma -- opening AUD/USD daily chart', status: 'active', app: 'optuma' },
-  { time: '00:23', action: 'Drawing Fibonacci retracement from 0.617 to 0.715', status: 'success', app: 'optuma' },
-  { time: '00:25', action: 'Checking RSI divergence -- bearish signal at 42.31', status: 'success', app: 'optuma' },
-  { time: '00:27', action: 'Saving chart workspace and annotating key levels', status: 'success', app: 'optuma' },
+  // Phase 3: Optuma Advanced Analysis
+  { time: '00:32', action: 'Switching to Optuma -- opening AUD/USD daily chart', status: 'active', app: 'optuma' },
+  { time: '00:34', action: 'Drawing Fibonacci retracement from 0.617 to 0.715', status: 'success', app: 'optuma' },
+  { time: '00:36', action: 'Checking RSI divergence -- bearish signal at 42.31', status: 'success', app: 'optuma' },
+  { time: '00:38', action: 'Applying Gann Fan from recent swing low', status: 'success', app: 'optuma' },
+  { time: '00:40', action: 'Adding 14-period RSI indicator to sub-panel', status: 'success', app: 'optuma' },
+  { time: '00:42', action: 'Annotating key support zone at 0.6680-0.6700', status: 'success', app: 'optuma' },
+  { time: '00:44', action: 'Saving chart workspace and exporting as PDF', status: 'success', app: 'optuma' },
 
-  { time: '00:29', action: 'Opening Outlook -- composing market analysis email', status: 'active', app: 'outlook' },
-  { time: '00:31', action: 'To: trading-team@yangcapital.com | Subject: Daily Brief', status: 'active', app: 'outlook' },
-  { time: '00:33', action: 'Drafting body: Gold Index bullish, AUD/USD bearish divergence', status: 'success', app: 'outlook' },
-  { time: '00:35', action: 'Attaching AmiBroker chart screenshot and AFL strategy file', status: 'success', app: 'outlook' },
-  { time: '00:37', action: 'Email sent successfully to 4 recipients', status: 'success', app: 'outlook' },
+  // Phase 4: Email Communication
+  { time: '00:46', action: 'Opening Outlook -- composing market analysis email', status: 'active', app: 'outlook' },
+  { time: '00:48', action: 'To: trading-team@yangcapital.com | Subject: Daily Market Brief', status: 'active', app: 'outlook' },
+  { time: '00:50', action: 'Drafting executive summary: Gold bullish, AUD/USD bearish setup', status: 'success', app: 'outlook' },
+  { time: '00:52', action: 'Inserting key findings and trade recommendations', status: 'success', app: 'outlook' },
+  { time: '00:54', action: 'Attaching: GoldIndex_2025.png, FMBull_v1.afl, AUDUSD_chart.pdf', status: 'success', app: 'outlook' },
+  { time: '00:56', action: 'Applying HTML formatting and company signature', status: 'success', app: 'outlook' },
+  { time: '00:58', action: 'Email sent successfully to 4 recipients + BCC: archive', status: 'success', app: 'outlook' },
+  { time: '01:00', action: 'Creating calendar reminder for 3PM market close review', status: 'success', app: 'outlook' },
 
-  { time: '00:39', action: 'Opening Excel -- creating portfolio risk assessment', status: 'active', app: 'excel' },
-  { time: '00:41', action: 'Importing live data: 12 positions across 3 asset classes', status: 'active', app: 'excel' },
-  { time: '00:43', action: 'Calculating VaR, Sharpe Ratio, Max Drawdown formulas', status: 'success', app: 'excel' },
-  { time: '00:45', action: 'Building PivotTable and conditional-format heat map', status: 'success', app: 'excel' },
-  { time: '00:47', action: 'Saved as Portfolio_Risk_2025.xlsx', status: 'success', app: 'excel' },
+  // Phase 5: Excel Portfolio Analytics
+  { time: '01:02', action: 'Opening Excel -- creating portfolio risk assessment', status: 'active', app: 'excel' },
+  { time: '01:04', action: 'Importing live data: 12 positions across Stocks, FX, Commodities', status: 'active', app: 'excel' },
+  { time: '01:06', action: 'Building position summary table with current P&L', status: 'success', app: 'excel' },
+  { time: '01:08', action: 'Calculating Value at Risk (VaR) using historical method', status: 'success', app: 'excel' },
+  { time: '01:10', action: 'Computing Sharpe Ratio: 1.87 (excellent risk-adjusted return)', status: 'success', app: 'excel' },
+  { time: '01:12', action: 'Analyzing Max Drawdown: -8.3% (within acceptable limits)', status: 'success', app: 'excel' },
+  { time: '01:14', action: 'Building PivotTable: Performance by Asset Class', status: 'success', app: 'excel' },
+  { time: '01:16', action: 'Applying conditional formatting heat map to correlations', status: 'success', app: 'excel' },
+  { time: '01:18', action: 'Creating dashboard with sparklines and KPI cards', status: 'success', app: 'excel' },
+  { time: '01:20', action: 'Saved as Portfolio_Risk_Assessment_2025-02-17.xlsx', status: 'success', app: 'excel' },
 
-  { time: '00:49', action: 'Opening Edge -- researching RBA interest rate decision', status: 'active', app: 'edge' },
-  { time: '00:51', action: 'Navigating Reuters, Bloomberg, RBA.gov.au', status: 'active', app: 'edge' },
-  { time: '00:53', action: 'Extracting key data: rate held at 4.35%, dovish guidance', status: 'success', app: 'edge' },
-  { time: '00:55', action: 'Compiling research notes into Word document', status: 'success', app: 'edge' },
+  // Phase 6: Web Research & Data Gathering
+  { time: '01:22', action: 'Opening Edge browser -- researching RBA policy decision', status: 'active', app: 'edge' },
+  { time: '01:24', action: 'Tab 1: Navigating to RBA.gov.au official statement', status: 'active', app: 'edge' },
+  { time: '01:26', action: 'Tab 2: Opening Bloomberg terminal for market reaction', status: 'success', app: 'edge' },
+  { time: '01:28', action: 'Tab 3: Reuters article on inflation outlook', status: 'success', app: 'edge' },
+  { time: '01:30', action: 'Extracting key data: Cash rate 4.35%, dovish forward guidance', status: 'success', app: 'edge' },
+  { time: '01:32', action: 'Analyzing market consensus: 65% expect cut by Q3 2025', status: 'success', app: 'edge' },
+  { time: '01:34', action: 'Copying key quotes and data points to clipboard', status: 'success', app: 'edge' },
+  { time: '01:36', action: 'Bookmarking sources for future reference', status: 'success', app: 'edge' },
 
-  { time: '00:57', action: 'Opening Word -- drafting Weekly Strategy Report', status: 'active', app: 'word' },
-  { time: '00:59', action: 'Formatting headings, inserting charts, adding analysis', status: 'active', app: 'word' },
-  { time: '01:01', action: 'Document complete: 8 pages with embedded visuals', status: 'success', app: 'word' },
+  // Phase 7: Document Creation & Reporting
+  { time: '01:38', action: 'Opening Word -- drafting Weekly Strategy Report', status: 'active', app: 'word' },
+  { time: '01:40', action: 'Applying corporate template with header/footer', status: 'success', app: 'word' },
+  { time: '01:42', action: 'Writing executive summary (300 words)', status: 'active', app: 'word' },
+  { time: '01:44', action: 'Inserting chart images from AmiBroker and Optuma', status: 'success', app: 'word' },
+  { time: '01:46', action: 'Adding Market Outlook section with RBA analysis', status: 'success', app: 'word' },
+  { time: '01:48', action: 'Creating Trade Recommendations table (5 setups)', status: 'success', app: 'word' },
+  { time: '01:50', action: 'Formatting with styles: Heading 1, Body Text, Quote', status: 'success', app: 'word' },
+  { time: '01:52', action: 'Inserting table of contents and page numbers', status: 'success', app: 'word' },
+  { time: '01:54', action: 'Document complete: 12 pages with professional layout', status: 'success', app: 'word' },
+  { time: '01:56', action: 'Saved as Weekly_Strategy_Report_Week07_2025.docx', status: 'success', app: 'word' },
+  { time: '01:58', action: 'Exporting PDF version for distribution', status: 'success', app: 'word' },
 
-  { time: '01:03', action: 'Learning user pattern: automated morning briefing workflow', status: 'active' },
-  { time: '01:05', action: 'All 33 tasks complete. 7 applications managed. 0 errors.', status: 'success' },
+  // Phase 8: Learning & Automation
+  { time: '02:00', action: 'Yang learning user workflow pattern: Morning briefing sequence', status: 'active' },
+  { time: '02:02', action: 'Identified automation opportunity: Daily chart analysis routine', status: 'success' },
+  { time: '02:04', action: 'Creating macro for automated AmiBroker → Optuma → Email flow', status: 'success' },
+  { time: '02:06', action: 'Stored workflow template: "Daily_Market_Analysis.yangflow"', status: 'success' },
+  { time: '02:08', action: 'All 58 tasks complete. 7 applications managed. 0 errors.', status: 'success' },
+  { time: '02:10', action: 'Ready to execute learned workflow autonomously tomorrow', status: 'success' },
 ];
 
 /* ------------------------------------------------------------------ */

@@ -1336,6 +1336,127 @@ function CopyAsMarkdownButton({
   )
 }
 
+// ─── CarPlay Mockup ───────────────────────────────────────────────────────
+function CarPlayMockup({ colors }: { colors: Record<string, string> }) {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'linear-gradient(180deg, #000 0%, #0a0a0a 100%)' }}>
+      {/* CarPlay Status Bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 16px', borderBottom: '1px solid #1a1a1a' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Clock size={10} color="#fff" />
+          <span style={{ fontSize: '11px', color: '#fff', fontWeight: 600 }}>{'2:30 PM'}</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Signal size={10} color="#fff" />
+          <Wifi size={10} color="#fff" />
+        </div>
+      </div>
+      
+      {/* Main Content Area */}
+      <div style={{ flex: 1, padding: '12px', display: 'flex', gap: '12px' }}>
+        {/* Left: App Grid */}
+        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+          {/* Navigation App */}
+          <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #4A90E2 0%, #357ABD 100%)', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 12px rgba(74,144,226,0.3)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ width: '20px', height: '20px', borderRadius: '6px', backgroundColor: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: '12px' }}>{'📍'}</span>
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.7)', marginBottom: '2px' }}>{'Navigation'}</div>
+              <div style={{ fontSize: '11px', color: '#fff', fontWeight: 700 }}>{'Home'}</div>
+              <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.6)', marginTop: '2px' }}>{'15 min'}</div>
+            </div>
+          </div>
+
+          {/* Media/Music App */}
+          <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #E94E77 0%, #C93E68 100%)', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 12px rgba(233,78,119,0.3)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Volume2 size={16} color="#fff" />
+            </div>
+            <div>
+              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.7)', marginBottom: '2px' }}>{'Now Playing'}</div>
+              <div style={{ fontSize: '10px', color: '#fff', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{'Market Analysis Pod...'}</div>
+              <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.6)', marginTop: '2px' }}>{'Potomac Trading'}</div>
+            </div>
+          </div>
+
+          {/* Messages App */}
+          <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #5AC85A 0%, #49B449 100%)', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 12px rgba(90,200,90,0.3)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <MessageCircle size={16} color="#fff" />
+              <div style={{ width: '16px', height: '16px', borderRadius: '50%', backgroundColor: '#ff3b30', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8px', color: '#fff', fontWeight: 700 }}>
+                {'3'}
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.7)', marginBottom: '2px' }}>{'Messages'}</div>
+              <div style={{ fontSize: '10px', color: '#fff', fontWeight: 700 }}>{'Yang'}</div>
+              <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.6)', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{'Trade alert: AAPL'}</div>
+            </div>
+          </div>
+
+          {/* Phone App */}
+          <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #FEC00F 0%, #E5AD00 100%)', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 12px rgba(254,192,15,0.3)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Mic size={16} color="#0a0a0a" />
+            </div>
+            <div>
+              <div style={{ fontSize: '9px', color: 'rgba(0,0,0,0.6)', marginBottom: '2px' }}>{'Siri'}</div>
+              <div style={{ fontSize: '10px', color: '#0a0a0a', fontWeight: 700 }}>{'Press to speak'}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Now Playing Card */}
+        <div style={{ width: '140px', borderRadius: '16px', background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)', padding: '14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', border: '1px solid #333' }}>
+          <div>
+            <div style={{ width: '100%', aspectRatio: '1', borderRadius: '12px', background: 'linear-gradient(135deg, #C93E68 0%, #E94E77 100%)', marginBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Volume2 size={32} color="#fff" />
+            </div>
+            <div style={{ fontSize: '10px', color: '#fff', fontWeight: 700, marginBottom: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{'Market Analysis Podcast'}</div>
+            <div style={{ fontSize: '8px', color: '#999', marginBottom: '8px' }}>{'Potomac Trading Insights'}</div>
+          </div>
+          
+          {/* Playback Controls */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '14px', marginBottom: '10px' }}>
+              <ChevronLeft size={18} color="#fff" style={{ cursor: 'pointer' }} />
+              <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                <span style={{ fontSize: '12px' }}>{'▶'}</span>
+              </div>
+              <ChevronRightIcon size={18} color="#fff" style={{ cursor: 'pointer' }} />
+            </div>
+            
+            {/* Progress Bar */}
+            <div style={{ height: '3px', borderRadius: '2px', backgroundColor: '#333', overflow: 'hidden', marginBottom: '4px' }}>
+              <div style={{ width: '45%', height: '100%', backgroundColor: '#fff', borderRadius: '2px' }} />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '7px', color: '#999' }}>
+              <span>{'12:34'}</span>
+              <span>{'28:00'}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '10px 16px', borderTop: '1px solid #1a1a1a' }}>
+        <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          <span style={{ fontSize: '16px' }}>{'🏠'}</span>
+        </div>
+        <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(254,192,15,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          <Activity size={18} color="#FEC00F" />
+        </div>
+        <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          <Bell size={18} color="#fff" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── Tab Bar (shared) ────────────────────────────────────────────────────
 function MockupTabBar({ active = 'Home' }: { active?: string }) {
   return (
@@ -1448,6 +1569,7 @@ export function DeveloperPage() {
     { id: 'backtest', label: 'BACKTEST', component: BacktestMockup },
     { id: 'content', label: 'CONTENT', component: ContentMockup },
     { id: 'settings', label: 'SETTINGS', component: SettingsMockup },
+    { id: 'carplay', label: 'CARPLAY', component: CarPlayMockup },
   ]
 
   const ipadScreens = [
