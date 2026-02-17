@@ -20,6 +20,17 @@ import {
   Zap,
   Activity,
   Clock,
+  Mail,
+  FileSpreadsheet,
+  Globe,
+  FileCode,
+  FileText,
+  Send,
+  Paperclip,
+  Bold,
+  Italic,
+  Underline,
+  AlignLeft,
 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -36,20 +47,61 @@ interface LogEntry {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Constants                                                          */
+/*  Expanded Demo Actions -- 30 steps                                  */
 /* ------------------------------------------------------------------ */
 
 const DEMO_ACTIONS: Omit<LogEntry, 'id'>[] = [
+  // Phase 1: Initialization
   { time: '00:01', action: 'Yang initialized -- scanning desktop environment', status: 'success' },
-  { time: '00:03', action: 'Opening AmiBroker -- loading chart workspace', status: 'active', app: 'amibroker' },
-  { time: '00:05', action: 'Applying DEMA overlay to Gold Index chart', status: 'success', app: 'amibroker' },
-  { time: '00:07', action: 'Switching to Optuma -- analyzing Fibonacci levels', status: 'active', app: 'optuma' },
-  { time: '00:09', action: 'Setting AUD/USD retracement from 0.617 to 0.715', status: 'success', app: 'optuma' },
-  { time: '00:11', action: 'Navigating AmiBroker Formula Editor', status: 'active', app: 'amibroker' },
-  { time: '00:13', action: 'Modifying AFL: Buy = Cross(MACD(), Signal())', status: 'success', app: 'amibroker' },
-  { time: '00:15', action: 'Returning to Optuma -- checking RSI divergence', status: 'active', app: 'optuma' },
-  { time: '00:17', action: 'Learning pattern: user Fibonacci workflow', status: 'active', app: 'optuma' },
-  { time: '00:19', action: 'Cross-app workflow complete -- all tasks executed', status: 'success' },
+  { time: '00:03', action: 'Identified 6 applications to manage. Beginning workflow...', status: 'success' },
+
+  // Phase 2: AmiBroker chart analysis
+  { time: '00:05', action: 'Opening AmiBroker -- loading Gold Index CDE workspace', status: 'active', app: 'amibroker' },
+  { time: '00:07', action: 'Applying DEMA overlay to candlestick chart', status: 'success', app: 'amibroker' },
+  { time: '00:09', action: 'Analyzing support/resistance at 69.40 and 81.20 levels', status: 'success', app: 'amibroker' },
+
+  // Phase 3: AFL Coding in AmiBroker Formula Editor
+  { time: '00:11', action: 'Opening AFL Formula Editor in AmiBroker', status: 'active', app: 'afl-editor' },
+  { time: '00:13', action: 'Writing new strategy: Freddy & Marla Bull Trading Algorithm', status: 'active', app: 'afl-editor' },
+  { time: '00:15', action: 'Coding Buy = Cross(MACD(), Signal()) with optimized params', status: 'success', app: 'afl-editor' },
+  { time: '00:17', action: 'Adding risk management: PositionSize = -2 (% risk model)', status: 'success', app: 'afl-editor' },
+  { time: '00:19', action: 'Setting backtest range 2015-2025, verifying syntax...', status: 'success', app: 'afl-editor' },
+
+  // Phase 4: Optuma analysis
+  { time: '00:21', action: 'Switching to Optuma -- opening AUD/USD daily chart', status: 'active', app: 'optuma' },
+  { time: '00:23', action: 'Drawing Fibonacci retracement from 0.617 to 0.715', status: 'success', app: 'optuma' },
+  { time: '00:25', action: 'Checking RSI divergence -- bearish signal at 42.31', status: 'success', app: 'optuma' },
+  { time: '00:27', action: 'Saving chart workspace and annotating key levels', status: 'success', app: 'optuma' },
+
+  // Phase 5: Email composition
+  { time: '00:29', action: 'Opening Outlook -- composing market analysis email', status: 'active', app: 'outlook' },
+  { time: '00:31', action: 'To: trading-team@yangcapital.com | Subject: Daily Brief', status: 'active', app: 'outlook' },
+  { time: '00:33', action: 'Drafting body: Gold Index bullish, AUD/USD bearish divergence', status: 'success', app: 'outlook' },
+  { time: '00:35', action: 'Attaching AmiBroker chart screenshot and AFL strategy file', status: 'success', app: 'outlook' },
+  { time: '00:37', action: 'Email sent successfully to 4 recipients', status: 'success', app: 'outlook' },
+
+  // Phase 6: Excel spreadsheet work
+  { time: '00:39', action: 'Opening Excel -- creating portfolio risk assessment', status: 'active', app: 'excel' },
+  { time: '00:41', action: 'Importing live data: 12 positions across 3 asset classes', status: 'active', app: 'excel' },
+  { time: '00:43', action: 'Calculating VaR, Sharpe Ratio, Max Drawdown formulas', status: 'success', app: 'excel' },
+  { time: '00:45', action: 'Building PivotTable and conditional-format heat map', status: 'success', app: 'excel' },
+  { time: '00:47', action: 'Saved as Portfolio_Risk_2025.xlsx', status: 'success', app: 'excel' },
+
+  // Phase 7: Web research
+  { time: '00:49', action: 'Opening Edge -- researching RBA interest rate decision', status: 'active', app: 'edge' },
+  { time: '00:51', action: 'Navigating Reuters, Bloomberg, RBA.gov.au', status: 'active', app: 'edge' },
+  { time: '00:53', action: 'Extracting key data: rate held at 4.35%, dovish guidance', status: 'success', app: 'edge' },
+  { time: '00:55', action: 'Compiling research notes into Word document', status: 'success', app: 'edge' },
+
+  // Phase 8: Document creation
+  { time: '00:57', action: 'Opening Word -- drafting Weekly Strategy Report', status: 'active', app: 'word' },
+  { time: '00:59', action: 'Formatting headings, inserting charts, adding analysis', status: 'active', app: 'word' },
+  { time: '01:01', action: 'Document complete: 8 pages with embedded visuals', status: 'success', app: 'word' },
+
+  // Phase 9: Learning & wrap-up
+  { time: '01:03', action: 'Learning user pattern: automated morning briefing workflow', status: 'active' },
+  { time: '01:05', action: 'Workflow saved -- Yang can now execute this autonomously', status: 'success' },
+  { time: '01:07', action: 'All 33 tasks complete. 7 applications managed. 0 errors.', status: 'success' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -57,13 +109,12 @@ const DEMO_ACTIONS: Omit<LogEntry, 'id'>[] = [
 /* ------------------------------------------------------------------ */
 
 function StatusDot({ status }: { status: string }) {
-  const bg =
-    status === 'success' ? '#10b981' : status === 'active' ? '#FEC00F' : '#64748b';
+  const bg = status === 'success' ? '#10b981' : status === 'active' ? '#FEC00F' : '#64748b';
   return <span className="inline-block w-2 h-2 rounded-full flex-shrink-0 mt-1.5" style={{ background: bg }} />;
 }
 
 /* ------------------------------------------------------------------ */
-/*  Windows 11 Title Bar                                               */
+/*  Win11 Title Bar                                                    */
 /* ------------------------------------------------------------------ */
 
 function Win11TitleBar({
@@ -72,62 +123,32 @@ function Win11TitleBar({
   bgColor,
   textColor,
   isActive,
-  onMinimize,
-  onMaximize,
-  onClose,
 }: {
   title: string;
   icon: React.ReactNode;
   bgColor: string;
   textColor: string;
   isActive: boolean;
-  onMinimize?: () => void;
-  onMaximize?: () => void;
-  onClose?: () => void;
 }) {
   return (
     <div
-      className="flex items-center justify-between select-none"
-      style={{
-        background: bgColor,
-        height: 32,
-        paddingLeft: 10,
-        paddingRight: 0,
-        opacity: isActive ? 1 : 0.85,
-      }}
+      className="flex items-center justify-between select-none flex-shrink-0"
+      style={{ background: bgColor, height: 32, paddingLeft: 10, paddingRight: 0, opacity: isActive ? 1 : 0.85 }}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-w-0 overflow-hidden">
         {icon}
-        <span style={{ color: textColor, fontSize: 12, fontWeight: 500 }}>{title}</span>
+        <span className="truncate" style={{ color: textColor, fontSize: 12, fontWeight: 500 }}>{title}</span>
       </div>
-      <div className="flex items-center h-full">
-        <button
-          onClick={onMinimize}
-          className="flex items-center justify-center h-full transition-colors"
-          style={{ width: 46, color: textColor }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
-        >
-          <Minus size={14} />
-        </button>
-        <button
-          onClick={onMaximize}
-          className="flex items-center justify-center h-full transition-colors"
-          style={{ width: 46, color: textColor }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
-        >
-          <Square size={11} />
-        </button>
-        <button
-          onClick={onClose}
-          className="flex items-center justify-center h-full transition-colors"
-          style={{ width: 46, color: textColor, borderRadius: '0 8px 0 0' }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#c42b1c'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
-        >
-          <X size={14} />
-        </button>
+      <div className="flex items-center h-full flex-shrink-0">
+        {[Minus, Square, X].map((Icon, i) => (
+          <div
+            key={i}
+            className="flex items-center justify-center h-full transition-colors hover:bg-white/10"
+            style={{ width: 46, color: textColor, ...(i === 2 ? { borderRadius: '0 8px 0 0' } : {}) }}
+          >
+            <Icon size={i === 1 ? 11 : 14} />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -139,84 +160,50 @@ function Win11TitleBar({
 
 function AmiBrokerWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
   return (
-    <div
-      className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
+    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
       style={{
-        boxShadow: isActive
-          ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)'
-          : '0 4px 16px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05)',
+        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
         opacity: isActive ? 1 : 0.7,
-        zIndex: isActive ? 20 : 10,
         transition: 'all 0.4s ease',
       }}
     >
-      {/* Title bar */}
       <Win11TitleBar
         title="AmiBroker - [RWV] - Sprott Physical Gold Index CDE - [Daily]"
-        icon={
-          <div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#e8912d' }}>
-            <span style={{ fontSize: 8, fontWeight: 800, color: '#fff' }}>AB</span>
-          </div>
-        }
-        bgColor="#2d2d2d"
-        textColor="#cccccc"
-        isActive={isActive}
+        icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#e8912d' }}><span style={{ fontSize: 8, fontWeight: 800, color: '#fff' }}>AB</span></div>}
+        bgColor="#2d2d2d" textColor="#cccccc" isActive={isActive}
       />
-
-      {/* Menu bar */}
       <div className="flex items-center gap-0 px-1" style={{ background: '#383838', height: 24 }}>
         {['File', 'Edit', 'View', 'Insert', 'Symbol', 'Analysis', 'Window', 'Help'].map((m) => (
-          <span key={m} className="px-2 py-0.5 text-[11px] hover:bg-[#505050] cursor-default" style={{ color: '#ccc' }}>
-            {m}
-          </span>
+          <span key={m} className="px-2 py-0.5 text-[11px] cursor-default" style={{ color: '#ccc' }}>{m}</span>
         ))}
       </div>
-
-      {/* Toolbar */}
       <div className="flex items-center gap-1 px-2" style={{ background: '#333', height: 28, borderBottom: '1px solid #222' }}>
-        <div className="flex items-center gap-1 px-2 rounded" style={{ background: '#444', height: 20 }}>
+        <div className="flex items-center px-2 rounded" style={{ background: '#444', height: 20 }}>
           <span style={{ fontSize: 9, color: '#aaa' }}>RWV (Daily)</span>
         </div>
-        <div className="flex items-center gap-1 px-2 rounded" style={{ background: '#444', height: 20 }}>
-          <span style={{ fontSize: 9, color: '#aaa' }}>GOLDCORP (Daily)</span>
-        </div>
-        <div className="flex items-center gap-1 px-2 rounded" style={{ background: '#5a4a1a', border: '1px solid #8a7a2a', height: 20 }}>
+        <div className="flex items-center px-2 rounded" style={{ background: '#5a4a1a', border: '1px solid #8a7a2a', height: 20 }}>
           <span style={{ fontSize: 9, color: '#FFD700' }}>CI RWV (Daily)</span>
         </div>
-        <span className="px-2 text-[10px]" style={{ color: '#777' }}>Sect Page</span>
       </div>
-
-      {/* Main content */}
-      <div className="flex flex-1" style={{ background: '#1a1a1a' }}>
-        {/* Indicator tree */}
-        <div className="flex-shrink-0 overflow-y-auto" style={{ width: 160, background: '#252525', borderRight: '1px solid #333' }}>
+      <div className="flex flex-1 min-h-0" style={{ background: '#1a1a1a' }}>
+        <div className="flex-shrink-0 overflow-y-auto" style={{ width: 150, background: '#252525', borderRight: '1px solid #333' }}>
           <div className="p-1.5 space-y-0.5">
             <div className="text-[9px] font-bold text-[#4ec9b0] pl-1">Formulas</div>
-            {[
-              { name: 'DEMA - Double Exp MA', color: '#569cd6' },
-              { name: 'EMA5 - Displaced MA', color: '#569cd6' },
-              { name: 'EMA - Exponential MA', color: '#569cd6' },
-              { name: 'Linear Regression', color: '#569cd6' },
-              { name: 'TEMA - Triple Exp MA', color: '#dcdcaa' },
-              { name: 'TRIX - Triple Exp Mov', color: '#dcdcaa' },
-              { name: 'TSF - Time Series For', color: '#dcdcaa' },
-              { name: 'WilMA - Wilder MA', color: '#569cd6' },
-              { name: 'WMA - Weighted MA', color: '#569cd6' },
-            ].map((f, i) => (
+            {['DEMA - Double Exp MA', 'EMA5 - Displaced MA', 'Linear Regression', 'TEMA - Triple Exp', 'WMA - Weighted MA'].map((f, i) => (
               <div key={i} className="flex items-center gap-1 px-1 py-0.5 hover:bg-[#333] rounded cursor-default">
-                <span style={{ fontSize: 8, color: f.color }}>{'>'}</span>
-                <span style={{ fontSize: 9, color: '#bbb' }}>{f.name}</span>
+                <span style={{ fontSize: 8, color: '#569cd6' }}>{'>'}</span>
+                <span style={{ fontSize: 9, color: '#bbb' }}>{f}</span>
               </div>
             ))}
             <div className="text-[9px] font-bold text-[#4ec9b0] pl-1 mt-2">Basic Charts</div>
-            {['Candlestick', 'Standard Price', 'Close', 'Open Interest', 'Price (all in one)', 'Price Strength', 'Spread', 'Volume', 'Volume At Price'].map((f, i) => (
+            {['Candlestick', 'Standard Price', 'Volume', 'Spread'].map((f, i) => (
               <div key={i} className="flex items-center gap-1 px-1 py-0.5 hover:bg-[#333] rounded cursor-default">
                 <span style={{ fontSize: 8, color: '#4ec9b0' }}>{'>'}</span>
                 <span style={{ fontSize: 9, color: '#bbb' }}>{f}</span>
               </div>
             ))}
             <div className="text-[9px] font-bold text-[#4ec9b0] pl-1 mt-2">Custom</div>
-            {['ATRV', 'CashFlowCall', 'Comp', 'CoppockBolton', 'DPCompound', 'GUPPYHIST'].map((f, i) => (
+            {['CoppockBolton', 'DPCompound', 'GUPPYHIST'].map((f, i) => (
               <div key={i} className="flex items-center gap-1 px-1 py-0.5 hover:bg-[#333] rounded cursor-default">
                 <span style={{ fontSize: 8, color: '#ce9178' }}>{'>'}</span>
                 <span style={{ fontSize: 9, color: '#bbb' }}>{f}</span>
@@ -224,117 +211,161 @@ function AmiBrokerWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
             ))}
           </div>
         </div>
-
-        {/* Chart area */}
         <div className="flex-1 relative overflow-hidden" style={{ background: '#1e1e1e' }}>
-          {/* Price scale on right */}
-          <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-between py-2 pr-1" style={{ width: 40, fontSize: 8, color: '#777' }}>
-            {['87', '81', '75', '69', '63', '57', '51', '45'].map((p) => (
-              <span key={p} className="text-right">{p}</span>
-            ))}
+          <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-between py-2 pr-1" style={{ width: 36, fontSize: 8, color: '#777' }}>
+            {['87', '81', '75', '69', '63', '57', '51'].map((p) => (<span key={p} className="text-right">{p}</span>))}
           </div>
-
-          {/* Grid lines */}
-          <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.08 }}>
-            {Array.from({ length: 12 }, (_, i) => (
-              <line key={`v${i}`} x1={`${(i + 1) * 8}%`} y1="0" x2={`${(i + 1) * 8}%`} y2="100%" stroke="#fff" strokeWidth="0.5" />
-            ))}
-            {Array.from({ length: 8 }, (_, i) => (
-              <line key={`h${i}`} x1="0" y1={`${(i + 1) * 12}%`} x2="100%" y2={`${(i + 1) * 12}%`} stroke="#fff" strokeWidth="0.5" />
-            ))}
+          <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.06 }}>
+            {Array.from({ length: 10 }, (_, i) => (<line key={`v${i}`} x1={`${(i + 1) * 9}%`} y1="0" x2={`${(i + 1) * 9}%`} y2="100%" stroke="#fff" strokeWidth="0.5" />))}
+            {Array.from({ length: 6 }, (_, i) => (<line key={`h${i}`} x1="0" y1={`${(i + 1) * 14}%`} x2="100%" y2={`${(i + 1) * 14}%`} stroke="#fff" strokeWidth="0.5" />))}
           </svg>
-
-          {/* Candlestick chart SVG */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 400" preserveAspectRatio="none">
-            {/* Moving average line */}
-            <path
-              d="M 50,350 Q 100,340 150,320 T 250,300 T 350,260 T 450,200 T 500,170 T 550,140 T 600,110 T 650,90 T 700,70 T 750,55"
-              fill="none"
-              stroke="#FFD700"
-              strokeWidth="1.5"
-              opacity="0.8"
-            />
-            <path
-              d="M 50,360 Q 100,355 150,340 T 250,320 T 350,280 T 450,220 T 500,190 T 550,160 T 600,130 T 650,110 T 700,90 T 750,75"
-              fill="none"
-              stroke="#4ec9b0"
-              strokeWidth="1"
-              opacity="0.6"
-            />
-
-            {/* Candlesticks */}
+            <path d="M 50,350 Q 150,320 250,300 T 450,200 T 600,110 T 750,55" fill="none" stroke="#FFD700" strokeWidth="1.5" opacity="0.8" />
+            <path d="M 50,360 Q 150,340 250,320 T 450,220 T 600,130 T 750,75" fill="none" stroke="#4ec9b0" strokeWidth="1" opacity="0.6" />
             {[
-              { x: 60, o: 350, c: 340, h: 335, l: 355, up: true },
-              { x: 80, o: 340, c: 345, h: 335, l: 350, up: false },
-              { x: 100, o: 345, c: 335, h: 330, l: 350, up: true },
-              { x: 120, o: 335, c: 325, h: 320, l: 340, up: true },
-              { x: 140, o: 325, c: 330, h: 322, l: 335, up: false },
-              { x: 160, o: 330, c: 320, h: 315, l: 335, up: true },
-              { x: 180, o: 320, c: 315, h: 310, l: 325, up: true },
-              { x: 200, o: 315, c: 310, h: 305, l: 320, up: true },
-              { x: 220, o: 310, c: 305, h: 300, l: 315, up: true },
-              { x: 240, o: 305, c: 300, h: 295, l: 310, up: true },
-              { x: 260, o: 300, c: 295, h: 290, l: 305, up: true },
-              { x: 280, o: 295, c: 290, h: 285, l: 300, up: true },
-              { x: 300, o: 290, c: 280, h: 275, l: 295, up: true },
-              { x: 320, o: 280, c: 270, h: 265, l: 285, up: true },
-              { x: 340, o: 270, c: 260, h: 255, l: 275, up: true },
-              { x: 360, o: 260, c: 265, h: 258, l: 270, up: false },
-              { x: 380, o: 265, c: 255, h: 250, l: 270, up: true },
-              { x: 400, o: 255, c: 245, h: 240, l: 260, up: true },
-              { x: 420, o: 245, c: 240, h: 235, l: 250, up: true },
-              { x: 440, o: 240, c: 220, h: 215, l: 245, up: true },
-              { x: 460, o: 220, c: 210, h: 205, l: 225, up: true },
-              { x: 480, o: 210, c: 200, h: 195, l: 215, up: true },
-              { x: 500, o: 200, c: 190, h: 185, l: 205, up: true },
-              { x: 520, o: 190, c: 180, h: 175, l: 195, up: true },
-              { x: 540, o: 180, c: 172, h: 168, l: 185, up: true },
-              { x: 560, o: 172, c: 160, h: 155, l: 178, up: true },
-              { x: 580, o: 160, c: 150, h: 145, l: 165, up: true },
-              { x: 600, o: 150, c: 145, h: 140, l: 155, up: true },
-              { x: 620, o: 145, c: 135, h: 130, l: 150, up: true },
-              { x: 640, o: 135, c: 125, h: 120, l: 140, up: true },
-              { x: 660, o: 125, c: 115, h: 110, l: 130, up: true },
-              { x: 680, o: 115, c: 105, h: 100, l: 120, up: true },
-              { x: 700, o: 105, c: 90, h: 85, l: 110, up: true },
-              { x: 720, o: 90, c: 80, h: 72, l: 95, up: true },
-              { x: 740, o: 80, c: 70, h: 62, l: 85, up: true },
-            ].map((candle, i) => (
+              { x: 80, o: 345, c: 335, h: 330, l: 350, up: true }, { x: 110, o: 335, c: 325, h: 320, l: 340, up: true },
+              { x: 140, o: 325, c: 330, h: 322, l: 335, up: false }, { x: 170, o: 330, c: 315, h: 310, l: 335, up: true },
+              { x: 200, o: 315, c: 305, h: 300, l: 320, up: true }, { x: 230, o: 305, c: 295, h: 290, l: 310, up: true },
+              { x: 260, o: 295, c: 280, h: 275, l: 300, up: true }, { x: 290, o: 280, c: 270, h: 265, l: 285, up: true },
+              { x: 320, o: 270, c: 260, h: 255, l: 275, up: true }, { x: 350, o: 260, c: 265, h: 258, l: 270, up: false },
+              { x: 380, o: 265, c: 250, h: 245, l: 270, up: true }, { x: 410, o: 250, c: 235, h: 230, l: 255, up: true },
+              { x: 440, o: 235, c: 215, h: 210, l: 240, up: true }, { x: 470, o: 215, c: 200, h: 195, l: 220, up: true },
+              { x: 500, o: 200, c: 180, h: 175, l: 205, up: true }, { x: 530, o: 180, c: 165, h: 160, l: 185, up: true },
+              { x: 560, o: 165, c: 150, h: 145, l: 170, up: true }, { x: 590, o: 150, c: 135, h: 130, l: 155, up: true },
+              { x: 620, o: 135, c: 120, h: 115, l: 140, up: true }, { x: 650, o: 120, c: 105, h: 100, l: 125, up: true },
+              { x: 680, o: 105, c: 90, h: 85, l: 110, up: true }, { x: 710, o: 90, c: 75, h: 68, l: 95, up: true },
+              { x: 740, o: 75, c: 65, h: 58, l: 80, up: true },
+            ].map((c, i) => (
               <g key={i}>
-                <line x1={candle.x} y1={candle.h} x2={candle.x} y2={candle.l} stroke={candle.up ? '#26a69a' : '#ef5350'} strokeWidth="1" />
-                <rect
-                  x={candle.x - 4}
-                  y={Math.min(candle.o, candle.c)}
-                  width="8"
-                  height={Math.abs(candle.o - candle.c) || 2}
-                  fill={candle.up ? '#26a69a' : '#ef5350'}
-                />
+                <line x1={c.x} y1={c.h} x2={c.x} y2={c.l} stroke={c.up ? '#26a69a' : '#ef5350'} strokeWidth="1" />
+                <rect x={c.x - 4} y={Math.min(c.o, c.c)} width="8" height={Math.abs(c.o - c.c) || 2} fill={c.up ? '#26a69a' : '#ef5350'} />
               </g>
             ))}
           </svg>
-
-          {/* Bottom sheet tabs */}
-          <div className="absolute bottom-0 left-0 right-0 flex items-center gap-0" style={{ background: '#2a2a2a', height: 22, borderTop: '1px solid #444' }}>
+          <div className="absolute bottom-0 left-0 right-0 flex items-center" style={{ background: '#2a2a2a', height: 20, borderTop: '1px solid #444' }}>
             <span className="px-2 text-[9px]" style={{ color: '#aaa', background: '#3a3a3a' }}>Composite</span>
             <span className="px-2 text-[9px]" style={{ color: '#777' }}>Symbols</span>
-            <span className="px-2 text-[9px]" style={{ color: '#777' }}>Layers</span>
             <span className="px-2 text-[9px] font-bold" style={{ color: '#FFD700', background: '#444' }}>Charts</span>
           </div>
-
-          {/* Yang working overlay */}
           {yangWorking && (
-            <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-1 rounded" style={{ background: 'rgba(254, 192, 15, 0.9)', zIndex: 30 }}>
+            <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-1 rounded z-30" style={{ background: 'rgba(254, 192, 15, 0.9)' }}>
               <Loader2 size={10} className="animate-spin" style={{ color: '#212121' }} />
               <span style={{ fontSize: 9, fontWeight: 700, color: '#212121' }}>Yang is working here...</span>
             </div>
           )}
         </div>
       </div>
-
-      {/* Status bar */}
-      <div className="flex items-center justify-between px-2" style={{ background: '#2a2a2a', height: 20, borderTop: '1px solid #444' }}>
+      <div className="flex items-center justify-between px-2 flex-shrink-0" style={{ background: '#2a2a2a', height: 20, borderTop: '1px solid #444' }}>
         <span style={{ fontSize: 8, color: '#777' }}>For Help, press F1</span>
-        <span style={{ fontSize: 8, color: '#777' }}>6,12/14/2025 | S: 38.14300 | NYSE Arca Investment Company, Financials</span>
+        <span style={{ fontSize: 8, color: '#777' }}>NYSE Arca | S: 38.14300</span>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  AFL Formula Editor Window                                          */
+/* ------------------------------------------------------------------ */
+
+function AFLEditorWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  return (
+    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
+      style={{
+        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+        opacity: isActive ? 1 : 0.7,
+        transition: 'all 0.4s ease',
+      }}
+    >
+      <Win11TitleBar
+        title="AFL Formula Editor - [RATED.afl] * RATED * AUTO-optimized"
+        icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#e8912d' }}><FileCode size={10} color="#fff" /></div>}
+        bgColor="#2d2d2d" textColor="#cccccc" isActive={isActive}
+      />
+      <div className="flex items-center gap-0 px-1" style={{ background: '#383838', height: 24 }}>
+        {['File', 'Edit', 'Tools', 'Window', 'Help'].map((m) => (
+          <span key={m} className="px-2 py-0.5 text-[11px] cursor-default" style={{ color: '#ccc' }}>{m}</span>
+        ))}
+      </div>
+      <div className="flex items-center gap-1 px-2" style={{ background: '#333', height: 26, borderBottom: '1px solid #222' }}>
+        {['Bb-DQ2.afl', 'BW 131 * AUTO-optimized', 'g-proExp-anim3', 's_Alpha'].map((t, i) => (
+          <div key={i} className="flex items-center px-2 rounded" style={{ background: i === 1 ? '#5a4a1a' : '#444', border: i === 1 ? '1px solid #8a7a2a' : 'none', height: 18 }}>
+            <span style={{ fontSize: 8, color: i === 1 ? '#FFD700' : '#aaa' }}>{t}</span>
+          </div>
+        ))}
+      </div>
+      <div className="flex-1 min-h-0 overflow-auto p-3 font-mono" style={{ background: '#1e1e1e', fontSize: 10, lineHeight: 1.7 }}>
+        <div><span style={{ color: '#608b4e' }}>{'// Strategy: Freddy & Marla Bull Trading Algorithm'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'// Auto-optimized by Yang AI'}</span></div>
+        <div style={{ height: 6 }} />
+        <div><span style={{ color: '#608b4e' }}>{'// Keep the ratio of RWI (Gold Floor Index) to Gold Futures to'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'// act as a gauge for a global GT e.g. CRN.'}</span></div>
+        <div style={{ height: 6 }} />
+        <div><span style={{ color: '#608b4e' }}>{'// The model supports 4 variables:'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'//   1. cMode : Upper Threshold Triggers:'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'//   2. nBand : Long-term bands (lower 2.5th)'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'//   3. mBand : Short-term bands (lower 5.0) &'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'//   4. qEntry: entry UT upper-band entries'}</span></div>
+        <div style={{ height: 6 }} />
+        <div>
+          <span style={{ color: '#608b4e' }}>{'// '}</span>
+          <span style={{ color: '#608b4e' }}>{'Backtest Mode & Program Control Settings'}</span>
+        </div>
+        <div style={{ height: 4 }} />
+        <div><span style={{ color: '#569cd6' }}>_SECTION_BEGIN</span><span style={{ color: '#ccc' }}>(</span><span style={{ color: '#ce9178' }}>{'"Test Mode"'}</span><span style={{ color: '#ccc' }}>);</span></div>
+        <div style={{ height: 6 }} />
+        <div><span style={{ color: '#608b4e' }}>{'// Two user-selectable backtest modes:'}</span></div>
+        <div>
+          <span style={{ color: '#569cd6' }}>TF_01</span>
+          <span style={{ color: '#ccc' }}> = </span>
+          <span style={{ color: '#ce9178' }}>{'"S1 Single"}</span>
+          <span style={{ color: '#ccc' }}>;</span>
+          <span style={{ color: '#608b4e' }}> {'// Single-symbol backtest (no portfolio logic)'}</span>
+        </div>
+        <div>
+          <span style={{ color: '#569cd6' }}>TF_07</span>
+          <span style={{ color: '#ccc' }}> = </span>
+          <span style={{ color: '#ce9178' }}>{'"S1 Trades"}</span>
+          <span style={{ color: '#ccc' }}>;</span>
+          <span style={{ color: '#608b4e' }}> {'// Multi-symbol with MasterPortfolio logic'}</span>
+        </div>
+        <div style={{ height: 6 }} />
+        <div><span style={{ color: '#608b4e' }}>{'// Starting capital for portfolio testing'}</span></div>
+        <div>
+          <span style={{ color: '#569cd6' }}>SetOption</span>
+          <span style={{ color: '#ccc' }}>(</span>
+          <span style={{ color: '#ce9178' }}>{'"InitialEquity"'}</span>
+          <span style={{ color: '#ccc' }}>, </span>
+          <span style={{ color: '#b5cea8' }}>100000</span>
+          <span style={{ color: '#ccc' }}>);</span>
+        </div>
+        <div style={{ height: 6 }} />
+        <div><span style={{ color: '#608b4e' }}>{'// Fractional position size: 1000 / new positions'}</span></div>
+        <div>
+          <span style={{ color: '#569cd6' }}>PositionSize</span>
+          <span style={{ color: '#ccc' }}> = </span>
+          <span style={{ color: '#b5cea8' }}>-2</span>
+          <span style={{ color: '#ccc' }}>;</span>
+        </div>
+        <div style={{ height: 6 }} />
+        <div><span style={{ color: '#608b4e' }}>{'// Define Trading/Money Management'}</span></div>
+        <div>
+          <span style={{ color: '#569cd6' }}>SetOption</span>
+          <span style={{ color: '#ccc' }}>(</span>
+          <span style={{ color: '#ce9178' }}>{'"MaxOpenPositions"'}</span>
+          <span style={{ color: '#ccc' }}>, </span>
+          <span style={{ color: '#b5cea8' }}>15</span>
+          <span style={{ color: '#ccc' }}>);</span>
+        </div>
+        {yangWorking && (
+          <div className="mt-2 flex items-center gap-1.5">
+            <span className="inline-block w-1.5 h-4 animate-pulse" style={{ background: '#FEC00F' }} />
+            <span style={{ color: '#FEC00F', fontSize: 10 }}>{'Yang is typing...'}</span>
+          </div>
+        )}
+      </div>
+      <div className="flex items-center justify-between px-2 flex-shrink-0" style={{ background: '#2a2a2a', height: 20, borderTop: '1px solid #444' }}>
+        <span style={{ fontSize: 8, color: '#777' }}>Ln 47 | Col 1 | For Help, press F1</span>
+        <span style={{ fontSize: 8, color: '#777' }}>AFL Syntax OK</span>
       </div>
     </div>
   );
@@ -346,246 +377,432 @@ function AmiBrokerWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
 
 function OptumaWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
   return (
-    <div
-      className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
+    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
       style={{
-        boxShadow: isActive
-          ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)'
-          : '0 4px 16px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05)',
+        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
         opacity: isActive ? 1 : 0.7,
-        zIndex: isActive ? 20 : 10,
         transition: 'all 0.4s ease',
       }}
     >
-      {/* Title bar */}
       <Win11TitleBar
-        title="Optuma"
-        icon={
-          <div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#1a5276' }}>
-            <span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>O</span>
-          </div>
-        }
-        bgColor="#1a5276"
-        textColor="#ffffff"
-        isActive={isActive}
+        title="Optuma - Australian Dollar / US Dollar - AUDUSD (FX)"
+        icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#1a5276' }}><span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>O</span></div>}
+        bgColor="#1a5276" textColor="#ffffff" isActive={isActive}
       />
-
-      {/* Toolbar */}
-      <div className="flex items-center gap-1 px-2" style={{ background: '#f0f0f0', height: 36, borderBottom: '1px solid #ccc' }}>
-        {/* Optuma ribbon-style icons */}
+      <div className="flex items-center gap-1 px-2" style={{ background: '#f0f0f0', height: 32, borderBottom: '1px solid #ccc' }}>
         {['File', 'New', 'Tools', 'Settings', 'Data', 'Alerts', 'Searches', 'Chat', 'Help'].map((t) => (
           <div key={t} className="flex flex-col items-center px-1.5 py-0.5 hover:bg-[#ddd] rounded cursor-default">
-            <div className="w-4 h-4 rounded flex items-center justify-center" style={{ background: t === 'Data' ? '#1a5276' : '#888' }}>
-              <span style={{ fontSize: 6, color: '#fff', fontWeight: 700 }}>{t.charAt(0)}</span>
+            <div className="w-3.5 h-3.5 rounded flex items-center justify-center" style={{ background: t === 'Data' ? '#1a5276' : '#888' }}>
+              <span style={{ fontSize: 5, color: '#fff', fontWeight: 700 }}>{t.charAt(0)}</span>
             </div>
-            <span style={{ fontSize: 8, color: '#444' }}>{t}</span>
+            <span style={{ fontSize: 7, color: '#444' }}>{t}</span>
           </div>
         ))}
       </div>
-
-      {/* Tab bar */}
-      <div className="flex items-center gap-0" style={{ background: '#e8e8e8', height: 26, borderBottom: '1px solid #ccc' }}>
-        {[
-          { name: 'Single Charts', active: false },
-          { name: 'MultiCode', active: false },
-          { name: 'Scripting', active: false },
-          { name: 'TA', active: true },
-        ].map((tab) => (
-          <div
-            key={tab.name}
-            className="flex items-center gap-1 px-3 py-1 cursor-default"
-            style={{
-              background: tab.active ? '#1a5276' : 'transparent',
-              color: tab.active ? '#fff' : '#666',
-              fontSize: 10,
-              fontWeight: tab.active ? 600 : 400,
-              borderRight: '1px solid #ccc',
-            }}
-          >
+      <div className="flex items-center" style={{ background: '#e8e8e8', height: 24, borderBottom: '1px solid #ccc' }}>
+        {[{ name: 'Single Charts', active: false }, { name: 'MultiCode', active: false }, { name: 'Scripting', active: false }, { name: 'TA', active: true }].map((tab) => (
+          <div key={tab.name} className="flex items-center gap-1 px-3 py-1 cursor-default"
+            style={{ background: tab.active ? '#1a5276' : 'transparent', color: tab.active ? '#fff' : '#666', fontSize: 10, fontWeight: tab.active ? 600 : 400, borderRight: '1px solid #ccc' }}>
             {tab.name}
-            <span style={{ fontSize: 8, color: tab.active ? '#ffffff80' : '#999' }}>x</span>
           </div>
         ))}
       </div>
-
-      {/* Main content */}
-      <div className="flex flex-1" style={{ background: '#ffffff' }}>
-        {/* Properties panel */}
-        <div className="flex-shrink-0 overflow-y-auto" style={{ width: 150, background: '#fafafa', borderRight: '1px solid #ddd' }}>
+      <div className="flex flex-1 min-h-0" style={{ background: '#ffffff' }}>
+        <div className="flex-shrink-0 overflow-y-auto" style={{ width: 140, background: '#fafafa', borderRight: '1px solid #ddd' }}>
           <div className="p-2 space-y-1">
             <div style={{ fontSize: 10, fontWeight: 700, color: '#1a5276' }}>Fibonacci Retracements</div>
-            <div style={{ fontSize: 9, fontWeight: 600, color: '#333', marginTop: 4 }}>Actions</div>
-            {['Add Price Alert', 'Add to Toolbar', 'Apply Settings to All', 'Copy Tool', 'Move to Back', 'Move to Front', 'Price Flip'].map((a) => (
-              <div key={a} className="text-[9px] py-0.5 hover:bg-[#eee] cursor-default" style={{ color: '#555' }}>{a}</div>
+            <div style={{ fontSize: 9, fontWeight: 600, color: '#333', marginTop: 4 }}>Properties</div>
+            {['Tool Name: Fibonacci', 'Extend Right: Yes', 'Show Prices: Yes', 'Show %: Yes', 'Font Size: 15', 'Line Colour: Blue'].map((a) => (
+              <div key={a} className="text-[8px] py-0.5" style={{ color: '#555' }}>{a}</div>
             ))}
-            <div style={{ fontSize: 9, fontWeight: 600, color: '#333', marginTop: 6 }}>Properties</div>
-            <div className="flex items-center justify-between text-[9px]" style={{ color: '#555' }}>
-              <span>Tool Name</span><span style={{ color: '#1a5276' }}>Fibonacci Retracem</span>
-            </div>
-            <div style={{ fontSize: 9, fontWeight: 600, color: '#333', marginTop: 4 }}>Levels</div>
-            <div className="space-y-0.5">
-              {[
-                { name: 'All Levels', val: '', checked: true },
-                { name: 'Level 1', val: '38.2', checked: true },
-                { name: 'Level 2', val: '50', checked: true },
-                { name: 'Level 3', val: '61.8', checked: true },
-              ].map((l) => (
-                <div key={l.name} className="flex items-center gap-1 text-[8px]" style={{ color: '#555' }}>
-                  <div className="w-2.5 h-2.5 rounded-sm border flex items-center justify-center" style={{ borderColor: l.checked ? '#1a5276' : '#bbb' }}>
-                    {l.checked && <span style={{ fontSize: 6, color: '#1a5276' }}>{'x'}</span>}
-                  </div>
-                  <span>{l.name}</span>
-                  {l.val && <span style={{ color: '#1a5276', fontWeight: 600, marginLeft: 'auto' }}>{l.val}</span>}
+            <div style={{ fontSize: 9, fontWeight: 600, color: '#333', marginTop: 6 }}>Levels</div>
+            {['Level 1: 38.2', 'Level 2: 50', 'Level 3: 61.8'].map((l) => (
+              <div key={l} className="text-[8px] py-0.5 flex items-center gap-1" style={{ color: '#555' }}>
+                <div className="w-2 h-2 rounded-sm border flex items-center justify-center" style={{ borderColor: '#1a5276' }}>
+                  <span style={{ fontSize: 5, color: '#1a5276' }}>{'x'}</span>
                 </div>
-              ))}
-            </div>
-            <div className="flex items-center justify-between text-[9px] mt-2" style={{ color: '#555' }}>
-              <span>Extend Left</span>
-              <div className="w-2.5 h-2.5 rounded-sm border" style={{ borderColor: '#bbb' }} />
-            </div>
-            <div className="flex items-center justify-between text-[9px]" style={{ color: '#555' }}>
-              <span>Extend Right</span>
-              <div className="w-2.5 h-2.5 rounded-sm border flex items-center justify-center" style={{ borderColor: '#1a5276' }}>
-                <span style={{ fontSize: 6, color: '#1a5276' }}>{'x'}</span>
+                {l}
               </div>
-            </div>
-            <div className="flex items-center justify-between text-[9px]" style={{ color: '#555' }}>
-              <span>Show Prices</span>
-              <div className="w-2.5 h-2.5 rounded-sm border flex items-center justify-center" style={{ borderColor: '#1a5276' }}>
-                <span style={{ fontSize: 6, color: '#1a5276' }}>{'x'}</span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between text-[9px]" style={{ color: '#555' }}>
-              <span>Show %</span>
-              <div className="w-2.5 h-2.5 rounded-sm border flex items-center justify-center" style={{ borderColor: '#1a5276' }}>
-                <span style={{ fontSize: 6, color: '#1a5276' }}>{'x'}</span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between text-[9px]" style={{ color: '#555' }}>
-              <span>Line Colour</span>
-              <div className="w-3 h-3 rounded-sm" style={{ background: '#1a5276' }} />
-            </div>
+            ))}
           </div>
         </div>
-
-        {/* Chart area */}
         <div className="flex-1 relative overflow-hidden" style={{ background: '#ffffff' }}>
-          {/* Chart header */}
-          <div className="px-3 py-1" style={{ borderBottom: '1px solid #eee' }}>
-            <span style={{ fontSize: 10, color: '#333' }}>Australian Dollar / US Dollar - AUDUSD (FX) - Daily CandleStick Chart</span>
+          <div className="px-2 py-0.5" style={{ borderBottom: '1px solid #eee' }}>
+            <span style={{ fontSize: 9, color: '#333' }}>AUD/USD (FX) - Daily CandleStick - No Layout</span>
           </div>
-
-          {/* Date scale */}
-          <div className="flex items-center gap-0 px-1" style={{ background: '#f8f8f8', height: 16, borderBottom: '1px solid #eee' }}>
-            {['1990', '1995', '2000', '2005', '2010', '2015', '2020'].map((y) => (
-              <span key={y} className="flex-1 text-center" style={{ fontSize: 7, color: '#999' }}>{y}</span>
-            ))}
+          <div className="absolute top-6 left-3" style={{ fontSize: 14, fontWeight: 300, color: '#333' }}>Daily</div>
+          <div className="absolute top-6 right-12 text-right" style={{ fontSize: 11, fontWeight: 300, color: '#555' }}>Australian Dollar / US Dollar</div>
+          <div className="absolute right-0 top-6 bottom-14 flex flex-col justify-between pr-1" style={{ width: 40, fontSize: 7, color: '#777' }}>
+            {['0.7200', '0.7000', '0.6800', '0.6600', '0.6400', '0.6200'].map((p) => (<span key={p} className="text-right">{p}</span>))}
           </div>
-
-          {/* Chart header label */}
-          <div className="absolute top-10 left-4" style={{ fontSize: 16, fontWeight: 300, color: '#333' }}>Daily</div>
-          <div className="absolute top-10 right-14 text-right" style={{ fontSize: 13, fontWeight: 300, color: '#555' }}>Australian Dollar / US Dollar</div>
-
-          {/* Price scale */}
-          <div className="absolute right-0 top-8 bottom-16 flex flex-col justify-between pr-1" style={{ width: 44, fontSize: 8, color: '#777' }}>
-            {['0.7200', '0.7000', '0.6800', '0.6600', '0.6400', '0.6200'].map((p) => (
-              <span key={p} className="text-right">{p}</span>
-            ))}
-          </div>
-
-          {/* Fibonacci chart */}
-          <svg className="absolute" style={{ left: 0, top: 30, width: 'calc(100% - 44px)', height: 'calc(100% - 70px)' }} viewBox="0 0 700 350" preserveAspectRatio="none">
-            {/* Fibonacci levels */}
+          <svg className="absolute" style={{ left: 0, top: 24, width: 'calc(100% - 40px)', height: 'calc(100% - 60px)' }} viewBox="0 0 700 350" preserveAspectRatio="none">
             <line x1="0" y1="25" x2="700" y2="25" stroke="#1a5276" strokeWidth="1" opacity="0.5" />
-            <text x="620" y="22" fill="#1a5276" fontSize="9">{'End: 0.71574'}</text>
-            <line x1="0" y1="105" x2="700" y2="105" stroke="#cc0000" strokeWidth="1" strokeDasharray="5,3" opacity="0.6" />
-            <text x="600" y="102" fill="#1a5276" fontSize="8">{'0.67803  61.8%'}</text>
+            <text x="615" y="22" fill="#1a5276" fontSize="8">{'End: 0.71574'}</text>
+            <line x1="0" y1="105" x2="700" y2="105" stroke="#cc0000" strokeWidth="1" strokeDasharray="5,3" opacity="0.5" />
+            <text x="595" y="102" fill="#1a5276" fontSize="7">{'0.67803  61.8%'}</text>
             <line x1="0" y1="155" x2="700" y2="155" stroke="#cc0000" strokeWidth="1" strokeDasharray="5,3" opacity="0.4" />
-            <text x="610" y="152" fill="#cc0000" fontSize="8">{'0.66638  50%'}</text>
+            <text x="610" y="152" fill="#cc0000" fontSize="7">{'0.66638  50%'}</text>
             <line x1="0" y1="205" x2="700" y2="205" stroke="#1a5276" strokeWidth="1" strokeDasharray="5,3" opacity="0.4" />
-            <text x="600" y="202" fill="#1a5276" fontSize="8">{'0.65473  38.2%'}</text>
+            <text x="595" y="202" fill="#1a5276" fontSize="7">{'0.65473  38.2%'}</text>
             <line x1="0" y1="320" x2="700" y2="320" stroke="#1a5276" strokeWidth="1" opacity="0.5" />
-            <text x="610" y="317" fill="#1a5276" fontSize="9">{'Start: 0.61702'}</text>
-
-            {/* Moving averages */}
-            <path d="M 20,290 Q 80,300 140,280 T 260,240 T 350,210 T 420,150 T 480,120 T 520,100 T 580,80 T 640,60 T 700,50" fill="none" stroke="#26a69a" strokeWidth="1.2" opacity="0.7" />
-
-            {/* Candlesticks */}
+            <text x="605" y="317" fill="#1a5276" fontSize="8">{'Start: 0.61702'}</text>
+            <path d="M 20,290 Q 140,280 260,240 T 420,150 T 520,100 T 640,60 T 700,50" fill="none" stroke="#26a69a" strokeWidth="1.2" opacity="0.7" />
             {[
-              { x: 30, o: 310, c: 295, h: 290, l: 315, up: true },
-              { x: 50, o: 295, c: 300, h: 288, l: 305, up: false },
-              { x: 70, o: 300, c: 285, h: 280, l: 305, up: true },
-              { x: 90, o: 285, c: 275, h: 270, l: 290, up: true },
-              { x: 110, o: 275, c: 260, h: 255, l: 280, up: true },
-              { x: 130, o: 260, c: 250, h: 245, l: 265, up: true },
-              { x: 150, o: 250, c: 245, h: 240, l: 255, up: true },
-              { x: 170, o: 245, c: 240, h: 235, l: 250, up: true },
-              { x: 190, o: 240, c: 220, h: 215, l: 245, up: true },
-              { x: 210, o: 220, c: 210, h: 205, l: 225, up: true },
-              { x: 230, o: 210, c: 215, h: 208, l: 220, up: false },
-              { x: 250, o: 215, c: 200, h: 195, l: 220, up: true },
-              { x: 270, o: 200, c: 195, h: 190, l: 205, up: true },
-              { x: 290, o: 195, c: 180, h: 175, l: 200, up: true },
-              { x: 310, o: 180, c: 170, h: 165, l: 185, up: true },
-              { x: 330, o: 170, c: 160, h: 155, l: 175, up: true },
-              { x: 350, o: 160, c: 150, h: 145, l: 165, up: true },
-              { x: 370, o: 150, c: 155, h: 148, l: 158, up: false },
-              { x: 390, o: 155, c: 160, h: 153, l: 165, up: false },
-              { x: 410, o: 160, c: 145, h: 140, l: 165, up: true },
-              { x: 430, o: 145, c: 130, h: 125, l: 150, up: true },
-              { x: 450, o: 130, c: 120, h: 115, l: 135, up: true },
-              { x: 470, o: 120, c: 110, h: 105, l: 125, up: true },
-              { x: 490, o: 110, c: 95, h: 88, l: 115, up: true },
-              { x: 510, o: 95, c: 85, h: 80, l: 100, up: true },
-              { x: 530, o: 85, c: 70, h: 64, l: 90, up: true },
-              { x: 550, o: 70, c: 60, h: 55, l: 75, up: true },
-              { x: 570, o: 60, c: 55, h: 50, l: 65, up: true },
-              { x: 590, o: 55, c: 45, h: 38, l: 60, up: true },
-              { x: 610, o: 45, c: 50, h: 42, l: 55, up: false },
-              { x: 630, o: 50, c: 55, h: 48, l: 60, up: false },
-              { x: 650, o: 55, c: 48, h: 42, l: 58, up: true },
-              { x: 670, o: 48, c: 40, h: 35, l: 52, up: true },
-            ].map((candle, i) => (
+              { x: 40, o: 310, c: 295, h: 290, l: 315, up: true }, { x: 80, o: 295, c: 280, h: 275, l: 300, up: true },
+              { x: 120, o: 280, c: 265, h: 260, l: 285, up: true }, { x: 160, o: 265, c: 250, h: 245, l: 270, up: true },
+              { x: 200, o: 250, c: 240, h: 235, l: 255, up: true }, { x: 240, o: 240, c: 220, h: 215, l: 245, up: true },
+              { x: 280, o: 220, c: 210, h: 205, l: 225, up: true }, { x: 320, o: 210, c: 195, h: 190, l: 215, up: true },
+              { x: 360, o: 195, c: 180, h: 175, l: 200, up: true }, { x: 400, o: 180, c: 165, h: 160, l: 185, up: true },
+              { x: 440, o: 165, c: 150, h: 145, l: 170, up: true }, { x: 480, o: 150, c: 135, h: 130, l: 155, up: true },
+              { x: 520, o: 135, c: 120, h: 115, l: 140, up: true }, { x: 560, o: 120, c: 105, h: 100, l: 125, up: true },
+              { x: 600, o: 105, c: 85, h: 78, l: 110, up: true }, { x: 640, o: 85, c: 65, h: 58, l: 90, up: true },
+            ].map((c, i) => (
               <g key={i}>
-                <line x1={candle.x} y1={candle.h} x2={candle.x} y2={candle.l} stroke={candle.up ? '#000' : '#cc0000'} strokeWidth="1" />
-                <rect
-                  x={candle.x - 3}
-                  y={Math.min(candle.o, candle.c)}
-                  width="6"
-                  height={Math.abs(candle.o - candle.c) || 2}
-                  fill={candle.up ? '#000' : '#cc0000'}
-                  stroke={candle.up ? '#000' : '#cc0000'}
-                  strokeWidth="0.5"
-                />
+                <line x1={c.x} y1={c.h} x2={c.x} y2={c.l} stroke={c.up ? '#000' : '#cc0000'} strokeWidth="1" />
+                <rect x={c.x - 3} y={Math.min(c.o, c.c)} width="6" height={Math.abs(c.o - c.c) || 2} fill={c.up ? '#000' : '#cc0000'} />
               </g>
             ))}
           </svg>
-
-          {/* RSI panel at bottom */}
-          <div className="absolute bottom-0 left-0 right-0" style={{ height: 50, borderTop: '2px solid #ddd', background: '#fafafa' }}>
-            <span className="absolute top-1 left-2" style={{ fontSize: 8, color: '#333', fontWeight: 600 }}>14 Period RSI</span>
-            <svg style={{ width: 'calc(100% - 44px)', height: '100%' }} viewBox="0 0 700 50" preserveAspectRatio="none">
-              <line x1="0" y1="15" x2="700" y2="15" stroke="#cc0000" strokeWidth="0.5" strokeDasharray="3,2" />
-              <line x1="0" y1="35" x2="700" y2="35" stroke="#1a5276" strokeWidth="0.5" strokeDasharray="3,2" />
-              <path d="M 30,40 Q 100,45 170,35 T 300,25 T 400,20 T 480,18 T 560,15 T 620,22 T 680,30" fill="none" stroke="#1a5276" strokeWidth="1.5" />
+          <div className="absolute bottom-0 left-0 right-0" style={{ height: 36, borderTop: '2px solid #ddd', background: '#fafafa' }}>
+            <span className="absolute top-1 left-2" style={{ fontSize: 7, color: '#333', fontWeight: 600 }}>14 Period RSI</span>
+            <svg style={{ width: 'calc(100% - 40px)', height: '100%' }} viewBox="0 0 700 36" preserveAspectRatio="none">
+              <line x1="0" y1="10" x2="700" y2="10" stroke="#cc0000" strokeWidth="0.5" strokeDasharray="3,2" />
+              <line x1="0" y1="26" x2="700" y2="26" stroke="#1a5276" strokeWidth="0.5" strokeDasharray="3,2" />
+              <path d="M 30,28 Q 100,32 200,22 T 400,14 T 560,12 T 650,20" fill="none" stroke="#1a5276" strokeWidth="1.2" />
             </svg>
-            <div className="absolute top-1 right-2 px-1 rounded" style={{ background: '#1a5276', fontSize: 7, color: '#fff', fontWeight: 600 }}>42.31</div>
+            <div className="absolute top-1 right-2 px-1 rounded" style={{ background: '#1a5276', fontSize: 6, color: '#fff', fontWeight: 600 }}>42.31</div>
           </div>
-
-          {/* Yang overlay */}
           {yangWorking && (
-            <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-1 rounded" style={{ background: 'rgba(254, 192, 15, 0.9)', zIndex: 30 }}>
+            <div className="absolute top-8 left-2 flex items-center gap-1.5 px-2 py-1 rounded z-30" style={{ background: 'rgba(254, 192, 15, 0.9)' }}>
               <Loader2 size={10} className="animate-spin" style={{ color: '#212121' }} />
               <span style={{ fontSize: 9, fontWeight: 700, color: '#212121' }}>Yang is working here...</span>
             </div>
           )}
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* Status bar */}
-      <div className="flex items-center justify-between px-2" style={{ background: '#f0f0f0', height: 20, borderTop: '1px solid #ccc' }}>
-        <span style={{ fontSize: 8, color: '#777' }}>Sel: 1, Col: 1 | For Help, press F1</span>
-        <span style={{ fontSize: 8, color: '#777' }}>0.001935c</span>
+/* ------------------------------------------------------------------ */
+/*  Outlook Window                                                     */
+/* ------------------------------------------------------------------ */
+
+function OutlookWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  return (
+    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
+      style={{
+        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+        opacity: isActive ? 1 : 0.7,
+        transition: 'all 0.4s ease',
+      }}
+    >
+      <Win11TitleBar
+        title="Outlook - New Message"
+        icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#0078d4' }}><Mail size={10} color="#fff" /></div>}
+        bgColor="#0078d4" textColor="#ffffff" isActive={isActive}
+      />
+      <div className="flex items-center gap-2 px-3 py-1.5" style={{ background: '#f3f3f3', borderBottom: '1px solid #ddd' }}>
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded" style={{ background: '#0078d4' }}>
+          <Send size={10} color="#fff" />
+          <span style={{ fontSize: 10, color: '#fff', fontWeight: 600 }}>Send</span>
+        </div>
+        <div className="flex items-center gap-1 px-2 py-1 rounded hover:bg-[#e0e0e0] cursor-default">
+          <Paperclip size={10} style={{ color: '#555' }} />
+          <span style={{ fontSize: 10, color: '#555' }}>Attach</span>
+        </div>
+        <div className="ml-auto flex items-center gap-1">
+          <Bold size={12} style={{ color: '#555' }} />
+          <Italic size={12} style={{ color: '#555' }} />
+          <Underline size={12} style={{ color: '#555' }} />
+          <AlignLeft size={12} style={{ color: '#555' }} />
+        </div>
+      </div>
+      <div className="flex-1 min-h-0 overflow-auto" style={{ background: '#ffffff' }}>
+        <div className="px-4 py-2 space-y-2" style={{ borderBottom: '1px solid #eee' }}>
+          <div className="flex items-center gap-2">
+            <span style={{ fontSize: 11, color: '#777', width: 40 }}>To:</span>
+            <div className="flex-1 flex items-center gap-1">
+              <span className="px-2 py-0.5 rounded text-[10px] font-medium" style={{ background: '#e8f0fe', color: '#1a5276' }}>trading-team@yangcapital.com</span>
+              <span className="px-2 py-0.5 rounded text-[10px] font-medium" style={{ background: '#e8f0fe', color: '#1a5276' }}>portfolio@yangcapital.com</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span style={{ fontSize: 11, color: '#777', width: 40 }}>Cc:</span>
+            <span className="px-2 py-0.5 rounded text-[10px] font-medium" style={{ background: '#e8f0fe', color: '#1a5276' }}>risk-management@yangcapital.com</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span style={{ fontSize: 11, color: '#777', width: 40 }}>Subject:</span>
+            <span style={{ fontSize: 11, color: '#333', fontWeight: 600 }}>Daily Market Briefing - Gold Bullish, AUD/USD Bearish Divergence</span>
+          </div>
+        </div>
+        <div className="px-4 py-3 space-y-2" style={{ fontSize: 11, color: '#333', lineHeight: 1.6 }}>
+          <p>Hi Team,</p>
+          <p>Please find today{"'"}s market analysis summary below:</p>
+          <p style={{ fontWeight: 600 }}>1. Gold Index (CDE) - Bullish</p>
+          <p style={{ fontSize: 10, color: '#555' }}>- DEMA crossover confirmed on daily timeframe</p>
+          <p style={{ fontSize: 10, color: '#555' }}>- Support at 69.40, resistance at 81.20</p>
+          <p style={{ fontSize: 10, color: '#555' }}>- AFL backtest ROI: +38.7% (2015-2025)</p>
+          <p style={{ fontWeight: 600 }}>2. AUD/USD - Bearish Divergence</p>
+          <p style={{ fontSize: 10, color: '#555' }}>- RSI divergence at 42.31</p>
+          <p style={{ fontSize: 10, color: '#555' }}>- Fibonacci 61.8% resistance at 0.67803</p>
+          <div className="flex items-center gap-2 mt-2 p-2 rounded" style={{ background: '#f5f5f5', border: '1px solid #eee' }}>
+            <Paperclip size={12} style={{ color: '#888' }} />
+            <span style={{ fontSize: 9, color: '#555' }}>Gold_Chart_AmiBroker.png</span>
+            <span style={{ fontSize: 9, color: '#555' }}>|</span>
+            <span style={{ fontSize: 9, color: '#555' }}>RATED_Strategy.afl</span>
+          </div>
+          {yangWorking && (
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="inline-block w-1 h-3 animate-pulse" style={{ background: '#0078d4' }} />
+              <span style={{ color: '#0078d4', fontSize: 10, fontWeight: 600 }}>Yang is composing...</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Excel Window                                                       */
+/* ------------------------------------------------------------------ */
+
+function ExcelWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  const headers = ['Asset', 'Class', 'Value ($)', 'Weight %', 'VaR 95%', 'Sharpe', 'Max DD'];
+  const rows = [
+    ['Gold CDE', 'Commodity', '142,500', '28.5%', '-4.2%', '1.82', '-12.3%'],
+    ['AAPL', 'Equity', '85,200', '17.0%', '-3.1%', '1.45', '-18.7%'],
+    ['AUD/USD', 'FX', '52,000', '10.4%', '-5.8%', '0.92', '-22.1%'],
+    ['BTC-USD', 'Crypto', '38,400', '7.7%', '-12.4%', '0.68', '-35.2%'],
+    ['US 10Y', 'Bond', '95,000', '19.0%', '-1.8%', '2.10', '-6.4%'],
+    ['MSFT', 'Equity', '62,300', '12.5%', '-2.9%', '1.56', '-15.8%'],
+    ['EUR/USD', 'FX', '24,600', '4.9%', '-4.0%', '1.05', '-19.3%'],
+  ];
+
+  return (
+    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
+      style={{
+        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+        opacity: isActive ? 1 : 0.7,
+        transition: 'all 0.4s ease',
+      }}
+    >
+      <Win11TitleBar
+        title="Excel - Portfolio_Risk_2025.xlsx"
+        icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#217346' }}><FileSpreadsheet size={10} color="#fff" /></div>}
+        bgColor="#217346" textColor="#ffffff" isActive={isActive}
+      />
+      <div className="flex items-center gap-0 px-1" style={{ background: '#f3f3f3', height: 24, borderBottom: '1px solid #ccc' }}>
+        {['File', 'Home', 'Insert', 'Page Layout', 'Formulas', 'Data', 'Review'].map((m) => (
+          <span key={m} className="px-2 py-0.5 text-[10px] cursor-default" style={{ color: '#333' }}>{m}</span>
+        ))}
+      </div>
+      <div className="flex items-center gap-1 px-2" style={{ background: '#f8f8f8', height: 24, borderBottom: '1px solid #ddd' }}>
+        <div className="px-2 py-0.5 rounded text-[9px]" style={{ background: '#fff', border: '1px solid #ccc', color: '#333', width: 40, textAlign: 'center' }}>D7</div>
+        <div className="flex-1 px-2 py-0.5 rounded text-[9px]" style={{ background: '#fff', border: '1px solid #ccc', color: '#333' }}>{'=STDEV(C2:C8)*NORMINV(0.05,0,1)*SQRT(252)'}</div>
+      </div>
+      <div className="flex-1 min-h-0 overflow-auto" style={{ background: '#ffffff' }}>
+        <table className="w-full" style={{ borderCollapse: 'collapse', fontSize: 9 }}>
+          <thead>
+            <tr>
+              <th className="px-1 py-0.5 text-center" style={{ background: '#f0f0f0', border: '1px solid #ddd', color: '#777', width: 24 }} />
+              {headers.map((h, i) => (
+                <th key={i} className="px-2 py-1 text-left font-semibold" style={{ background: '#4472c4', border: '1px solid #3563a5', color: '#fff', fontSize: 8 }}>
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, ri) => (
+              <tr key={ri}>
+                <td className="px-1 py-0.5 text-center" style={{ background: '#f0f0f0', border: '1px solid #ddd', color: '#777', fontSize: 8 }}>{ri + 1}</td>
+                {row.map((cell, ci) => {
+                  const isNeg = cell.startsWith('-');
+                  const isHighSharpe = ci === 5 && parseFloat(cell) > 1.5;
+                  return (
+                    <td key={ci} className="px-2 py-0.5"
+                      style={{
+                        border: '1px solid #e8e8e8',
+                        color: isNeg ? '#c00' : isHighSharpe ? '#217346' : '#333',
+                        background: ci === 4 && isNeg && parseFloat(cell) < -10 ? '#fce4e4' : ri % 2 === 0 ? '#f8f9fc' : '#fff',
+                        fontWeight: isHighSharpe ? 700 : 400,
+                      }}
+                    >
+                      {cell}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+            <tr>
+              <td className="px-1 py-0.5 text-center" style={{ background: '#f0f0f0', border: '1px solid #ddd', color: '#777', fontSize: 8 }}>8</td>
+              <td colSpan={2} className="px-2 py-0.5 font-bold" style={{ border: '1px solid #e8e8e8', color: '#333' }}>TOTAL</td>
+              <td className="px-2 py-0.5 font-bold" style={{ border: '1px solid #e8e8e8', color: '#333' }}>500,000</td>
+              <td className="px-2 py-0.5 font-bold" style={{ border: '1px solid #e8e8e8', color: '#333' }}>100%</td>
+              <td className="px-2 py-0.5 font-bold" style={{ border: '1px solid #e8e8e8', color: '#c00' }}>-4.88%</td>
+              <td className="px-2 py-0.5 font-bold" style={{ border: '1px solid #e8e8e8', color: '#217346' }}>1.37</td>
+              <td className="px-2 py-0.5 font-bold" style={{ border: '1px solid #e8e8e8', color: '#c00' }}>-18.5%</td>
+            </tr>
+          </tbody>
+        </table>
+        {yangWorking && (
+          <div className="flex items-center gap-1.5 px-3 py-1.5">
+            <Loader2 size={10} className="animate-spin" style={{ color: '#217346' }} />
+            <span style={{ fontSize: 9, fontWeight: 700, color: '#217346' }}>Yang is calculating formulas...</span>
+          </div>
+        )}
+      </div>
+      <div className="flex items-center justify-between px-2 flex-shrink-0" style={{ background: '#217346', height: 20 }}>
+        <div className="flex items-center gap-2">
+          <span style={{ fontSize: 8, color: '#fff' }}>Sheet1</span>
+          <span style={{ fontSize: 8, color: '#ffffff80' }}>Sheet2</span>
+          <span style={{ fontSize: 8, color: '#ffffff80' }}>PivotAnalysis</span>
+        </div>
+        <span style={{ fontSize: 8, color: '#ffffff80' }}>Ready</span>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Edge Browser Window                                                */
+/* ------------------------------------------------------------------ */
+
+function EdgeWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  return (
+    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
+      style={{
+        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+        opacity: isActive ? 1 : 0.7,
+        transition: 'all 0.4s ease',
+      }}
+    >
+      <Win11TitleBar
+        title="Edge - RBA Interest Rate Decision | Reuters"
+        icon={<div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0078d4, #00bcf2)' }}><Globe size={8} color="#fff" /></div>}
+        bgColor="#2d2d2d" textColor="#cccccc" isActive={isActive}
+      />
+      <div className="flex items-center gap-1 px-2" style={{ background: '#323232', height: 34, borderBottom: '1px solid #444' }}>
+        <div className="flex items-center gap-1">
+          <div className="w-6 h-6 rounded flex items-center justify-center hover:bg-[#444] cursor-default"><span style={{ color: '#aaa', fontSize: 12 }}>{'<'}</span></div>
+          <div className="w-6 h-6 rounded flex items-center justify-center hover:bg-[#444] cursor-default"><span style={{ color: '#aaa', fontSize: 12 }}>{'>'}</span></div>
+          <div className="w-6 h-6 rounded flex items-center justify-center hover:bg-[#444] cursor-default"><span style={{ color: '#aaa', fontSize: 12 }}>{'R'}</span></div>
+        </div>
+        <div className="flex-1 flex items-center px-3 py-1 rounded-full" style={{ background: '#3a3a3a', border: '1px solid #555' }}>
+          <span style={{ fontSize: 9, color: '#4caf50', marginRight: 4 }}>{'https://'}</span>
+          <span style={{ fontSize: 9, color: '#ccc' }}>www.reuters.com/markets/rates/rba-interest-rate-decision-feb-2025</span>
+        </div>
+      </div>
+      <div className="flex items-center gap-0" style={{ background: '#2d2d2d', height: 28, borderBottom: '1px solid #444' }}>
+        {['Reuters - Markets', 'Bloomberg - AUD', 'RBA.gov.au'].map((t, i) => (
+          <div key={i} className="flex items-center gap-1 px-3 py-1"
+            style={{ background: i === 0 ? '#3a3a3a' : 'transparent', color: i === 0 ? '#fff' : '#888', fontSize: 10, borderRight: '1px solid #444' }}>
+            {t}
+            <span style={{ fontSize: 8, color: '#666' }}>x</span>
+          </div>
+        ))}
+      </div>
+      <div className="flex-1 min-h-0 overflow-auto" style={{ background: '#1a1a1a' }}>
+        <div className="p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#ff6600' }}>REUTERS</span>
+            <span style={{ fontSize: 9, color: '#888' }}>Markets {'>'} Rates {'>'} Australia</span>
+          </div>
+          <h2 style={{ fontSize: 16, fontWeight: 700, color: '#fff', lineHeight: 1.3 }}>
+            RBA Holds Cash Rate at 4.35% with Dovish Forward Guidance
+          </h2>
+          <div className="flex items-center gap-2">
+            <span style={{ fontSize: 9, color: '#888' }}>By Yang Capital Research</span>
+            <span style={{ fontSize: 9, color: '#555' }}>|</span>
+            <span style={{ fontSize: 9, color: '#888' }}>February 17, 2025</span>
+          </div>
+          <div className="space-y-2" style={{ fontSize: 11, color: '#ccc', lineHeight: 1.6 }}>
+            <p>The Reserve Bank of Australia maintained its cash rate target at 4.35% at its February meeting, matching market expectations. Governor Michele Bullock signalled a shift in language...</p>
+            <div className="p-2 rounded" style={{ background: '#252525', border: '1px solid #333' }}>
+              <div style={{ fontSize: 10, fontWeight: 600, color: '#4caf50' }}>Key Takeaways:</div>
+              <div className="space-y-0.5 mt-1" style={{ fontSize: 9, color: '#bbb' }}>
+                <p>- Cash rate held at 4.35% (7th consecutive hold)</p>
+                <p>- Dovish language: "Board will respond to incoming data"</p>
+                <p>- Markets pricing 68% chance of cut by May 2025</p>
+                <p>- AUD weakened 0.3% post-announcement to 0.6520</p>
+              </div>
+            </div>
+          </div>
+          {yangWorking && (
+            <div className="flex items-center gap-1.5 mt-1">
+              <Loader2 size={10} className="animate-spin" style={{ color: '#00bcf2' }} />
+              <span style={{ fontSize: 9, fontWeight: 700, color: '#00bcf2' }}>Yang is extracting research data...</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Word Document Window                                               */
+/* ------------------------------------------------------------------ */
+
+function WordWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  return (
+    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
+      style={{
+        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+        opacity: isActive ? 1 : 0.7,
+        transition: 'all 0.4s ease',
+      }}
+    >
+      <Win11TitleBar
+        title="Word - Weekly_Strategy_Report.docx"
+        icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#2b579a' }}><FileText size={10} color="#fff" /></div>}
+        bgColor="#2b579a" textColor="#ffffff" isActive={isActive}
+      />
+      <div className="flex items-center gap-0 px-1" style={{ background: '#f3f3f3', height: 24, borderBottom: '1px solid #ccc' }}>
+        {['File', 'Home', 'Insert', 'Design', 'Layout', 'References', 'Review'].map((m) => (
+          <span key={m} className="px-2 py-0.5 text-[10px] cursor-default" style={{ color: '#333' }}>{m}</span>
+        ))}
+      </div>
+      <div className="flex items-center gap-2 px-3" style={{ background: '#f8f8f8', height: 30, borderBottom: '1px solid #ddd' }}>
+        <Bold size={12} style={{ color: '#555' }} />
+        <Italic size={12} style={{ color: '#555' }} />
+        <Underline size={12} style={{ color: '#555' }} />
+        <div className="w-px h-4" style={{ background: '#ccc' }} />
+        <AlignLeft size={12} style={{ color: '#555' }} />
+        <div className="px-2 py-0.5 rounded text-[9px]" style={{ background: '#fff', border: '1px solid #ccc', color: '#333' }}>Calibri</div>
+        <div className="px-1.5 py-0.5 rounded text-[9px]" style={{ background: '#fff', border: '1px solid #ccc', color: '#333' }}>11</div>
+      </div>
+      <div className="flex-1 min-h-0 overflow-auto flex justify-center" style={{ background: '#e8e8e8' }}>
+        <div className="my-3 mx-2 w-full max-w-lg" style={{ background: '#ffffff', boxShadow: '0 2px 8px rgba(0,0,0,0.12)', padding: '20px 24px' }}>
+          <div style={{ textAlign: 'center', marginBottom: 12 }}>
+            <h1 style={{ fontSize: 18, fontWeight: 700, color: '#1a1a1a', marginBottom: 4 }}>Weekly Strategy Report</h1>
+            <p style={{ fontSize: 10, color: '#777' }}>Yang Capital | Week of February 17, 2025</p>
+            <div className="w-16 h-0.5 mx-auto mt-2" style={{ background: '#2b579a' }} />
+          </div>
+          <div className="space-y-2" style={{ fontSize: 10, color: '#333', lineHeight: 1.6 }}>
+            <h2 style={{ fontSize: 13, fontWeight: 700, color: '#2b579a' }}>1. Executive Summary</h2>
+            <p>Gold continues its bullish trajectory with DEMA confirmation on the daily timeframe. The AFL strategy backtest returned +38.7% over the 2015-2025 period with a maximum drawdown of -12.3%.</p>
+            <h2 style={{ fontSize: 13, fontWeight: 700, color: '#2b579a' }}>2. AUD/USD Technical Analysis</h2>
+            <p>Fibonacci retracement analysis shows key resistance at the 61.8% level (0.67803). RSI divergence at 42.31 suggests bearish momentum. RBA{"'"}s dovish guidance supports short AUD positions.</p>
+            <h2 style={{ fontSize: 13, fontWeight: 700, color: '#2b579a' }}>3. Portfolio Risk Assessment</h2>
+            <p>Portfolio VaR (95%) stands at -4.88%. Sharpe ratio of 1.37 is within acceptable range. Recommend reducing FX exposure by 2% and increasing bond allocation.</p>
+            <div className="mt-2 p-2 rounded" style={{ background: '#f0f4ff', border: '1px solid #d0daf0' }}>
+              <span style={{ fontSize: 9, color: '#2b579a', fontWeight: 600 }}>{'[Chart: Gold_CDE_Daily.png embedded]'}</span>
+            </div>
+          </div>
+          {yangWorking && (
+            <div className="flex items-center gap-1.5 mt-3">
+              <span className="inline-block w-1 h-3 animate-pulse" style={{ background: '#2b579a' }} />
+              <span style={{ color: '#2b579a', fontSize: 10, fontWeight: 600 }}>Yang is writing...</span>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="flex items-center justify-between px-3 flex-shrink-0" style={{ background: '#2b579a', height: 20 }}>
+        <span style={{ fontSize: 8, color: '#ffffff80' }}>Page 3 of 8</span>
+        <span style={{ fontSize: 8, color: '#ffffff80' }}>2,847 words</span>
       </div>
     </div>
   );
@@ -607,6 +824,24 @@ function DesktopIcon({ label, color, letter }: { label: string; color: string; l
 }
 
 /* ------------------------------------------------------------------ */
+/*  Determine visible windows per phase                                */
+/* ------------------------------------------------------------------ */
+
+type AppKey = 'amibroker' | 'afl-editor' | 'optuma' | 'outlook' | 'excel' | 'edge' | 'word';
+
+function getVisibleWindows(step: number): AppKey[] {
+  if (step < 2) return ['amibroker', 'optuma'];
+  if (step < 5) return ['amibroker', 'optuma'];
+  if (step < 10) return ['afl-editor', 'amibroker'];
+  if (step < 14) return ['optuma', 'afl-editor'];
+  if (step < 19) return ['outlook', 'optuma'];
+  if (step < 24) return ['excel', 'outlook'];
+  if (step < 28) return ['edge', 'excel'];
+  if (step < 31) return ['word', 'edge'];
+  return ['amibroker', 'optuma'];
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main Component                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -620,6 +855,7 @@ export default function AutopilotPage() {
   const [activeApp, setActiveApp] = useState<string | null>(null);
   const [demoComplete, setDemoComplete] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
+  const [currentStep, setCurrentStep] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const logContainerRef = useRef<HTMLDivElement>(null);
 
@@ -633,38 +869,28 @@ export default function AutopilotPage() {
     accentText: '#212121',
   };
 
-  /* Clock */
   useEffect(() => {
-    const tick = () => {
-      const now = new Date();
-      setCurrentTime(
-        now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
-      );
-    };
+    const tick = () => setCurrentTime(new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }));
     tick();
     const id = setInterval(tick, 30000);
     return () => clearInterval(id);
   }, []);
 
-  /* Auto-scroll logs */
   useEffect(() => {
-    if (logContainerRef.current) {
-      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
-    }
+    if (logContainerRef.current) logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
   }, [logs]);
 
-  /* Cleanup */
   useEffect(() => {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, []);
 
-  /* Demo runner */
   const startDemo = useCallback(() => {
     if (isRunning) return;
     setIsRunning(true);
     setDemoComplete(false);
     setLogs([]);
     setActiveApp(null);
+    setCurrentStep(0);
     let step = 0;
 
     intervalRef.current = setInterval(() => {
@@ -678,19 +904,21 @@ export default function AutopilotPage() {
       }
       const action = DEMO_ACTIONS[step];
       setLogs((prev) => [...prev, { ...action, id: step }]);
+      setCurrentStep(step);
       if (action.app) {
         setActiveApp(action.app);
         const targets: Record<string, { x: number; y: number }> = {
-          amibroker: { x: 20, y: 35 },
-          optuma: { x: 60, y: 35 },
+          amibroker: { x: 18, y: 30 }, 'afl-editor': { x: 18, y: 35 },
+          optuma: { x: 58, y: 30 }, outlook: { x: 18, y: 30 },
+          excel: { x: 18, y: 35 }, edge: { x: 58, y: 30 }, word: { x: 18, y: 30 },
         };
-        const target = targets[action.app] ?? { x: 50, y: 50 };
-        setCursorPos({ x: target.x + Math.random() * 15, y: target.y + Math.random() * 10 });
+        const t = targets[action.app] ?? { x: 50, y: 50 };
+        setCursorPos({ x: t.x + Math.random() * 18, y: t.y + Math.random() * 15 });
       } else {
-        setCursorPos({ x: 40 + Math.random() * 20, y: 30 + Math.random() * 30 });
+        setCursorPos({ x: 35 + Math.random() * 30, y: 25 + Math.random() * 35 });
       }
       step++;
-    }, 2200);
+    }, 2000);
   }, [isRunning]);
 
   const resetDemo = useCallback(() => {
@@ -700,31 +928,51 @@ export default function AutopilotPage() {
     setLogs([]);
     setActiveApp(null);
     setCursorPos({ x: 50, y: 50 });
+    setCurrentStep(0);
   }, []);
 
   const todayDate = new Date().toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' });
+  const visibleWindows = getVisibleWindows(currentStep);
+
+  const windowComponents: Record<AppKey, (active: boolean, working: boolean) => React.ReactNode> = {
+    amibroker: (a, w) => <AmiBrokerWindow isActive={a} yangWorking={w} />,
+    'afl-editor': (a, w) => <AFLEditorWindow isActive={a} yangWorking={w} />,
+    optuma: (a, w) => <OptumaWindow isActive={a} yangWorking={w} />,
+    outlook: (a, w) => <OutlookWindow isActive={a} yangWorking={w} />,
+    excel: (a, w) => <ExcelWindow isActive={a} yangWorking={w} />,
+    edge: (a, w) => <EdgeWindow isActive={a} yangWorking={w} />,
+    word: (a, w) => <WordWindow isActive={a} yangWorking={w} />,
+  };
+
+  const taskbarApps: { key: AppKey; label: string; bg: string; icon: React.ReactNode }[] = [
+    { key: 'amibroker', label: 'AB', bg: '#e8912d', icon: <span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>AB</span> },
+    { key: 'afl-editor', label: 'AFL', bg: '#e8912d', icon: <FileCode size={10} color="#fff" /> },
+    { key: 'optuma', label: 'O', bg: '#1a5276', icon: <span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>O</span> },
+    { key: 'outlook', label: 'OL', bg: '#0078d4', icon: <Mail size={10} color="#fff" /> },
+    { key: 'excel', label: 'XL', bg: '#217346', icon: <FileSpreadsheet size={10} color="#fff" /> },
+    { key: 'edge', label: 'E', bg: '#0078d4', icon: <Globe size={10} color="#fff" /> },
+    { key: 'word', label: 'W', bg: '#2b579a', icon: <FileText size={10} color="#fff" /> },
+  ];
+
+  const progressPercent = DEMO_ACTIONS.length > 0 ? Math.round((logs.length / DEMO_ACTIONS.length) * 100) : 0;
 
   return (
     <div className="min-h-screen p-4 lg:p-6" style={{ background: c.bg, color: c.text }}>
-      {/* Coming Soon + Header */}
+      {/* Header */}
       <div className="max-w-[1440px] mx-auto mb-4">
         <div className="flex items-center justify-center mb-4">
-          <div
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold tracking-wider shadow-lg"
-            style={{ background: c.accent, color: c.accentText }}
-          >
-            <Zap className="w-4 h-4" />
-            COMING SOON
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold tracking-wider shadow-lg"
+            style={{ background: c.accent, color: c.accentText }}>
+            <Zap className="w-4 h-4" /> COMING SOON
           </div>
         </div>
         <h1 className="text-2xl lg:text-3xl font-bold text-center mb-1 text-balance" style={{ fontFamily: "'Rajdhani', sans-serif", letterSpacing: '1px' }}>
           Auto Pilot Preview
         </h1>
         <p className="text-center text-sm mb-4" style={{ color: c.muted }}>
-          Watch Yang take autonomous control -- navigating AmiBroker and Optuma, modifying files, and learning new tasks.
+          Watch Yang autonomously manage 7 applications -- writing AFL code, composing emails, building spreadsheets, researching markets, and creating reports.
         </p>
 
-        {/* CTA Button */}
         <div className="flex justify-center mb-6">
           <button
             onClick={isRunning ? undefined : demoComplete ? resetDemo : startDemo}
@@ -752,65 +1000,39 @@ export default function AutopilotPage() {
       </div>
 
       {/* Main Grid */}
-      <div className="max-w-[1440px] mx-auto grid lg:grid-cols-[1fr_280px] gap-4">
-        {/* Windows 11 Desktop */}
-        <div
-          className="rounded-xl overflow-hidden shadow-2xl"
-          style={{ border: `1px solid ${isDark ? '#444' : '#bbb'}` }}
-        >
+      <div className="max-w-[1440px] mx-auto grid lg:grid-cols-[1fr_300px] gap-4">
+        {/* Desktop */}
+        <div className="rounded-xl overflow-hidden shadow-2xl" style={{ border: `1px solid ${isDark ? '#444' : '#bbb'}` }}>
           {/* Desktop area */}
-          <div
-            className="relative"
-            style={{
-              height: 580,
-              backgroundImage: 'url(/images/win11-wallpaper.jpeg)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
+          <div className="relative" style={{ height: 600, backgroundImage: 'url(/images/win11-wallpaper.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
             {/* Desktop icons */}
             <div className="absolute top-3 left-3 flex flex-col gap-1 z-[2]">
               <DesktopIcon label="AmiBroker" color="#e8912d" letter="AB" />
               <DesktopIcon label="Optuma" color="#1a5276" letter="O" />
-              <DesktopIcon label="Recycle Bin" color="#555" letter="R" />
+              <DesktopIcon label="Outlook" color="#0078d4" letter="OL" />
+              <DesktopIcon label="Excel" color="#217346" letter="XL" />
+              <DesktopIcon label="Edge" color="#0078d4" letter="E" />
+              <DesktopIcon label="Word" color="#2b579a" letter="W" />
               <DesktopIcon label="This PC" color="#0078d4" letter="PC" />
-              <DesktopIcon label="File Explorer" color="#d4a017" letter="FE" />
+              <DesktopIcon label="Recycle Bin" color="#555" letter="R" />
             </div>
 
-            {/* AmiBroker window -- left half */}
-            <div
-              className="absolute transition-all duration-500"
-              style={{
-                left: '7%',
-                top: '2%',
-                width: '48%',
-                height: '82%',
-                zIndex: activeApp === 'amibroker' ? 20 : 10,
-              }}
-            >
-              <AmiBrokerWindow isActive={activeApp === 'amibroker'} yangWorking={isRunning && activeApp === 'amibroker'} />
+            {/* Left window */}
+            <div className="absolute transition-all duration-700 ease-in-out"
+              style={{ left: '7%', top: '2%', width: '48%', height: '84%', zIndex: activeApp === visibleWindows[0] ? 20 : 10 }}>
+              {windowComponents[visibleWindows[0]](activeApp === visibleWindows[0], isRunning && activeApp === visibleWindows[0])}
             </div>
 
-            {/* Optuma window -- right half */}
-            <div
-              className="absolute transition-all duration-500"
-              style={{
-                right: '1%',
-                top: '4%',
-                width: '46%',
-                height: '80%',
-                zIndex: activeApp === 'optuma' ? 20 : 10,
-              }}
-            >
-              <OptumaWindow isActive={activeApp === 'optuma'} yangWorking={isRunning && activeApp === 'optuma'} />
+            {/* Right window */}
+            <div className="absolute transition-all duration-700 ease-in-out"
+              style={{ right: '1%', top: '4%', width: '46%', height: '82%', zIndex: activeApp === visibleWindows[1] ? 20 : 10 }}>
+              {windowComponents[visibleWindows[1]](activeApp === visibleWindows[1], isRunning && activeApp === visibleWindows[1])}
             </div>
 
-            {/* Animated cursor */}
+            {/* Cursor */}
             {isRunning && (
-              <div
-                className="absolute pointer-events-none transition-all duration-[1200ms] ease-in-out z-30"
-                style={{ left: `${cursorPos.x}%`, top: `${cursorPos.y}%` }}
-              >
+              <div className="absolute pointer-events-none transition-all duration-[1200ms] ease-in-out z-30"
+                style={{ left: `${cursorPos.x}%`, top: `${cursorPos.y}%` }}>
                 <MousePointer2 className="w-5 h-5 text-white drop-shadow-[0_0_6px_rgba(254,192,15,0.9)]" />
                 <span className="absolute -top-1 -left-1 w-7 h-7 rounded-full animate-ping pointer-events-none" style={{ background: 'rgba(254, 192, 15, 0.3)' }} />
               </div>
@@ -830,11 +1052,11 @@ export default function AutopilotPage() {
               <div className="absolute inset-0 flex flex-col items-center justify-center z-[15] bg-black/30 backdrop-blur-[1px]">
                 <CheckCircle2 className="w-10 h-10 mb-2" style={{ color: '#10b981' }} />
                 <p className="text-white font-bold text-base">Demo Complete</p>
-                <p className="text-white/60 text-xs mt-1">All autonomous tasks executed successfully</p>
+                <p className="text-white/60 text-xs mt-1">33 tasks executed across 7 applications -- 0 errors</p>
               </div>
             )}
 
-            {/* Autopilot active indicator */}
+            {/* Active indicator */}
             {isRunning && (
               <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2.5 py-1 rounded-lg z-[25]" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}>
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -843,70 +1065,36 @@ export default function AutopilotPage() {
             )}
           </div>
 
-          {/* Windows 11 Taskbar */}
-          <div
-            className="flex items-center justify-between px-3"
-            style={{
-              height: 48,
-              background: isDark ? 'rgba(32,32,32,0.95)' : 'rgba(243,243,243,0.95)',
-              borderTop: `1px solid ${isDark ? '#444' : '#ddd'}`,
-              backdropFilter: 'blur(30px)',
-            }}
-          >
-            {/* Left - system tray arrow */}
+          {/* Taskbar */}
+          <div className="flex items-center justify-between px-3"
+            style={{ height: 48, background: isDark ? 'rgba(32,32,32,0.95)' : 'rgba(243,243,243,0.95)', borderTop: `1px solid ${isDark ? '#444' : '#ddd'}`, backdropFilter: 'blur(30px)' }}>
             <div className="flex items-center gap-2">
               <ChevronUp size={14} style={{ color: isDark ? '#aaa' : '#666' }} />
             </div>
-
-            {/* Center - pinned icons */}
             <div className="flex items-center gap-1">
-              {/* Windows logo */}
-              <div className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-white/10 cursor-default transition-colors">
+              {/* Windows */}
+              <div className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-white/10 cursor-default">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill={isDark ? '#fff' : '#0078d4'}>
-                  <rect x="0" y="0" width="7.2" height="7.2" rx="0.5" />
-                  <rect x="8.8" y="0" width="7.2" height="7.2" rx="0.5" />
-                  <rect x="0" y="8.8" width="7.2" height="7.2" rx="0.5" />
-                  <rect x="8.8" y="8.8" width="7.2" height="7.2" rx="0.5" />
+                  <rect x="0" y="0" width="7.2" height="7.2" rx="0.5" /><rect x="8.8" y="0" width="7.2" height="7.2" rx="0.5" />
+                  <rect x="0" y="8.8" width="7.2" height="7.2" rx="0.5" /><rect x="8.8" y="8.8" width="7.2" height="7.2" rx="0.5" />
                 </svg>
               </div>
-              {/* Search */}
-              <div className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-white/10 cursor-default transition-colors">
+              <div className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-white/10 cursor-default">
                 <Search size={16} style={{ color: isDark ? '#ccc' : '#555' }} />
               </div>
-              {/* Task view */}
-              <div className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-white/10 cursor-default transition-colors">
-                <div className="grid grid-cols-2 gap-0.5">
-                  <div className="w-2 h-2 rounded-[1px]" style={{ background: isDark ? '#ccc' : '#555' }} />
-                  <div className="w-2 h-2 rounded-[1px]" style={{ background: isDark ? '#ccc' : '#555' }} />
-                  <div className="w-2 h-2 rounded-[1px]" style={{ background: isDark ? '#ccc' : '#555' }} />
-                  <div className="w-2 h-2 rounded-[1px]" style={{ background: isDark ? '#ccc' : '#555' }} />
+              {/* App icons */}
+              {taskbarApps.map((app) => (
+                <div key={app.key} className="relative w-10 h-10 flex items-center justify-center rounded-md cursor-default transition-colors"
+                  style={{ background: activeApp === app.key ? (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)') : 'transparent' }}>
+                  <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: app.bg }}>
+                    {app.icon}
+                  </div>
+                  {visibleWindows.includes(app.key) && (
+                    <div className="absolute bottom-1 rounded-full" style={{ width: activeApp === app.key ? 12 : 4, height: 2, background: activeApp === app.key ? '#FEC00F' : isDark ? '#888' : '#aaa' }} />
+                  )}
                 </div>
-              </div>
-              {/* File Explorer */}
-              <div className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-white/10 cursor-default transition-colors">
-                <div className="w-5 h-4 rounded-sm" style={{ background: '#d4a017', border: '1px solid #b8860b' }} />
-              </div>
-              {/* Edge */}
-              <div className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-white/10 cursor-default transition-colors">
-                <div className="w-5 h-5 rounded-full" style={{ background: 'linear-gradient(135deg, #0078d4, #00bcf2)' }} />
-              </div>
-              {/* AmiBroker (active) */}
-              <div className="w-10 h-10 flex items-center justify-center rounded-md cursor-default transition-colors" style={{ background: activeApp === 'amibroker' ? (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)') : 'transparent' }}>
-                <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: '#e8912d' }}>
-                  <span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>AB</span>
-                </div>
-                {activeApp === 'amibroker' && <div className="absolute bottom-1 w-3 h-[2px] rounded-full" style={{ background: '#FEC00F' }} />}
-              </div>
-              {/* Optuma (active) */}
-              <div className="w-10 h-10 flex items-center justify-center rounded-md cursor-default transition-colors relative" style={{ background: activeApp === 'optuma' ? (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)') : 'transparent' }}>
-                <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: '#1a5276' }}>
-                  <span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>O</span>
-                </div>
-                {activeApp === 'optuma' && <div className="absolute bottom-1 w-3 h-[2px] rounded-full" style={{ background: '#FEC00F' }} />}
-              </div>
+              ))}
             </div>
-
-            {/* Right - system tray */}
             <div className="flex items-center gap-2">
               <Wifi size={13} style={{ color: isDark ? '#ccc' : '#555' }} />
               <Volume2 size={13} style={{ color: isDark ? '#ccc' : '#555' }} />
@@ -920,7 +1108,7 @@ export default function AutopilotPage() {
         </div>
 
         {/* Activity Log */}
-        <div className="rounded-xl overflow-hidden flex flex-col" style={{ background: c.card, border: `1px solid ${c.border}`, maxHeight: 640 }}>
+        <div className="rounded-xl overflow-hidden flex flex-col" style={{ background: c.card, border: `1px solid ${c.border}`, maxHeight: 660 }}>
           <div className="flex items-center gap-2 px-4 py-3 flex-shrink-0" style={{ borderBottom: `1px solid ${c.border}` }}>
             <Activity className="w-4 h-4" style={{ color: c.accent }} />
             <span className="text-sm font-bold tracking-wide" style={{ fontFamily: "'Rajdhani', sans-serif" }}>ACTIVITY LOG</span>
@@ -930,6 +1118,32 @@ export default function AutopilotPage() {
               </span>
             )}
           </div>
+
+          {/* Progress bar */}
+          {logs.length > 0 && (
+            <div className="px-4 py-2 flex-shrink-0" style={{ borderBottom: `1px solid ${c.border}` }}>
+              <div className="flex items-center justify-between mb-1">
+                <span style={{ fontSize: 9, color: c.muted }}>Progress</span>
+                <span style={{ fontSize: 9, color: c.muted, fontWeight: 600 }}>{progressPercent}%</span>
+              </div>
+              <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: isDark ? '#333' : '#e0e0e0' }}>
+                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progressPercent}%`, background: c.accent }} />
+              </div>
+              {/* Phase indicator */}
+              <div className="mt-1.5 flex items-center gap-1">
+                <span className="text-[8px] font-bold px-1.5 py-0.5 rounded" style={{
+                  background: isDark ? '#333' : '#e8e8e8',
+                  color: activeApp ? c.text : c.muted,
+                }}>
+                  {activeApp === 'amibroker' ? 'AMIBROKER' : activeApp === 'afl-editor' ? 'AFL EDITOR' :
+                   activeApp === 'optuma' ? 'OPTUMA' : activeApp === 'outlook' ? 'OUTLOOK' :
+                   activeApp === 'excel' ? 'EXCEL' : activeApp === 'edge' ? 'EDGE' :
+                   activeApp === 'word' ? 'WORD' : 'SYSTEM'}
+                </span>
+              </div>
+            </div>
+          )}
+
           <div ref={logContainerRef} className="flex-1 overflow-y-auto p-3 space-y-2">
             {logs.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full py-12" style={{ color: c.muted }}>
@@ -938,19 +1152,28 @@ export default function AutopilotPage() {
               </div>
             ) : (
               logs.map((log) => (
-                <div
-                  key={log.id}
-                  className="flex items-start gap-2 p-2.5 rounded-lg text-xs transition-all duration-300"
+                <div key={log.id} className="flex items-start gap-2 p-2.5 rounded-lg text-xs transition-all duration-300"
                   style={{
                     background: isDark ? '#0d1117' : '#fafafa',
-                    border: `1px solid ${
-                      log.status === 'success' ? 'rgba(16, 185, 129, 0.4)' : log.status === 'active' ? 'rgba(254, 192, 15, 0.4)' : c.border
-                    }`,
-                  }}
-                >
+                    border: `1px solid ${log.status === 'success' ? 'rgba(16, 185, 129, 0.4)' : log.status === 'active' ? 'rgba(254, 192, 15, 0.4)' : c.border}`,
+                  }}>
                   <StatusDot status={log.status} />
                   <div className="flex-1 min-w-0">
-                    <span className="block font-semibold mb-0.5" style={{ color: c.muted, fontSize: 10 }}>{log.time}</span>
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="font-semibold" style={{ color: c.muted, fontSize: 10 }}>{log.time}</span>
+                      {log.app && (
+                        <span className="text-[8px] font-bold px-1 py-0 rounded" style={{
+                          background: log.app === 'amibroker' || log.app === 'afl-editor' ? '#e8912d20' :
+                                     log.app === 'optuma' ? '#1a527620' : log.app === 'outlook' ? '#0078d420' :
+                                     log.app === 'excel' ? '#21734620' : log.app === 'edge' ? '#0078d420' : '#2b579a20',
+                          color: log.app === 'amibroker' || log.app === 'afl-editor' ? '#e8912d' :
+                                 log.app === 'optuma' ? '#1a5276' : log.app === 'outlook' ? '#0078d4' :
+                                 log.app === 'excel' ? '#217346' : log.app === 'edge' ? '#0078d4' : '#2b579a',
+                        }}>
+                          {log.app === 'afl-editor' ? 'AFL' : log.app.toUpperCase()}
+                        </span>
+                      )}
+                    </div>
                     <span style={{ color: c.text, lineHeight: '1.4' }}>{log.action}</span>
                   </div>
                 </div>
@@ -961,11 +1184,12 @@ export default function AutopilotPage() {
       </div>
 
       {/* Feature cards */}
-      <div className="max-w-[1440px] mx-auto grid sm:grid-cols-3 gap-4 mt-4">
+      <div className="max-w-[1440px] mx-auto grid sm:grid-cols-4 gap-4 mt-4">
         {[
-          { icon: MousePointer2, title: 'Autonomous Control', desc: 'Takes full control of mouse and keyboard to execute complex multi-step tasks across AmiBroker and Optuma.' },
-          { icon: Brain, title: 'Skill Acquisition', desc: 'Observes and learns new workflows from users -- no additional programming or AFL scripting needed.' },
-          { icon: Layers, title: 'Multi-App Orchestration', desc: 'Seamlessly works across AmiBroker, Optuma, and the file system simultaneously in real time.' },
+          { icon: MousePointer2, title: 'Autonomous Control', desc: 'Full mouse and keyboard control across 7+ applications simultaneously.' },
+          { icon: FileCode, title: 'AFL Coding', desc: 'Writes, debugs, and optimizes AmiBroker AFL strategies autonomously.' },
+          { icon: Brain, title: 'Skill Acquisition', desc: 'Learns new workflows by observing -- no manual programming required.' },
+          { icon: Layers, title: 'Multi-App Orchestration', desc: 'Seamlessly manages AmiBroker, Optuma, Outlook, Excel, Edge, and Word.' },
         ].map((f) => (
           <div key={f.title} className="p-4 rounded-xl" style={{ background: c.card, border: `1px solid ${c.border}` }}>
             <f.icon className="w-5 h-5 mb-2" style={{ color: c.accent }} />
