@@ -16,6 +16,7 @@ import {
   Sparkles,
   Smartphone,
   Monitor,
+  Rocket,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -33,6 +34,7 @@ const navItems = [
   { name: 'REVERSE ENGINEER', href: '/reverse-engineer', icon: Zap },
   { name: 'DEVELOPER', href: '/developer', icon: Smartphone },
   { name: 'NON APPLE DEV', href: '/non-apple-developer', icon: Monitor },
+  { name: 'AUTOPILOT DEMO', href: '/autopilot', icon: Rocket },
   { name: 'SETTINGS', href: '/settings', icon: Settings },
 ];
 

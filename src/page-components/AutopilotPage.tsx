@@ -1,418 +1,599 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Play, Pause, RotateCcw, Monitor, Activity, FileText, Zap } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  Monitor,
+  Activity,
+  FileText,
+  Zap,
+  MousePointer2,
+  Brain,
+  Layers,
+  Folder,
+  FileCode,
+  BarChart3,
+  TrendingUp,
+  CheckCircle2,
+  Clock,
+  Loader2,
+} from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
-interface ActivityLog {
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+interface LogEntry {
   id: number;
   time: string;
   action: string;
   status: 'success' | 'active' | 'pending';
+  app?: string;
 }
 
-interface AppWindow {
+interface DesktopApp {
   id: string;
   title: string;
-  icon: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  active: boolean;
+  color: string;
+  borderColor: string;
+  activeBorder: string;
+  glowColor: string;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Constants                                                          */
+/* ------------------------------------------------------------------ */
+
+const APPS: DesktopApp[] = [
+  {
+    id: 'amy',
+    title: 'Amy Broker',
+    color: '#1e40af',
+    borderColor: '#3b82f6',
+    activeBorder: '#60a5fa',
+    glowColor: 'rgba(59, 130, 246, 0.3)',
+  },
+  {
+    id: 'optima',
+    title: 'Optima',
+    color: '#7e22ce',
+    borderColor: '#a855f7',
+    activeBorder: '#c084fc',
+    glowColor: 'rgba(168, 85, 247, 0.3)',
+  },
+  {
+    id: 'files',
+    title: 'File Explorer',
+    color: '#0e7490',
+    borderColor: '#06b6d4',
+    activeBorder: '#22d3ee',
+    glowColor: 'rgba(6, 182, 212, 0.3)',
+  },
+];
+
+const DEMO_ACTIONS: Omit<LogEntry, 'id'>[] = [
+  { time: '00:01', action: 'Yang initialized -- scanning desktop environment', status: 'success' },
+  { time: '00:03', action: 'Opening Amy Broker -- loading portfolio view', status: 'active', app: 'amy' },
+  { time: '00:05', action: 'Reading live market data from Amy Broker', status: 'success', app: 'amy' },
+  { time: '00:07', action: 'Switching to Optima for strategy optimization', status: 'active', app: 'optima' },
+  { time: '00:09', action: 'Running backtest on AFL momentum strategy', status: 'success', app: 'optima' },
+  { time: '00:11', action: 'Opening File Explorer -- accessing config files', status: 'active', app: 'files' },
+  { time: '00:13', action: 'Modifying trading_params.json with new thresholds', status: 'success', app: 'files' },
+  { time: '00:15', action: 'Returning to Amy Broker -- applying new parameters', status: 'active', app: 'amy' },
+  { time: '00:17', action: 'Learning pattern: user risk-assessment workflow', status: 'active', app: 'optima' },
+  { time: '00:19', action: 'Cross-app workflow complete -- all tasks executed', status: 'success' },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Sub-components                                                     */
+/* ------------------------------------------------------------------ */
+
+function StatusDot({ status }: { status: string }) {
+  const bg =
+    status === 'success'
+      ? '#10b981'
+      : status === 'active'
+        ? '#FEC00F'
+        : '#64748b';
+  return (
+    <span
+      className="inline-block w-2 h-2 rounded-full flex-shrink-0 mt-1.5"
+      style={{ background: bg }}
+    />
+  );
+}
+
+function DesktopIcon({ label, children, isDark }: { label: string; children: React.ReactNode; isDark: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-1 w-16">
+      <div
+        className="w-10 h-10 rounded-lg flex items-center justify-center"
+        style={{ background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.25)' }}
+      >
+        {children}
+      </div>
+      <span className="text-[10px] text-white text-center leading-tight truncate w-full">{label}</span>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main Component                                                     */
+/* ------------------------------------------------------------------ */
+
 export default function AutopilotPage() {
-  const { resolvedTheme } = useTheme();
+  const { actualTheme } = useTheme();
+  const isDark = actualTheme === 'dark';
+
   const [isRunning, setIsRunning] = useState(false);
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 });
-  const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
-  const [activeWindows, setActiveWindows] = useState<AppWindow[]>([
-    { id: 'amy', title: 'Amy Broker', icon: '💼', x: 20, y: 15, width: 35, height: 40, active: false },
-    { id: 'optima', title: 'Optima', icon: '📊', x: 45, y: 25, width: 35, height: 40, active: false },
-    { id: 'files', title: 'File Explorer', icon: '📁', x: 15, y: 55, width: 30, height: 30, active: false },
-  ]);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [activeApp, setActiveApp] = useState<string | null>(null);
+  const [demoComplete, setDemoComplete] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const logContainerRef = useRef<HTMLDivElement>(null);
 
-  const isDark = resolvedTheme === 'dark';
+  /* ---- colours ---- */
+  const c = {
+    bg: isDark ? '#121212' : '#f5f5f5',
+    card: isDark ? '#1E1E1E' : '#ffffff',
+    border: isDark ? '#333' : '#e0e0e0',
+    text: isDark ? '#ffffff' : '#212121',
+    muted: isDark ? '#9E9E9E' : '#757575',
+    accent: '#FEC00F',
+    accentText: '#212121',
+    desktopBg: isDark
+      ? 'linear-gradient(135deg, #0a1628 0%, #162033 50%, #1a2744 100%)'
+      : 'linear-gradient(135deg, #1565c0 0%, #1976d2 50%, #1e88e5 100%)',
+    taskbar: isDark ? '#0d1117' : '#0d47a1',
+  };
 
-  const startAutopilot = () => {
+  /* ---- auto-scroll logs ---- */
+  useEffect(() => {
+    if (logContainerRef.current) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
+  }, [logs]);
+
+  /* ---- cleanup on unmount ---- */
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  /* ---- demo runner ---- */
+  const startDemo = useCallback(() => {
+    if (isRunning) return;
     setIsRunning(true);
-    setActivityLogs([]);
-    simulateYangActions();
-  };
+    setDemoComplete(false);
+    setLogs([]);
+    setActiveApp(null);
 
-  const stopAutopilot = () => {
-    setIsRunning(false);
-  };
+    let step = 0;
 
-  const resetDemo = () => {
-    setIsRunning(false);
-    setCursorPos({ x: 50, y: 50 });
-    setActivityLogs([]);
-    setActiveWindows(windows =>
-      windows.map(w => ({ ...w, active: false }))
-    );
-  };
-
-  const simulateYangActions = () => {
-    const actions = [
-      { time: '00:01', action: 'Yang initialized - analyzing desktop environment', status: 'success' as const },
-      { time: '00:02', action: 'Opening Amy Broker application', status: 'active' as const, window: 'amy' },
-      { time: '00:04', action: 'Reading market data from Amy Broker', status: 'success' as const },
-      { time: '00:06', action: 'Switching to Optima for portfolio optimization', status: 'active' as const, window: 'optima' },
-      { time: '00:08', action: 'Analyzing portfolio allocation strategies', status: 'success' as const },
-      { time: '00:10', action: 'Opening File Explorer to access trading logs', status: 'active' as const, window: 'files' },
-      { time: '00:12', action: 'Modifying configuration file: trading_params.json', status: 'success' as const },
-      { time: '00:14', action: 'Learning new task: automated risk assessment', status: 'active' as const },
-      { time: '00:16', action: 'Executing multi-application workflow', status: 'success' as const },
-      { time: '00:18', action: 'Task completed - ready for next instruction', status: 'success' as const },
-    ];
-
-    let currentAction = 0;
-
-    const interval = setInterval(() => {
-      if (currentAction >= actions.length) {
-        clearInterval(interval);
+    intervalRef.current = setInterval(() => {
+      if (step >= DEMO_ACTIONS.length) {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        intervalRef.current = null;
         setIsRunning(false);
+        setDemoComplete(true);
+        setActiveApp(null);
         return;
       }
 
-      const action = actions[currentAction];
-      setActivityLogs(prev => [...prev, { id: currentAction, ...action }]);
+      const action = DEMO_ACTIONS[step];
+      setLogs((prev) => [...prev, { ...action, id: step }]);
 
-      // Activate corresponding window
-      if (action.window) {
-        setActiveWindows(windows =>
-          windows.map(w => ({ ...w, active: w.id === action.window }))
-        );
-
-        // Move cursor to window
-        const targetWindow = activeWindows.find(w => w.id === action.window);
-        if (targetWindow) {
-          setCursorPos({ x: targetWindow.x + 10, y: targetWindow.y + 10 });
-        }
+      if (action.app) {
+        setActiveApp(action.app);
+        // Move cursor towards the active app's area
+        const appIdx = APPS.findIndex((a) => a.id === action.app);
+        const targets = [
+          { x: 18, y: 28 },
+          { x: 55, y: 28 },
+          { x: 18, y: 62 },
+        ];
+        const target = targets[appIdx] ?? { x: 50, y: 50 };
+        setCursorPos({ x: target.x + Math.random() * 15, y: target.y + Math.random() * 10 });
+      } else {
+        setCursorPos({ x: 40 + Math.random() * 20, y: 30 + Math.random() * 30 });
       }
 
-      // Simulate cursor movement
-      if (currentAction % 2 === 0) {
-        setCursorPos({
-          x: Math.random() * 80 + 10,
-          y: Math.random() * 60 + 15,
-        });
-      }
-
-      currentAction++;
+      step++;
     }, 2000);
-  };
+  }, [isRunning]);
 
-  return (
-    <div 
-      className="min-h-screen p-6"
-      style={{
-        background: isDark 
-          ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)'
-          : 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)',
-      }}
-    >
-      {/* Coming Soon Badge */}
-      <div className="flex justify-center mb-6">
-        <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-lg shadow-lg animate-pulse">
-          <Zap className="w-5 h-5" />
-          <span>COMING SOON</span>
+  const pauseDemo = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setIsRunning(false);
+  }, []);
+
+  const resetDemo = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setIsRunning(false);
+    setDemoComplete(false);
+    setLogs([]);
+    setActiveApp(null);
+    setCursorPos({ x: 50, y: 50 });
+  }, []);
+
+  /* ---- render helpers ---- */
+  const renderAppWindow = (app: DesktopApp, style: React.CSSProperties) => {
+    const isActive = activeApp === app.id;
+    return (
+      <div
+        key={app.id}
+        className="absolute rounded-lg overflow-hidden transition-all duration-500"
+        style={{
+          ...style,
+          border: isActive ? `2px solid ${app.activeBorder}` : `1px solid ${isDark ? '#333' : 'rgba(255,255,255,0.3)'}`,
+          boxShadow: isActive ? `0 0 24px ${app.glowColor}` : '0 4px 12px rgba(0,0,0,0.3)',
+          transform: isActive ? 'scale(1.02)' : 'scale(1)',
+          zIndex: isActive ? 20 : 5,
+          opacity: !activeApp || isActive ? 1 : 0.45,
+        }}
+      >
+        {/* Title bar */}
+        <div
+          className="flex items-center justify-between px-3 py-1.5"
+          style={{ background: app.color }}
+        >
+          <span className="text-xs font-semibold text-white truncate">{app.title}</span>
+          <div className="flex gap-1">
+            <span className="w-2.5 h-2.5 rounded-full bg-white/25" />
+            <span className="w-2.5 h-2.5 rounded-full bg-white/25" />
+            <span className="w-2.5 h-2.5 rounded-full bg-white/25" />
+          </div>
+        </div>
+        {/* Body */}
+        <div className="p-3" style={{ background: isDark ? '#1a1a2e' : '#f0f4ff', minHeight: 110 }}>
+          {app.id === 'amy' && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-[11px]">
+                <span style={{ color: c.muted }}>Portfolio Value</span>
+                <span style={{ color: '#10b981', fontWeight: 700 }}>$524,832.00</span>
+              </div>
+              {['AAPL  +2.34%', 'MSFT  +1.87%', 'GOOGL +0.95%'].map((s) => (
+                <div
+                  key={s}
+                  className="text-[10px] px-2 py-1 rounded"
+                  style={{ background: isDark ? '#0d1117' : '#e0ecff', color: isDark ? '#94a3b8' : '#1e40af' }}
+                >
+                  {s}
+                </div>
+              ))}
+              {isActive && (
+                <div className="text-[10px] font-bold px-2 py-1 rounded" style={{ background: '#FEC00F', color: '#212121' }}>
+                  Yang reading market data...
+                </div>
+              )}
+            </div>
+          )}
+          {app.id === 'optima' && (
+            <div className="space-y-2">
+              <div className="font-mono text-[10px] space-y-0.5" style={{ color: isDark ? '#c084fc' : '#7e22ce' }}>
+                <div>{'// AFL Strategy Code'}</div>
+                <div style={{ color: c.muted }}>{'Buy = Cross(MACD(), Signal());'}</div>
+                <div style={{ color: c.muted }}>{'Sell = Cross(Signal(), MACD());'}</div>
+              </div>
+              <div className="flex items-center justify-between text-[11px]">
+                <span style={{ color: c.muted }}>Backtest ROI</span>
+                <span style={{ color: '#10b981', fontWeight: 700 }}>+42.3%</span>
+              </div>
+              {isActive && (
+                <div className="text-[10px] font-bold px-2 py-1 rounded" style={{ background: '#FEC00F', color: '#212121' }}>
+                  Yang optimizing strategy...
+                </div>
+              )}
+            </div>
+          )}
+          {app.id === 'files' && (
+            <div className="space-y-1.5">
+              {['trading_params.json', 'portfolio_data.csv', 'strategy.afl', 'report.pdf'].map((f) => (
+                <div
+                  key={f}
+                  className="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded"
+                  style={{ background: isDark ? '#0d1117' : '#e0f2fe', color: isDark ? '#94a3b8' : '#0e7490' }}
+                >
+                  <FileCode className="w-3 h-3 flex-shrink-0" />
+                  {f}
+                </div>
+              ))}
+              {isActive && (
+                <div className="text-[10px] font-bold px-2 py-1 rounded" style={{ background: '#FEC00F', color: '#212121' }}>
+                  Yang modifying files...
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
+    );
+  };
 
-      {/* Title */}
-      <div className="text-center mb-8">
-        <h1 
-          className="text-5xl font-bold mb-2 text-balance"
-          style={{ color: isDark ? '#ffffff' : '#0f172a' }}
+  /* ---------------------------------------------------------------- */
+  /*  Render                                                           */
+  /* ---------------------------------------------------------------- */
+
+  return (
+    <div className="min-h-screen p-4 lg:p-8" style={{ background: c.bg, color: c.text }}>
+      {/* -------- Header -------- */}
+      <div className="max-w-7xl mx-auto mb-6">
+        {/* Coming Soon Banner */}
+        <div className="flex items-center justify-center mb-6">
+          <div
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold tracking-wider shadow-lg"
+            style={{ background: c.accent, color: c.accentText }}
+          >
+            <Zap className="w-4 h-4" />
+            COMING SOON
+          </div>
+        </div>
+
+        <h1
+          className="text-3xl lg:text-4xl font-bold text-center mb-2 text-balance"
+          style={{ fontFamily: "'Rajdhani', sans-serif", letterSpacing: '1px' }}
         >
           Auto Pilot Preview
         </h1>
-        <p 
-          className="text-lg"
-          style={{ color: isDark ? '#94a3b8' : '#475569' }}
-        >
-          {'Watch Yang take autonomous control of your computer'}
+        <p className="text-center text-sm lg:text-base mb-8" style={{ color: c.muted }}>
+          Watch Yang take autonomous control -- navigating apps, modifying files, and learning new tasks in real time.
         </p>
-      </div>
 
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-6">
-        {/* Windows Desktop Simulation */}
-        <div className="lg:col-span-2">
-          <div 
-            className="rounded-xl shadow-2xl overflow-hidden"
+        {/* -------- Go into Autopilot button (hero CTA) -------- */}
+        <div className="flex justify-center mb-8">
+          <button
+            onClick={startDemo}
+            disabled={isRunning}
+            className="group relative flex items-center gap-3 px-10 py-5 rounded-xl text-lg font-bold tracking-wide transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
             style={{
-              background: isDark ? '#1e293b' : '#ffffff',
-              border: `1px solid ${isDark ? '#334155' : '#e2e8f0'}`,
+              background: isRunning ? (isDark ? '#333' : '#9E9E9E') : c.accent,
+              color: c.accentText,
+              boxShadow: isRunning ? 'none' : '0 0 30px rgba(254, 192, 15, 0.45)',
             }}
           >
-            {/* Windows Taskbar */}
-            <div 
-              className="flex items-center gap-2 px-4 py-2"
-              style={{
-                background: isDark ? '#0f172a' : '#1e40af',
-                borderBottom: `1px solid ${isDark ? '#1e293b' : '#1e3a8a'}`,
-              }}
-            >
-              <Monitor className="w-4 h-4 text-white" />
-              <span className="text-white text-sm font-semibold">{'Windows Desktop - Yang AI Control'}</span>
-            </div>
+            {isRunning ? (
+              <>
+                <Loader2 className="w-6 h-6 animate-spin" />
+                Yang is Working...
+              </>
+            ) : demoComplete ? (
+              <>
+                <RotateCcw className="w-6 h-6" />
+                Replay Demo
+              </>
+            ) : (
+              <>
+                <Play className="w-6 h-6" />
+                Go into Autopilot
+              </>
+            )}
+            {/* glow ring */}
+            {!isRunning && !demoComplete && (
+              <span
+                className="absolute inset-0 rounded-xl animate-ping pointer-events-none"
+                style={{ border: '2px solid #FEC00F', opacity: 0.4 }}
+              />
+            )}
+          </button>
+        </div>
+      </div>
 
-            {/* Desktop Area */}
-            <div 
-              className="relative p-4"
-              style={{
-                height: '500px',
-                background: isDark 
-                  ? 'linear-gradient(135deg, #1e293b 0%, #334155 100%)'
-                  : 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
-              }}
+      {/* -------- Main grid -------- */}
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_320px] gap-6">
+        {/* LEFT -- Desktop Simulation */}
+        <div>
+          <div
+            className="rounded-xl overflow-hidden shadow-2xl"
+            style={{ border: `1px solid ${c.border}` }}
+          >
+            {/* Taskbar */}
+            <div
+              className="flex items-center gap-3 px-4 py-2"
+              style={{ background: c.taskbar }}
             >
-              {/* Application Windows */}
-              {activeWindows.map((window) => (
+              <div className="flex items-center gap-2">
                 <div
-                  key={window.id}
-                  className="absolute rounded-lg shadow-xl transition-all duration-300"
-                  style={{
-                    left: `${window.x}%`,
-                    top: `${window.y}%`,
-                    width: `${window.width}%`,
-                    height: `${window.height}%`,
-                    background: isDark ? '#ffffff' : '#ffffff',
-                    border: window.active ? '3px solid #06b6d4' : '1px solid #cbd5e1',
-                    transform: window.active ? 'scale(1.02)' : 'scale(1)',
-                    zIndex: window.active ? 10 : 1,
-                  }}
+                  className="w-6 h-6 rounded flex items-center justify-center"
+                  style={{ background: c.accent }}
                 >
-                  {/* Window Title Bar */}
-                  <div 
-                    className="flex items-center justify-between px-3 py-2"
+                  <Zap className="w-3.5 h-3.5" style={{ color: c.accentText }} />
+                </div>
+                <span className="text-white text-xs font-bold tracking-wider" style={{ fontFamily: "'Rajdhani', sans-serif" }}>
+                  YANG OS
+                </span>
+              </div>
+
+              <div className="flex gap-1 ml-2">
+                {APPS.map((app) => (
+                  <div
+                    key={app.id}
+                    className="px-2.5 py-1 rounded text-[10px] font-semibold transition-all duration-300"
                     style={{
-                      background: window.active ? '#06b6d4' : '#64748b',
-                      color: '#ffffff',
+                      background: activeApp === app.id ? app.borderColor : 'rgba(255,255,255,0.1)',
+                      color: '#fff',
                     }}
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl">{window.icon}</span>
-                      <span className="text-sm font-semibold">{window.title}</span>
-                    </div>
-                    <div className="flex gap-1">
-                      <div className="w-3 h-3 rounded-full bg-white/30"></div>
-                      <div className="w-3 h-3 rounded-full bg-white/30"></div>
-                      <div className="w-3 h-3 rounded-full bg-white/30"></div>
-                    </div>
+                    {app.title}
                   </div>
+                ))}
+              </div>
 
-                  {/* Window Content */}
-                  <div className="p-4 h-full" style={{ color: '#1e293b' }}>
-                    <div className="space-y-2">
-                      <div className="h-3 bg-slate-200 rounded animate-pulse"></div>
-                      <div className="h-3 bg-slate-200 rounded w-5/6 animate-pulse"></div>
-                      <div className="h-3 bg-slate-200 rounded w-4/6 animate-pulse"></div>
-                      {window.active && (
-                        <div className="mt-4 p-2 bg-cyan-100 rounded text-xs font-semibold text-cyan-900">
-                          {'Yang is working here...'}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+              {isRunning && (
+                <div className="ml-auto flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-green-300 text-[10px] font-semibold">AUTOPILOT ACTIVE</span>
                 </div>
-              ))}
+              )}
+            </div>
 
-              {/* Animated Cursor */}
+            {/* Desktop area */}
+            <div
+              className="relative"
+              style={{ background: c.desktopBg, height: 420, overflow: 'hidden' }}
+            >
+              {/* Desktop icons (left column) */}
+              <div className="absolute top-3 left-3 flex flex-col gap-3 z-[1]">
+                <DesktopIcon label="Amy Broker" isDark={isDark}><BarChart3 className="w-5 h-5 text-blue-300" /></DesktopIcon>
+                <DesktopIcon label="Optima" isDark={isDark}><TrendingUp className="w-5 h-5 text-purple-300" /></DesktopIcon>
+                <DesktopIcon label="Files" isDark={isDark}><Folder className="w-5 h-5 text-cyan-300" /></DesktopIcon>
+              </div>
+
+              {/* App windows */}
+              {renderAppWindow(APPS[0], { left: '12%', top: '8%', width: '38%', height: '52%' })}
+              {renderAppWindow(APPS[1], { right: '4%', top: '6%', width: '38%', height: '52%' })}
+              {renderAppWindow(APPS[2], { left: '12%', bottom: '4%', width: '34%', height: '38%' })}
+
+              {/* Animated cursor */}
               {isRunning && (
                 <div
-                  className="absolute w-6 h-6 transition-all duration-1000 ease-in-out pointer-events-none"
-                  style={{
-                    left: `${cursorPos.x}%`,
-                    top: `${cursorPos.y}%`,
-                  }}
+                  className="absolute pointer-events-none transition-all duration-[1200ms] ease-in-out z-30"
+                  style={{ left: `${cursorPos.x}%`, top: `${cursorPos.y}%` }}
                 >
-                  <div className="relative">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z"
-                        fill="#06b6d4"
-                        stroke="#ffffff"
-                        strokeWidth="2"
-                      />
-                    </svg>
-                    <div className="absolute -top-1 -left-1 w-8 h-8 bg-cyan-400 rounded-full opacity-50 animate-ping"></div>
-                  </div>
+                  <MousePointer2 className="w-6 h-6 text-white drop-shadow-[0_0_6px_rgba(254,192,15,0.9)]" />
+                  <span
+                    className="absolute -top-1 -left-1 w-8 h-8 rounded-full animate-ping pointer-events-none"
+                    style={{ background: 'rgba(254, 192, 15, 0.35)' }}
+                  />
+                </div>
+              )}
+
+              {/* Idle overlay */}
+              {!isRunning && !demoComplete && logs.length === 0 && (
+                <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/30">
+                  <p className="text-white/70 text-sm font-semibold tracking-wide">
+                    Press &quot;Go into Autopilot&quot; to start the simulation
+                  </p>
+                </div>
+              )}
+
+              {/* Complete overlay */}
+              {demoComplete && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black/40">
+                  <CheckCircle2 className="w-12 h-12 mb-3" style={{ color: '#10b981' }} />
+                  <p className="text-white font-bold text-lg">Demo Complete</p>
+                  <p className="text-white/60 text-sm mt-1">All autonomous tasks executed successfully</p>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Control Panel */}
-          <div 
-            className="mt-6 p-6 rounded-xl shadow-lg"
-            style={{
-              background: isDark ? '#1e293b' : '#ffffff',
-              border: `1px solid ${isDark ? '#334155' : '#e2e8f0'}`,
-            }}
+          {/* Control strip */}
+          <div
+            className="mt-4 flex items-center gap-3 p-4 rounded-xl"
+            style={{ background: c.card, border: `1px solid ${c.border}` }}
           >
-            <h3 
-              className="text-xl font-bold mb-4 flex items-center gap-2"
-              style={{ color: isDark ? '#ffffff' : '#0f172a' }}
+            <button
+              onClick={pauseDemo}
+              disabled={!isRunning}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ background: isDark ? '#333' : '#e0e0e0', color: c.text }}
             >
-              <Activity className="w-5 h-5 text-cyan-500" />
-              {'Control Panel'}
-            </h3>
-            
-            <div className="flex gap-3">
-              <button
-                onClick={startAutopilot}
-                disabled={isRunning}
-                className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-bold text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-105"
-                style={{
-                  background: isRunning 
-                    ? '#64748b' 
-                    : 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
-                }}
-              >
-                <Play className="w-5 h-5" />
-                {'Go into Autopilot'}
-              </button>
+              <Pause className="w-4 h-4" /> Pause
+            </button>
+            <button
+              onClick={resetDemo}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all"
+              style={{ background: isDark ? '#333' : '#e0e0e0', color: c.text }}
+            >
+              <RotateCcw className="w-4 h-4" /> Reset
+            </button>
 
-              <button
-                onClick={stopAutopilot}
-                disabled={!isRunning}
-                className="px-6 py-4 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{
-                  background: isDark ? '#334155' : '#f1f5f9',
-                  color: isDark ? '#ffffff' : '#0f172a',
-                }}
-              >
-                <Pause className="w-5 h-5" />
-              </button>
+            {isRunning && (
+              <div className="ml-auto flex items-center gap-2 text-xs font-semibold" style={{ color: c.muted }}>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" style={{ color: c.accent }} />
+                Yang is performing autonomous tasks...
+              </div>
+            )}
+          </div>
 
-              <button
-                onClick={resetDemo}
-                className="px-6 py-4 rounded-lg font-semibold transition-all duration-200"
-                style={{
-                  background: isDark ? '#334155' : '#f1f5f9',
-                  color: isDark ? '#ffffff' : '#0f172a',
-                }}
+          {/* Feature cards */}
+          <div className="grid sm:grid-cols-3 gap-4 mt-6">
+            {[
+              { icon: MousePointer2, title: 'Autonomous Control', desc: 'Takes full control of mouse and keyboard to execute complex multi-step tasks.' },
+              { icon: Brain, title: 'Skill Acquisition', desc: 'Observes and learns new workflows from users -- no additional programming needed.' },
+              { icon: Layers, title: 'Multi-App Orchestration', desc: 'Seamlessly works across Amy Broker, Optima, and the file system simultaneously.' },
+            ].map((f) => (
+              <div
+                key={f.title}
+                className="p-4 rounded-xl"
+                style={{ background: c.card, border: `1px solid ${c.border}` }}
               >
-                <RotateCcw className="w-5 h-5" />
-              </button>
-            </div>
+                <f.icon className="w-5 h-5 mb-2" style={{ color: c.accent }} />
+                <h4 className="text-sm font-bold mb-1">{f.title}</h4>
+                <p className="text-xs leading-relaxed" style={{ color: c.muted }}>{f.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Activity Log */}
-        <div 
-          className="rounded-xl shadow-lg p-6"
-          style={{
-            background: isDark ? '#1e293b' : '#ffffff',
-            border: `1px solid ${isDark ? '#334155' : '#e2e8f0'}`,
-          }}
+        {/* RIGHT -- Activity Log */}
+        <div
+          className="rounded-xl overflow-hidden flex flex-col"
+          style={{ background: c.card, border: `1px solid ${c.border}`, maxHeight: 640 }}
         >
-          <h3 
-            className="text-xl font-bold mb-4 flex items-center gap-2"
-            style={{ color: isDark ? '#ffffff' : '#0f172a' }}
+          <div
+            className="flex items-center gap-2 px-4 py-3 flex-shrink-0"
+            style={{ borderBottom: `1px solid ${c.border}` }}
           >
-            <FileText className="w-5 h-5 text-cyan-500" />
-            {'Activity Log'}
-          </h3>
-
-          <div className="space-y-3 max-h-[600px] overflow-y-auto">
-            {activityLogs.length === 0 ? (
-              <p 
-                className="text-sm text-center py-8"
-                style={{ color: isDark ? '#64748b' : '#94a3b8' }}
+            <Activity className="w-4 h-4" style={{ color: c.accent }} />
+            <span className="text-sm font-bold tracking-wide" style={{ fontFamily: "'Rajdhani', sans-serif" }}>
+              ACTIVITY LOG
+            </span>
+            {logs.length > 0 && (
+              <span
+                className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full"
+                style={{ background: isDark ? '#333' : '#e0e0e0', color: c.muted }}
               >
-                {'Click "Go into Autopilot" to start the demo'}
-              </p>
+                {logs.length}/{DEMO_ACTIONS.length}
+              </span>
+            )}
+          </div>
+
+          <div ref={logContainerRef} className="flex-1 overflow-y-auto p-3 space-y-2">
+            {logs.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full py-12" style={{ color: c.muted }}>
+                <Clock className="w-8 h-8 mb-3 opacity-40" />
+                <p className="text-xs text-center">Activity will appear here once the demo starts.</p>
+              </div>
             ) : (
-              activityLogs.map((log) => (
+              logs.map((log) => (
                 <div
                   key={log.id}
-                  className="p-3 rounded-lg transition-all duration-200"
+                  className="flex items-start gap-2 p-2.5 rounded-lg text-xs transition-all duration-300"
                   style={{
-                    background: isDark ? '#0f172a' : '#f8fafc',
+                    background: isDark ? '#0d1117' : '#fafafa',
                     border: `1px solid ${
-                      log.status === 'success' ? '#10b981' :
-                      log.status === 'active' ? '#06b6d4' :
-                      isDark ? '#334155' : '#e2e8f0'
+                      log.status === 'success'
+                        ? 'rgba(16, 185, 129, 0.4)'
+                        : log.status === 'active'
+                          ? 'rgba(254, 192, 15, 0.4)'
+                          : c.border
                     }`,
                   }}
                 >
-                  <div className="flex items-start gap-2">
-                    <div
-                      className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
-                      style={{
-                        background: log.status === 'success' ? '#10b981' :
-                                   log.status === 'active' ? '#06b6d4' : '#64748b',
-                      }}
-                    ></div>
-                    <div className="flex-1 min-w-0">
-                      <p 
-                        className="text-xs font-semibold mb-1"
-                        style={{ color: isDark ? '#94a3b8' : '#64748b' }}
-                      >
-                        {log.time}
-                      </p>
-                      <p 
-                        className="text-sm"
-                        style={{ color: isDark ? '#e2e8f0' : '#1e293b' }}
-                      >
-                        {log.action}
-                      </p>
-                    </div>
+                  <StatusDot status={log.status} />
+                  <div className="flex-1 min-w-0">
+                    <span className="block font-semibold mb-0.5" style={{ color: c.muted, fontSize: 10 }}>
+                      {log.time}
+                    </span>
+                    <span style={{ color: c.text, lineHeight: '1.4' }}>{log.action}</span>
                   </div>
                 </div>
               ))
             )}
           </div>
         </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="max-w-7xl mx-auto mt-12 grid md:grid-cols-3 gap-6">
-        {[
-          {
-            icon: '🎯',
-            title: 'Autonomous Control',
-            description: 'Yang takes full control of mouse and keyboard to execute complex tasks',
-          },
-          {
-            icon: '🧠',
-            title: 'Intelligent Learning',
-            description: 'Learns new workflows by observing user actions without manual programming',
-          },
-          {
-            icon: '🔄',
-            title: 'Multi-App Integration',
-            description: 'Seamlessly works across Amy Broker, Optima, and file systems',
-          },
-        ].map((feature, index) => (
-          <div
-            key={index}
-            className="p-6 rounded-xl shadow-lg"
-            style={{
-              background: isDark ? '#1e293b' : '#ffffff',
-              border: `1px solid ${isDark ? '#334155' : '#e2e8f0'}`,
-            }}
-          >
-            <div className="text-4xl mb-3">{feature.icon}</div>
-            <h4 
-              className="text-lg font-bold mb-2"
-              style={{ color: isDark ? '#ffffff' : '#0f172a' }}
-            >
-              {feature.title}
-            </h4>
-            <p 
-              className="text-sm"
-              style={{ color: isDark ? '#94a3b8' : '#64748b' }}
-            >
-              {feature.description}
-            </p>
-          </div>
-        ))}
       </div>
     </div>
   );
