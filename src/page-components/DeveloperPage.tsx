@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import {
   Code2,
   Smartphone,
@@ -37,6 +37,14 @@ import {
   Wifi,
   BatteryFull,
   Signal,
+  Watch,
+  Glasses,
+  Mic,
+  Bell,
+  Activity,
+  Hand,
+  ClipboardCopy,
+  Volume2,
 } from 'lucide-react'
 import { useTheme } from '@/contexts/ThemeContext'
 
@@ -164,7 +172,7 @@ function IPadFrame({
   )
 }
 
-// ─── Mac Frame ────────────────────────────────────────────────────────────
+// ─── Mac Frame (Enhanced with menu bar, hover traffic lights) ─────────────
 function MacFrame({
   children,
   label,
@@ -174,6 +182,7 @@ function MacFrame({
   label: string
   colors: Record<string, string>
 }) {
+  const [hoveredBtn, setHoveredBtn] = useState<string | null>(null)
   return (
     <div>
       <div
@@ -186,18 +195,39 @@ function MacFrame({
           boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
         }}
       >
-        {/* Title bar */}
+        {/* Menu bar strip */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '4px 16px', backgroundColor: '#222', borderBottom: '1px solid #333', fontSize: '11px', color: '#999', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+          <span style={{ fontWeight: 700, fontSize: '13px' }}>{'<Analyst/>'}</span>
+          <span style={{ cursor: 'default' }}>File</span>
+          <span style={{ cursor: 'default' }}>Edit</span>
+          <span style={{ cursor: 'default' }}>View</span>
+          <span style={{ cursor: 'default' }}>Window</span>
+          <span style={{ cursor: 'default' }}>Help</span>
+          <div style={{ flex: 1 }} />
+          <span style={{ fontSize: '10px', color: '#666' }}>Mon 9:41 AM</span>
+        </div>
+        {/* Title bar with hover-enabled traffic lights */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#2a2a2a', borderBottom: `1px solid ${colors.border}` }}>
-          <div style={{ display: 'flex', gap: '6px' }}>
-            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ff5f57' }} />
-            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#febc2e' }} />
-            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#28c840' }} />
+          <div style={{ display: 'flex', gap: '6px' }} onMouseLeave={() => setHoveredBtn(null)}>
+            <div onMouseEnter={() => setHoveredBtn('close')} style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ff5f57', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'transform 0.15s' }}>
+              {hoveredBtn === 'close' && <span style={{ fontSize: '8px', fontWeight: 700, color: '#4a0002', lineHeight: 1 }}>{'x'}</span>}
+            </div>
+            <div onMouseEnter={() => setHoveredBtn('min')} style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#febc2e', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+              {hoveredBtn === 'min' && <span style={{ fontSize: '10px', fontWeight: 700, color: '#5a3e00', lineHeight: 1, marginTop: '-2px' }}>-</span>}
+            </div>
+            <div onMouseEnter={() => setHoveredBtn('max')} style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#28c840', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+              {hoveredBtn === 'max' && <span style={{ fontSize: '7px', fontWeight: 700, color: '#0a5417', lineHeight: 1 }}>{'<>'}</span>}
+            </div>
           </div>
           <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 16px', borderRadius: '6px', backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#28c840' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 16px', borderRadius: '6px', backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', cursor: 'text' }}>
+              <Shield size={9} color="#28c840" />
               <span style={{ fontSize: '11px', color: '#999', fontFamily: 'system-ui' }}>analyst.potomac.com</span>
             </div>
+          </div>
+          {/* Keyboard shortcut hint */}
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <div style={{ padding: '2px 6px', borderRadius: '4px', backgroundColor: 'rgba(255,255,255,0.06)', fontSize: '9px', color: '#666', fontFamily: 'monospace' }}>Cmd+K</div>
           </div>
         </div>
         {/* Screen content */}
@@ -830,6 +860,484 @@ function MacDashboardMockup({ colors }: { colors: Record<string, string> }) {
   )
 }
 
+// ========================================================================
+// APPLE WATCH COMPONENTS
+// ========================================================================
+
+function AppleWatchFrame({
+  children,
+  label,
+  isActive,
+  onClick,
+  colors,
+}: {
+  children: React.ReactNode
+  label: string
+  isActive?: boolean
+  onClick?: () => void
+  colors: Record<string, string>
+}) {
+  return (
+    <div onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default', transition: 'all 0.3s ease', transform: isActive ? 'scale(1.04)' : 'scale(1)' }}>
+      {/* Band top */}
+      <div style={{ width: '100px', height: '24px', margin: '0 auto', borderRadius: '6px 6px 0 0', background: 'linear-gradient(180deg, #333 0%, #2a2a2a 100%)', border: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderBottom: 'none' }} />
+      <div
+        style={{
+          width: '180px',
+          height: '220px',
+          borderRadius: '38px',
+          border: `3px solid ${isActive ? '#FEC00F' : colors.border}`,
+          backgroundColor: '#000',
+          padding: '14px',
+          position: 'relative',
+          boxShadow: isActive ? '0 0 30px rgba(254,192,15,0.15), 0 12px 40px rgba(0,0,0,0.5)' : '0 12px 40px rgba(0,0,0,0.4)',
+          transition: 'all 0.3s ease',
+        }}
+      >
+        {/* Digital Crown */}
+        <div style={{ position: 'absolute', right: '-8px', top: '55px', width: '6px', height: '24px', borderRadius: '3px', backgroundColor: isActive ? '#FEC00F' : '#555', border: '1px solid #333' }} />
+        {/* Side button */}
+        <div style={{ position: 'absolute', right: '-7px', top: '90px', width: '5px', height: '14px', borderRadius: '2px', backgroundColor: isActive ? '#FEC00F' : '#444' }} />
+        {/* Screen */}
+        <div style={{ width: '100%', height: '100%', borderRadius: '28px', overflow: 'hidden', backgroundColor: '#000' }}>
+          {children}
+        </div>
+      </div>
+      {/* Band bottom */}
+      <div style={{ width: '100px', height: '24px', margin: '0 auto', borderRadius: '0 0 6px 6px', background: 'linear-gradient(180deg, #2a2a2a 0%, #333 100%)', border: `2px solid ${isActive ? '#FEC00F' : colors.border}`, borderTop: 'none' }} />
+      {label && (
+        <p style={{ textAlign: 'center', marginTop: '10px', fontFamily: "'Rajdhani', sans-serif", fontSize: '12px', fontWeight: 600, letterSpacing: '1px', color: isActive ? '#FEC00F' : colors.textMuted }}>
+          {label}
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ─── Watch Complication ──────────────────────────────────────────────────
+function WatchComplicationMockup() {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', position: 'relative' }}>
+      {/* Time */}
+      <span style={{ fontSize: '32px', fontWeight: 200, color: '#fff', fontFamily: 'system-ui, -apple-system', letterSpacing: '-1px', lineHeight: 1 }}>9:41</span>
+      <span style={{ fontSize: '9px', color: '#999', marginTop: '2px' }}>MONDAY 17</span>
+      {/* Complication ring */}
+      <div style={{ marginTop: '12px', width: '64px', height: '64px', borderRadius: '50%', border: '3px solid #FEC00F', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: '-3px', borderRadius: '50%', border: '3px solid transparent', borderTopColor: '#22C55E', transform: 'rotate(-30deg)' }} />
+        <Activity size={10} color="#FEC00F" />
+        <span style={{ fontSize: '10px', fontWeight: 700, color: '#fff', marginTop: '2px', fontFamily: "'Rajdhani', sans-serif" }}>$48.2K</span>
+        <span style={{ fontSize: '6px', color: '#22C55E', fontWeight: 600 }}>+2.3%</span>
+      </div>
+      {/* Bottom complications */}
+      <div style={{ display: 'flex', gap: '16px', marginTop: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+          <Bell size={8} color="#FEC00F" />
+          <span style={{ fontSize: '7px', color: '#FEC00F', fontWeight: 600 }}>3</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+          <TrendingUp size={8} color="#22C55E" />
+          <span style={{ fontSize: '7px', color: '#22C55E', fontWeight: 600 }}>AAPL</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Watch Quick Glance ─────────────────────────────────────────────────
+function WatchGlanceMockup() {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#000', padding: '8px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '6px' }}>
+        <div style={{ width: '14px', height: '14px', borderRadius: '4px', overflow: 'hidden' }}>
+          <img src="/potomac-icon.png" alt="Analyst" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </div>
+        <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '9px', fontWeight: 700, color: '#FEC00F', letterSpacing: '0.5px' }}>ANALYST</span>
+      </div>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
+        <div style={{ padding: '6px 8px', borderRadius: '10px', backgroundColor: '#1a1a1a' }}>
+          <span style={{ fontSize: '7px', color: '#9E9E9E', display: 'block' }}>PORTFOLIO</span>
+          <span style={{ fontSize: '16px', fontWeight: 700, color: '#fff', fontFamily: "'Rajdhani', sans-serif" }}>$48,234</span>
+        </div>
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <div style={{ flex: 1, padding: '5px 6px', borderRadius: '8px', backgroundColor: '#1a1a1a' }}>
+            <span style={{ fontSize: '6px', color: '#9E9E9E', display: 'block' }}>TOP MOVER</span>
+            <span style={{ fontSize: '9px', fontWeight: 700, color: '#22C55E' }}>AAPL +2.3%</span>
+          </div>
+          <div style={{ flex: 1, padding: '5px 6px', borderRadius: '8px', backgroundColor: '#1a1a1a' }}>
+            <span style={{ fontSize: '6px', color: '#9E9E9E', display: 'block' }}>ALERTS</span>
+            <span style={{ fontSize: '9px', fontWeight: 700, color: '#FEC00F' }}>3 new</span>
+          </div>
+        </div>
+        <div style={{ padding: '5px 8px', borderRadius: '8px', backgroundColor: 'rgba(254,192,15,0.1)', border: '1px solid rgba(254,192,15,0.2)' }}>
+          <span style={{ fontSize: '7px', color: '#FEC00F', fontWeight: 600 }}>Open Analyst</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Watch Notification ─────────────────────────────────────────────────
+function WatchNotificationMockup() {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#000', padding: '10px 8px' }}>
+      {/* App header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '8px' }}>
+        <div style={{ width: '12px', height: '12px', borderRadius: '3px', overflow: 'hidden' }}>
+          <img src="/potomac-icon.png" alt="Analyst" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </div>
+        <span style={{ fontSize: '8px', color: '#FEC00F', fontWeight: 600 }}>ANALYST</span>
+        <div style={{ flex: 1 }} />
+        <span style={{ fontSize: '7px', color: '#666' }}>now</span>
+      </div>
+      {/* Notification content */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <div style={{ padding: '8px', borderRadius: '10px', backgroundColor: '#1a1a1a' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '4px' }}>
+            <TrendingUp size={8} color="#22C55E" />
+            <span style={{ fontSize: '8px', fontWeight: 700, color: '#22C55E' }}>MOMENTUM SIGNAL</span>
+          </div>
+          <span style={{ fontSize: '8px', color: '#d4d4d4', lineHeight: 1.4, display: 'block' }}>
+            AAPL triggered buy signal at $198.45 - RSI crossover confirmed
+          </span>
+        </div>
+        {/* Action buttons */}
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <div style={{ flex: 1, padding: '6px', borderRadius: '8px', backgroundColor: '#FEC00F', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: '8px', fontWeight: 700, color: '#0A0A0B' }}>VIEW</span>
+          </div>
+          <div style={{ flex: 1, padding: '6px', borderRadius: '8px', backgroundColor: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: '8px', fontWeight: 600, color: '#999' }}>DISMISS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Watch Dictation ────────────────────────────────────────────────────
+function WatchDictationMockup() {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', padding: '10px' }}>
+      <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '9px', fontWeight: 600, color: '#FEC00F', letterSpacing: '0.5px', marginBottom: '6px' }}>ASK YANG</span>
+      {/* Waveform visualization */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '2px', height: '30px', marginBottom: '10px' }}>
+        {[12, 20, 28, 18, 24, 30, 16, 22, 26, 14, 20, 24].map((h, i) => (
+          <div key={i} style={{ width: '3px', height: `${h}px`, borderRadius: '2px', backgroundColor: i % 3 === 0 ? '#FEC00F' : 'rgba(254,192,15,0.4)', transition: 'height 0.2s' }} />
+        ))}
+      </div>
+      <div style={{ width: '44px', height: '44px', borderRadius: '50%', backgroundColor: '#FEC00F', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(254,192,15,0.3)' }}>
+        <Mic size={18} color="#0A0A0B" />
+      </div>
+      <span style={{ fontSize: '7px', color: '#666', marginTop: '8px' }}>{'Tap to speak...'}</span>
+    </div>
+  )
+}
+
+// ========================================================================
+// APPLE VISION PRO COMPONENTS
+// ========================================================================
+
+function VisionProFrame({
+  children,
+  label,
+  isActive,
+  onClick,
+  colors,
+}: {
+  children: React.ReactNode
+  label: string
+  isActive?: boolean
+  onClick?: () => void
+  colors: Record<string, string>
+}) {
+  return (
+    <div onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default', transition: 'all 0.3s ease' }}>
+      <div
+        style={{
+          width: '640px',
+          height: '340px',
+          borderRadius: '24px',
+          border: `2px solid ${isActive ? '#FEC00F' : 'rgba(255,255,255,0.1)'}`,
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+          padding: '3px',
+          position: 'relative',
+          boxShadow: isActive
+            ? '0 0 60px rgba(254,192,15,0.08), 0 30px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)'
+            : '0 30px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)',
+          transition: 'all 0.3s ease',
+          backdropFilter: 'blur(20px)',
+        }}
+      >
+        {/* Glass edge effect */}
+        <div style={{ position: 'absolute', inset: 0, borderRadius: '24px', background: 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.02) 100%)', pointerEvents: 'none' }} />
+        {/* Screen */}
+        <div style={{ width: '100%', height: '100%', borderRadius: '22px', overflow: 'hidden', backgroundColor: 'rgba(10,10,11,0.95)', position: 'relative' }}>
+          {children}
+          {/* Eye tracking reticle hint */}
+          <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', alignItems: 'center', gap: '4px', padding: '3px 8px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.06)' }}>
+            <Eye size={8} color="#999" />
+            <Hand size={8} color="#999" />
+          </div>
+        </div>
+      </div>
+      {label && (
+        <p style={{ textAlign: 'center', marginTop: '14px', fontFamily: "'Rajdhani', sans-serif", fontSize: '14px', fontWeight: 600, letterSpacing: '1px', color: isActive ? '#FEC00F' : colors.textMuted }}>
+          {label}
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ─── Vision Pro Spatial Dashboard ────────────────────────────────────────
+function VisionProDashboardMockup({ colors }: { colors: Record<string, string> }) {
+  return (
+    <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(10,10,11,0.95)', padding: '20px', position: 'relative' }}>
+      {/* Ambient glow */}
+      <div style={{ position: 'absolute', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,192,15,0.03) 0%, transparent 70%)', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+      {/* Floating panels */}
+      <div style={{ display: 'flex', gap: '16px', position: 'relative', zIndex: 1, perspective: '1200px' }}>
+        {/* Left panel - Dashboard */}
+        <div style={{ width: '180px', padding: '16px', borderRadius: '16px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(40px)', transform: 'rotateY(8deg) translateZ(10px)', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
+            <div style={{ width: '20px', height: '20px', borderRadius: '6px', overflow: 'hidden' }}>
+              <img src="/potomac-icon.png" alt="Analyst" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            </div>
+            <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '11px', fontWeight: 700, color: '#fff', letterSpacing: '0.5px' }}>DASHBOARD</span>
+          </div>
+          {[
+            { icon: Code2, label: 'AFL Gen', color: '#3B82F6' },
+            { icon: MessageCircle, label: 'AI Chat', color: '#8B5CF6' },
+            { icon: Database, label: 'Knowledge', color: '#22C55E' },
+            { icon: TrendingUp, label: 'Backtest', color: '#F97316' },
+          ].map((f) => {
+            const Icon = f.icon
+            return (
+              <div key={f.label} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 8px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.03)', marginBottom: '4px' }}>
+                <Icon size={11} color={f.color} />
+                <span style={{ fontSize: '9px', color: '#d4d4d4', fontWeight: 500 }}>{f.label}</span>
+              </div>
+            )
+          })}
+        </div>
+        {/* Center panel - Main content */}
+        <div style={{ width: '240px', padding: '16px', borderRadius: '16px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(40px)', transform: 'translateZ(20px)', boxShadow: '0 12px 48px rgba(0,0,0,0.4)' }}>
+          <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '14px', fontWeight: 700, color: '#fff', letterSpacing: '1px', display: 'block', marginBottom: '12px' }}>
+            Welcome, <span style={{ color: '#FEC00F' }}>Trader</span>
+          </span>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
+            {[
+              { label: 'Portfolio', value: '$48.2K', color: '#FEC00F' },
+              { label: 'Today P&L', value: '+$1.1K', color: '#22C55E' },
+            ].map((m) => (
+              <div key={m.label} style={{ padding: '8px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.04)' }}>
+                <span style={{ fontSize: '7px', color: '#999', display: 'block' }}>{m.label}</span>
+                <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '14px', fontWeight: 700, color: m.color }}>{m.value}</span>
+              </div>
+            ))}
+          </div>
+          {/* Mini chart */}
+          <div style={{ height: '50px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.03)', padding: '8px', display: 'flex', alignItems: 'flex-end', gap: '2px' }}>
+            {[35, 42, 38, 52, 48, 60, 55, 68, 62, 75, 70, 80].map((h, i) => (
+              <div key={i} style={{ flex: 1, height: `${h}%`, backgroundColor: h > 55 ? 'rgba(34,197,94,0.35)' : 'rgba(254,192,15,0.2)', borderRadius: '2px 2px 0 0' }} />
+            ))}
+          </div>
+        </div>
+        {/* Right panel - Quick actions */}
+        <div style={{ width: '140px', padding: '14px', borderRadius: '16px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(40px)', transform: 'rotateY(-8deg) translateZ(10px)', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}>
+          <span style={{ fontSize: '8px', color: '#999', fontWeight: 600, letterSpacing: '0.5px', display: 'block', marginBottom: '8px' }}>QUICK ACTIONS</span>
+          {['New Strategy', 'Ask Yang', 'Upload Doc'].map((a) => (
+            <div key={a} style={{ padding: '6px 8px', borderRadius: '8px', backgroundColor: 'rgba(254,192,15,0.06)', border: '1px solid rgba(254,192,15,0.12)', marginBottom: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '8px', color: '#FEC00F', fontWeight: 600 }}>{a}</span>
+            </div>
+          ))}
+          <div style={{ marginTop: '8px', padding: '6px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.03)', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
+            <Volume2 size={8} color="#999" />
+            <span style={{ fontSize: '7px', color: '#999' }}>{'Voice input'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Vision Pro Immersive Chat ──────────────────────────────────────────
+function VisionProChatMockup({ colors }: { colors: Record<string, string> }) {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: 'rgba(10,10,11,0.95)', padding: '16px 24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px', padding: '8px 12px', borderRadius: '12px', background: 'rgba(255,255,255,0.04)' }}>
+        <div style={{ width: '22px', height: '22px', borderRadius: '6px', overflow: 'hidden' }}>
+          <img src="/potomac-icon.png" alt="Yang" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </div>
+        <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '13px', fontWeight: 700, color: '#fff', letterSpacing: '0.5px' }}>AI CHAT</span>
+        <div style={{ flex: 1 }} />
+        <span style={{ fontSize: '8px', color: '#666', padding: '2px 8px', borderRadius: '6px', backgroundColor: 'rgba(255,255,255,0.04)' }}>Spatial View</span>
+      </div>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '10px', overflow: 'hidden' }}>
+        <div style={{ alignSelf: 'flex-end', maxWidth: '50%' }}>
+          <div style={{ padding: '10px 14px', borderRadius: '14px 14px 4px 14px', backgroundColor: '#FEC00F', fontSize: '10px', color: '#0A0A0B', lineHeight: 1.4, fontWeight: 500 }}>Analyze AAPL for a momentum strategy</div>
+        </div>
+        <div style={{ alignSelf: 'flex-start', maxWidth: '65%' }}>
+          <div style={{ padding: '12px 14px', borderRadius: '4px 14px 14px 14px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(20px)' }}>
+            <p style={{ fontSize: '10px', color: '#d4d4d4', lineHeight: 1.5, margin: 0 }}>
+              Based on AAPL analysis, I recommend a dual MA crossover strategy with RSI confirmation. The 10/50 MA crossover with RSI below 70 provides optimal entry signals...
+            </p>
+            <div style={{ marginTop: '8px', padding: '8px', borderRadius: '10px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.15)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <TrendingUp size={10} color="#22C55E" />
+                <span style={{ fontSize: '9px', fontWeight: 600, color: '#22C55E' }}>AAPL: $198.45 (+2.3%)</span>
+              </div>
+            </div>
+          </div>
+          {/* Typing indicator */}
+          <div style={{ display: 'flex', gap: '3px', marginTop: '6px', padding: '4px 0' }}>
+            <span style={{ fontSize: '8px', color: '#FEC00F' }}>Yang</span>
+            <span style={{ fontSize: '8px', color: '#555' }}>- Read</span>
+          </div>
+        </div>
+      </div>
+      {/* Spatial keyboard hint */}
+      <div style={{ padding: '10px 14px', borderRadius: '14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Hand size={12} color="#666" />
+        <span style={{ fontSize: '10px', color: '#757575', flex: 1 }}>Ask Yang anything...</span>
+        <Mic size={12} color="#FEC00F" />
+        <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#FEC00F', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <ArrowRight size={12} color="#0A0A0B" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Vision Pro 3D Data Viz ─────────────────────────────────────────────
+function VisionProDataVizMockup({ colors }: { colors: Record<string, string> }) {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: 'rgba(10,10,11,0.95)', padding: '16px 24px', position: 'relative' }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '13px', fontWeight: 700, color: '#fff', letterSpacing: '0.5px' }}>3D EQUITY CURVE</span>
+        <div style={{ display: 'flex', gap: '6px' }}>
+          {['1W', '1M', '3M', '1Y'].map((t) => (
+            <div key={t} style={{ padding: '3px 8px', borderRadius: '6px', backgroundColor: t === '3M' ? '#FEC00F' : 'rgba(255,255,255,0.04)', cursor: 'pointer' }}>
+              <span style={{ fontSize: '8px', fontWeight: 600, color: t === '3M' ? '#0A0A0B' : '#999' }}>{t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* 3D perspective chart */}
+      <div style={{ flex: 1, position: 'relative', perspective: '800px' }}>
+        <div style={{ width: '100%', height: '100%', borderRadius: '14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', padding: '16px', transform: 'rotateX(8deg) rotateY(-3deg)', transformOrigin: 'center center', display: 'flex', flexDirection: 'column' }}>
+          {/* Stats row */}
+          <div style={{ display: 'flex', gap: '16px', marginBottom: '12px' }}>
+            {[
+              { label: 'CAGR', value: '18.5%', color: '#22C55E' },
+              { label: 'Sharpe', value: '1.82', color: '#3B82F6' },
+              { label: 'Max DD', value: '-12.3%', color: '#DC2626' },
+              { label: 'Win Rate', value: '67.2%', color: '#FEC00F' },
+            ].map((m) => (
+              <div key={m.label}>
+                <span style={{ fontSize: '7px', color: '#666', display: 'block' }}>{m.label}</span>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: m.color, fontFamily: "'Rajdhani', sans-serif" }}>{m.value}</span>
+              </div>
+            ))}
+          </div>
+          {/* Chart bars with depth */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end', gap: '4px' }}>
+            {[30, 45, 38, 55, 42, 60, 52, 72, 65, 80, 75, 88, 70, 85, 78, 92].map((h, i) => (
+              <div key={i} style={{ flex: 1, height: `${h}%`, borderRadius: '3px 3px 0 0', background: `linear-gradient(180deg, ${h > 60 ? 'rgba(34,197,94,0.5)' : 'rgba(254,192,15,0.35)'} 0%, ${h > 60 ? 'rgba(34,197,94,0.15)' : 'rgba(254,192,15,0.1)'} 100%)`, boxShadow: h > 60 ? '0 0 8px rgba(34,197,94,0.15)' : 'none' }} />
+            ))}
+          </div>
+          {/* Grid lines */}
+          <div style={{ position: 'absolute', inset: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', pointerEvents: 'none', opacity: 0.1 }}>
+            {[0, 1, 2, 3, 4].map((i) => (
+              <div key={i} style={{ borderBottom: '1px solid #fff' }} />
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Gesture hint */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '8px' }}>
+        <Hand size={10} color="#666" />
+        <span style={{ fontSize: '8px', color: '#555' }}>Pinch to zoom - Rotate to explore</span>
+      </div>
+    </div>
+  )
+}
+
+// ========================================================================
+// COPY AS MARKDOWN BUTTON
+// ========================================================================
+
+function CopyAsMarkdownButton({
+  activeDevice,
+  activeScreen,
+  screens,
+  deviceSpecs,
+  colors,
+}: {
+  activeDevice: string
+  activeScreen: string
+  screens: Array<{ id: string; label: string }>
+  deviceSpecs: Array<{ label: string; value: string }>
+  colors: Record<string, string>
+}) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = useCallback(() => {
+    const currentScreen = screens.find((s) => s.id === activeScreen)
+    const lines = [
+      `# Device Mockup: ${activeDevice.toUpperCase()}`,
+      '',
+      `## Active Screen: ${currentScreen?.label || activeScreen}`,
+      '',
+      '## Device Specifications',
+      ...deviceSpecs.map((s) => `- **${s.label}**: ${s.value}`),
+      '',
+      '## All Available Screens',
+      ...screens.map((s) => `- ${s.label}${s.id === activeScreen ? ' (active)' : ''}`),
+      '',
+      '## UI Elements',
+      '- Navigation: Tab bar / Sidebar (device adaptive)',
+      '- Primary Action: START GENERATING (brand yellow #FEC00F)',
+      '- Features: AFL Generator, AI Chat, Knowledge Base, Backtest, Content, Settings',
+      '- Brand: Potomac Analyst Workbench',
+      '- Typography: Rajdhani (headings), Quicksand (body)',
+      '',
+      `---`,
+      `*Exported from Potomac Analyst Developer Blueprint*`,
+    ]
+    navigator.clipboard.writeText(lines.join('\n'))
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2500)
+  }, [activeDevice, activeScreen, screens, deviceSpecs])
+
+  return (
+    <button
+      onClick={handleCopy}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '8px 16px',
+        borderRadius: '10px',
+        border: 'none',
+        backgroundColor: copied ? 'rgba(34,197,94,0.1)' : colors.cardBg,
+        color: copied ? '#22C55E' : colors.textMuted,
+        fontFamily: "'Rajdhani', sans-serif",
+        fontSize: '12px',
+        fontWeight: 600,
+        letterSpacing: '0.5px',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        outline: `1px solid ${copied ? 'rgba(34,197,94,0.3)' : colors.border}`,
+      }}
+    >
+      {copied ? <Check size={14} color="#22C55E" /> : <ClipboardCopy size={14} />}
+      {copied ? 'COPIED AS MARKDOWN' : 'COPY AS MARKDOWN'}
+    </button>
+  )
+}
+
 // ─── Tab Bar (shared) ────────────────────────────────────────────────────
 function MockupTabBar({ active = 'Home' }: { active?: string }) {
   return (
@@ -912,7 +1420,11 @@ export function DeveloperPage() {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
   const [activeScreen, setActiveScreen] = useState('splash')
-  const [activeDevice, setActiveDevice] = useState<'iphone' | 'ipad' | 'mac'>('iphone')
+  const [activeDevice, setActiveDevice] = useState<'iphone' | 'ipad' | 'mac' | 'watch' | 'visionpro'>('iphone')
+  const [activeWatchScreen, setActiveWatchScreen] = useState('complication')
+  const [activeVPScreen, setActiveVPScreen] = useState('dashboard')
+  const [highlightedCard, setHighlightedCard] = useState<string | null>(null)
+  const [loginClicked, setLoginClicked] = useState(false)
 
   const colors = {
     background: isDark ? '#0A0A0B' : '#ffffff',
@@ -950,8 +1462,12 @@ export function DeveloperPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: colors.background, fontFamily: "'Quicksand', sans-serif", transition: 'background-color 0.3s ease' }}>
-      {/* Shimmer animation for splash screen */}
-      <style>{`@keyframes shimmer { 0% { left: -50%; } 100% { left: 100%; } }`}</style>
+      {/* Animations for splash screen, interactive elements */}
+      <style>{`
+        @keyframes shimmer { 0% { left: -50%; } 100% { left: 100%; } }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(254,192,15,0); } 50% { box-shadow: 0 0 12px 4px rgba(254,192,15,0.15); } }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      `}</style>
 
       {/* ── Hero Header ──────────────────────────────────────────────── */}
       <div style={{ background: isDark ? 'linear-gradient(135deg, #0A0A0B 0%, #1A1A1D 50%, #0A0A0B 100%)' : 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%)', borderBottom: `1px solid ${colors.border}`, padding: '48px 32px 40px', position: 'relative', overflow: 'hidden' }}>
@@ -967,14 +1483,16 @@ export function DeveloperPage() {
             </div>
           </div>
           <p style={{ color: colors.textMuted, fontSize: '16px', lineHeight: 1.7, maxWidth: '700px', margin: 0 }}>
-            Full-scale visual mockups and comprehensive SwiftUI translation guide for rebuilding the Potomac Analyst Workbench as a native Apple app across iPhone, iPad, and Mac with 1:1 feature parity.
+            Full-scale interactive mockups and comprehensive SwiftUI translation guide for rebuilding the Potomac Analyst Workbench as a native Apple app across iPhone, iPad, Mac, Apple Watch, and Vision Pro with 1:1 feature parity. Includes high-fidelity device frames, interactive prototype elements, and markdown export.
           </p>
           <div style={{ display: 'flex', gap: '12px', marginTop: '24px', flexWrap: 'wrap' }}>
             {[
-              { label: '9 Screens', icon: Monitor },
+              { label: '9+ Screens', icon: Monitor },
               { label: 'SwiftUI 5', icon: Code2 },
               { label: 'iOS 17+', icon: Smartphone },
               { label: 'iPad + Mac', icon: Tablet },
+              { label: 'Apple Watch', icon: Watch },
+              { label: 'Vision Pro', icon: Glasses },
               { label: 'MVVM', icon: GitBranch },
             ].map((b) => {
               const Icon = b.icon
@@ -1002,12 +1520,14 @@ export function DeveloperPage() {
             Interactive mockups across all Apple platforms. Select a device and screen to preview with realistic device frames including Dynamic Island, notch area, safe area insets, and home indicator.
           </p>
 
-          {/* Device type tabs */}
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+          {/* Device type tabs + Copy as Markdown */}
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
             {([
               { id: 'iphone', label: 'iPhone 15 Pro', icon: Smartphone },
               { id: 'ipad', label: 'iPad Pro', icon: Tablet },
               { id: 'mac', label: 'Mac (Catalyst)', icon: Laptop },
+              { id: 'watch', label: 'Apple Watch', icon: Watch },
+              { id: 'visionpro', label: 'Vision Pro', icon: Glasses },
             ] as const).map((device) => {
               const Icon = device.icon
               const isDeviceActive = activeDevice === device.id
@@ -1018,6 +1538,36 @@ export function DeveloperPage() {
                 </button>
               )
             })}
+            <div style={{ flex: 1 }} />
+            <CopyAsMarkdownButton
+              activeDevice={activeDevice}
+              activeScreen={activeDevice === 'watch' ? activeWatchScreen : activeDevice === 'visionpro' ? activeVPScreen : activeScreen}
+              screens={activeDevice === 'watch' ? [
+                { id: 'complication', label: 'COMPLICATION' },
+                { id: 'glance', label: 'QUICK GLANCE' },
+                { id: 'notification', label: 'NOTIFICATION' },
+                { id: 'dictation', label: 'VOICE INPUT' },
+              ] : activeDevice === 'visionpro' ? [
+                { id: 'dashboard', label: 'SPATIAL DASHBOARD' },
+                { id: 'chat', label: 'IMMERSIVE CHAT' },
+                { id: 'dataviz', label: '3D DATA VIZ' },
+              ] : iphoneScreens}
+              deviceSpecs={activeDevice === 'watch' ? [
+                { label: 'Display', value: 'OLED Always-On' },
+                { label: 'Size', value: '49mm Ultra' },
+                { label: 'OS', value: 'watchOS 10+' },
+                { label: 'Input', value: 'Digital Crown + Haptics' },
+              ] : activeDevice === 'visionpro' ? [
+                { label: 'Type', value: 'Spatial Computing' },
+                { label: 'OS', value: 'visionOS 1+' },
+                { label: 'Input', value: 'Eye + Hand Tracking' },
+                { label: 'Canvas', value: 'Infinite' },
+              ] : [
+                { label: 'Dynamic Island', value: 'Yes' },
+                { label: 'Display', value: '6.1" OLED' },
+              ]}
+              colors={colors}
+            />
           </div>
 
           {/* ── iPhone View ───────────────────────────────────────────── */}
@@ -1115,16 +1665,131 @@ export function DeveloperPage() {
           {activeDevice === 'mac' && (
             <div>
               <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '16px', fontWeight: 600, color: colors.textMuted, letterSpacing: '1px', marginBottom: '4px' }}>MAC CATALYST / DESIGNED FOR IPAD</h3>
-              <p style={{ fontSize: '12px', color: colors.textMuted, marginBottom: '20px', lineHeight: 1.6 }}>The Mac version runs via Mac Catalyst or "Designed for iPad", inheriting the iPad split-view layout with macOS window chrome. Supports keyboard shortcuts, menu bar integration, and native macOS window management. Pointer hover states are enabled via .hoverEffect() modifier.</p>
+              <p style={{ fontSize: '12px', color: colors.textMuted, marginBottom: '20px', lineHeight: 1.6 }}>The Mac version runs via Mac Catalyst or "Designed for iPad", inheriting the iPad split-view layout with macOS window chrome. Hover over the traffic light buttons and explore the menu bar strip. Supports keyboard shortcuts (Cmd+K), menu bar integration, and native macOS window management.</p>
               <MacFrame label="DASHBOARD - MAC CATALYST" colors={colors}>
                 <MacDashboardMockup colors={colors} />
               </MacFrame>
               <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '24px' }}>
                 {[
                   { label: 'Window Chrome', value: 'Traffic lights + title bar' },
-                  { label: 'Menu Bar', value: 'File, Edit, View, Window' },
-                  { label: 'Keyboard', value: 'Full shortcuts support' },
+                  { label: 'Menu Bar', value: 'File, Edit, View, Window, Help' },
+                  { label: 'Keyboard', value: 'Full shortcuts (Cmd+K)' },
                   { label: 'Minimum Size', value: '1024 x 768' },
+                  { label: 'Hover States', value: '.hoverEffect() modifier' },
+                ].map((spec) => (
+                  <div key={spec.label} style={{ padding: '12px 16px', borderRadius: '10px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}>
+                    <span style={{ fontSize: '9px', color: colors.textMuted, display: 'block', letterSpacing: '0.5px', marginBottom: '4px' }}>{spec.label}</span>
+                    <span style={{ fontSize: '12px', color: colors.text, fontWeight: 600 }}>{spec.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Apple Watch View ──────────────────────────────────────── */}
+          {activeDevice === 'watch' && (
+            <div>
+              <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '16px', fontWeight: 600, color: colors.textMuted, letterSpacing: '1px', marginBottom: '4px' }}>APPLE WATCH ULTRA - WATCHOS 10+</h3>
+              <p style={{ fontSize: '12px', color: colors.textMuted, marginBottom: '20px', lineHeight: 1.6 }}>Companion watchOS app providing quick portfolio glances, real-time trading signal notifications, watch face complications showing live P&L, and Siri-powered voice input to ask Yang questions directly from your wrist. Designed for the 49mm Apple Watch Ultra with OLED Always-On display and haptic feedback.</p>
+
+              {/* Watch screen selector */}
+              <div style={{ display: 'flex', gap: '6px', marginBottom: '28px' }}>
+                {[
+                  { id: 'complication', label: 'COMPLICATION' },
+                  { id: 'glance', label: 'QUICK GLANCE' },
+                  { id: 'notification', label: 'NOTIFICATION' },
+                  { id: 'dictation', label: 'VOICE INPUT' },
+                ].map((s) => (
+                  <button key={s.id} onClick={() => setActiveWatchScreen(s.id)} style={{ padding: '8px 14px', borderRadius: '8px', border: 'none', backgroundColor: activeWatchScreen === s.id ? '#FEC00F' : colors.cardBg, color: activeWatchScreen === s.id ? '#0A0A0B' : colors.textMuted, fontFamily: "'Rajdhani', sans-serif", fontSize: '11px', fontWeight: 600, letterSpacing: '0.5px', cursor: 'pointer', transition: 'all 0.2s ease', outline: activeWatchScreen === s.id ? 'none' : `1px solid ${colors.border}` }}>
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+
+              <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                {/* Active watch mockup */}
+                <AppleWatchFrame label={activeWatchScreen.toUpperCase()} isActive colors={colors}>
+                  {activeWatchScreen === 'complication' && <WatchComplicationMockup />}
+                  {activeWatchScreen === 'glance' && <WatchGlanceMockup />}
+                  {activeWatchScreen === 'notification' && <WatchNotificationMockup />}
+                  {activeWatchScreen === 'dictation' && <WatchDictationMockup />}
+                </AppleWatchFrame>
+
+                {/* All watch screens gallery */}
+                <div style={{ flex: 1, minWidth: '300px' }}>
+                  <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.textMuted, letterSpacing: '1px', marginBottom: '12px' }}>ALL WATCH SCREENS</h3>
+                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                    {[
+                      { id: 'complication', label: 'Complication', comp: WatchComplicationMockup },
+                      { id: 'glance', label: 'Quick Glance', comp: WatchGlanceMockup },
+                      { id: 'notification', label: 'Notification', comp: WatchNotificationMockup },
+                      { id: 'dictation', label: 'Voice Input', comp: WatchDictationMockup },
+                    ].map((s) => {
+                      const Comp = s.comp
+                      return (
+                        <div key={s.id} onClick={() => setActiveWatchScreen(s.id)} style={{ cursor: 'pointer' }}>
+                          <AppleWatchFrame label={s.label} isActive={activeWatchScreen === s.id} colors={colors}>
+                            <div style={{ transform: 'scale(0.85)', transformOrigin: 'center center', width: '100%', height: '100%', pointerEvents: 'none' }}>
+                              <Comp />
+                            </div>
+                          </AppleWatchFrame>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '28px' }}>
+                {[
+                  { label: 'Display', value: 'OLED Always-On' },
+                  { label: 'Size', value: '49mm Ultra' },
+                  { label: 'OS', value: 'watchOS 10+' },
+                  { label: 'Input', value: 'Digital Crown + Haptics' },
+                  { label: 'Connectivity', value: 'Bluetooth + LTE' },
+                ].map((spec) => (
+                  <div key={spec.label} style={{ padding: '12px 16px', borderRadius: '10px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}>
+                    <span style={{ fontSize: '9px', color: colors.textMuted, display: 'block', letterSpacing: '0.5px', marginBottom: '4px' }}>{spec.label}</span>
+                    <span style={{ fontSize: '12px', color: colors.text, fontWeight: 600 }}>{spec.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Vision Pro View ───────────────────────────────────────── */}
+          {activeDevice === 'visionpro' && (
+            <div>
+              <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '16px', fontWeight: 600, color: colors.textMuted, letterSpacing: '1px', marginBottom: '4px' }}>APPLE VISION PRO - VISIONOS 1+</h3>
+              <p style={{ fontSize: '12px', color: colors.textMuted, marginBottom: '20px', lineHeight: 1.6 }}>Spatial computing app with floating window panels, eye tracking for navigation, hand gesture input, and an infinite canvas for data visualization. The dashboard features multiple floating panels in a 3D-layered perspective. Chat uses immersive spatial mode with voice and gesture input. Data visualization leverages depth for equity curves and 3D chart exploration.</p>
+
+              {/* Vision Pro screen selector */}
+              <div style={{ display: 'flex', gap: '6px', marginBottom: '28px' }}>
+                {[
+                  { id: 'dashboard', label: 'SPATIAL DASHBOARD' },
+                  { id: 'chat', label: 'IMMERSIVE CHAT' },
+                  { id: 'dataviz', label: '3D DATA VIZ' },
+                ].map((s) => (
+                  <button key={s.id} onClick={() => setActiveVPScreen(s.id)} style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', backgroundColor: activeVPScreen === s.id ? '#FEC00F' : colors.cardBg, color: activeVPScreen === s.id ? '#0A0A0B' : colors.textMuted, fontFamily: "'Rajdhani', sans-serif", fontSize: '12px', fontWeight: 600, letterSpacing: '0.5px', cursor: 'pointer', transition: 'all 0.2s ease', outline: activeVPScreen === s.id ? 'none' : `1px solid ${colors.border}` }}>
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+
+              <VisionProFrame label={activeVPScreen === 'dashboard' ? 'SPATIAL DASHBOARD' : activeVPScreen === 'chat' ? 'IMMERSIVE CHAT' : '3D DATA VISUALIZATION'} isActive colors={colors}>
+                {activeVPScreen === 'dashboard' && <VisionProDashboardMockup colors={colors} />}
+                {activeVPScreen === 'chat' && <VisionProChatMockup colors={colors} />}
+                {activeVPScreen === 'dataviz' && <VisionProDataVizMockup colors={colors} />}
+              </VisionProFrame>
+
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '28px' }}>
+                {[
+                  { label: 'Platform', value: 'Spatial Computing' },
+                  { label: 'OS', value: 'visionOS 1+' },
+                  { label: 'Input', value: 'Eye + Hand Tracking' },
+                  { label: 'Canvas', value: 'Infinite spatial' },
+                  { label: 'Audio', value: 'Spatial Audio' },
+                  { label: 'Framework', value: 'RealityKit + SwiftUI' },
                 ].map((spec) => (
                   <div key={spec.label} style={{ padding: '12px 16px', borderRadius: '10px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}>
                     <span style={{ fontSize: '9px', color: colors.textMuted, display: 'block', letterSpacing: '0.5px', marginBottom: '4px' }}>{spec.label}</span>
@@ -1989,7 +2654,7 @@ struct ChatInputView: View {
 
         {/* ── Footer ─────────────────────────────────────────────────── */}
         <footer style={{ padding: '32px 0', borderTop: `1px solid ${colors.border}`, textAlign: 'center' }}>
-          <p style={{ fontSize: '12px', color: colors.textMuted }}>Potomac Analyst Workbench - iOS Developer Blueprint v2.0</p>
+          <p style={{ fontSize: '12px', color: colors.textMuted }}>Potomac Analyst Workbench - Apple Developer Blueprint v3.0 (iPhone, iPad, Mac, Watch, Vision Pro)</p>
         </footer>
       </div>
     </div>
