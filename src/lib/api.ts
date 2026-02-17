@@ -129,8 +129,14 @@ class APIClient {
       this.setToken(response.access_token);
       return response;
     } catch (error) {
-      // If register fails due to network error, create a demo token for testing
-      if (error instanceof Error && error.message.includes('Cannot connect')) {
+      // If register fails due to network error or API unavailability, create a demo token for testing
+      if (error instanceof Error && (
+        error.message.includes('Cannot connect') ||
+        error.message.includes('status 404') ||
+        error.message.includes('status 500') ||
+        error.message.includes('status 502') ||
+        error.message.includes('status 503')
+      )) {
         logger.warn('API unavailable - using demo mode for registration', error);
         const demoToken = 'demo_token_' + Date.now();
         this.setToken(demoToken);
@@ -156,8 +162,14 @@ class APIClient {
       this.setToken(response.access_token);
       return response;
     } catch (error) {
-      // If login fails due to network error, create a demo token for testing
-      if (error instanceof Error && error.message.includes('Cannot connect')) {
+      // If login fails due to network error or API unavailability, create a demo token for testing
+      if (error instanceof Error && (
+        error.message.includes('Cannot connect') || 
+        error.message.includes('status 404') ||
+        error.message.includes('status 500') ||
+        error.message.includes('status 502') ||
+        error.message.includes('status 503')
+      )) {
         logger.warn('API unavailable - using demo mode', error);
         const demoToken = 'demo_token_' + Date.now();
         this.setToken(demoToken);

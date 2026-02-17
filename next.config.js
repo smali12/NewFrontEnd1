@@ -34,19 +34,7 @@ const nextConfig = {
     ],
   },
   
-  async rewrites() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 
-      (process.env.NODE_ENV === 'development' 
-        ? 'http://localhost:8000' 
-        : 'https://potomac-analyst-workbench-production.up.railway.app');
-    
-    return [
-      {
-        source: '/api/backend/:path*',
-        destination: `${apiUrl}/:path*`,
-      },
-    ];
-  },
+
   
   // Webpack customization removed — Turbopack (default in Next.js 16) does not
   // support the webpack() callback.  The previous filesystem-cache and
