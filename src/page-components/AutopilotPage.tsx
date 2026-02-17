@@ -46,62 +46,54 @@ interface LogEntry {
   app?: string;
 }
 
+type AppKey = 'amibroker' | 'afl-editor' | 'optuma' | 'outlook' | 'excel' | 'edge' | 'word';
+
 /* ------------------------------------------------------------------ */
-/*  Expanded Demo Actions -- 30 steps                                  */
+/*  Expanded Demo Actions -- 33 steps                                  */
 /* ------------------------------------------------------------------ */
 
 const DEMO_ACTIONS: Omit<LogEntry, 'id'>[] = [
-  // Phase 1: Initialization
   { time: '00:01', action: 'Yang initialized -- scanning desktop environment', status: 'success' },
-  { time: '00:03', action: 'Identified 6 applications to manage. Beginning workflow...', status: 'success' },
+  { time: '00:03', action: 'Identified 7 applications to manage. Beginning workflow...', status: 'success' },
 
-  // Phase 2: AmiBroker chart analysis
   { time: '00:05', action: 'Opening AmiBroker -- loading Gold Index CDE workspace', status: 'active', app: 'amibroker' },
   { time: '00:07', action: 'Applying DEMA overlay to candlestick chart', status: 'success', app: 'amibroker' },
   { time: '00:09', action: 'Analyzing support/resistance at 69.40 and 81.20 levels', status: 'success', app: 'amibroker' },
 
-  // Phase 3: AFL Coding in AmiBroker Formula Editor
   { time: '00:11', action: 'Opening AFL Formula Editor in AmiBroker', status: 'active', app: 'afl-editor' },
   { time: '00:13', action: 'Writing new strategy: Freddy & Marla Bull Trading Algorithm', status: 'active', app: 'afl-editor' },
   { time: '00:15', action: 'Coding Buy = Cross(MACD(), Signal()) with optimized params', status: 'success', app: 'afl-editor' },
   { time: '00:17', action: 'Adding risk management: PositionSize = -2 (% risk model)', status: 'success', app: 'afl-editor' },
   { time: '00:19', action: 'Setting backtest range 2015-2025, verifying syntax...', status: 'success', app: 'afl-editor' },
 
-  // Phase 4: Optuma analysis
   { time: '00:21', action: 'Switching to Optuma -- opening AUD/USD daily chart', status: 'active', app: 'optuma' },
   { time: '00:23', action: 'Drawing Fibonacci retracement from 0.617 to 0.715', status: 'success', app: 'optuma' },
   { time: '00:25', action: 'Checking RSI divergence -- bearish signal at 42.31', status: 'success', app: 'optuma' },
   { time: '00:27', action: 'Saving chart workspace and annotating key levels', status: 'success', app: 'optuma' },
 
-  // Phase 5: Email composition
   { time: '00:29', action: 'Opening Outlook -- composing market analysis email', status: 'active', app: 'outlook' },
   { time: '00:31', action: 'To: trading-team@yangcapital.com | Subject: Daily Brief', status: 'active', app: 'outlook' },
   { time: '00:33', action: 'Drafting body: Gold Index bullish, AUD/USD bearish divergence', status: 'success', app: 'outlook' },
   { time: '00:35', action: 'Attaching AmiBroker chart screenshot and AFL strategy file', status: 'success', app: 'outlook' },
   { time: '00:37', action: 'Email sent successfully to 4 recipients', status: 'success', app: 'outlook' },
 
-  // Phase 6: Excel spreadsheet work
   { time: '00:39', action: 'Opening Excel -- creating portfolio risk assessment', status: 'active', app: 'excel' },
   { time: '00:41', action: 'Importing live data: 12 positions across 3 asset classes', status: 'active', app: 'excel' },
   { time: '00:43', action: 'Calculating VaR, Sharpe Ratio, Max Drawdown formulas', status: 'success', app: 'excel' },
   { time: '00:45', action: 'Building PivotTable and conditional-format heat map', status: 'success', app: 'excel' },
   { time: '00:47', action: 'Saved as Portfolio_Risk_2025.xlsx', status: 'success', app: 'excel' },
 
-  // Phase 7: Web research
   { time: '00:49', action: 'Opening Edge -- researching RBA interest rate decision', status: 'active', app: 'edge' },
   { time: '00:51', action: 'Navigating Reuters, Bloomberg, RBA.gov.au', status: 'active', app: 'edge' },
   { time: '00:53', action: 'Extracting key data: rate held at 4.35%, dovish guidance', status: 'success', app: 'edge' },
   { time: '00:55', action: 'Compiling research notes into Word document', status: 'success', app: 'edge' },
 
-  // Phase 8: Document creation
   { time: '00:57', action: 'Opening Word -- drafting Weekly Strategy Report', status: 'active', app: 'word' },
   { time: '00:59', action: 'Formatting headings, inserting charts, adding analysis', status: 'active', app: 'word' },
   { time: '01:01', action: 'Document complete: 8 pages with embedded visuals', status: 'success', app: 'word' },
 
-  // Phase 9: Learning & wrap-up
   { time: '01:03', action: 'Learning user pattern: automated morning briefing workflow', status: 'active' },
-  { time: '01:05', action: 'Workflow saved -- Yang can now execute this autonomously', status: 'success' },
-  { time: '01:07', action: 'All 33 tasks complete. 7 applications managed. 0 errors.', status: 'success' },
+  { time: '01:05', action: 'All 33 tasks complete. 7 applications managed. 0 errors.', status: 'success' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -140,15 +132,15 @@ function Win11TitleBar({
         <span className="truncate" style={{ color: textColor, fontSize: 12, fontWeight: 500 }}>{title}</span>
       </div>
       <div className="flex items-center h-full flex-shrink-0">
-        {[Minus, Square, X].map((Icon, i) => (
-          <div
-            key={i}
-            className="flex items-center justify-center h-full transition-colors hover:bg-white/10"
-            style={{ width: 46, color: textColor, ...(i === 2 ? { borderRadius: '0 8px 0 0' } : {}) }}
-          >
-            <Icon size={i === 1 ? 11 : 14} />
-          </div>
-        ))}
+        <div className="flex items-center justify-center h-full transition-colors hover:bg-white/10" style={{ width: 46, color: textColor }}>
+          <Minus size={14} />
+        </div>
+        <div className="flex items-center justify-center h-full transition-colors hover:bg-white/10" style={{ width: 46, color: textColor }}>
+          <Square size={11} />
+        </div>
+        <div className="flex items-center justify-center h-full transition-colors hover:bg-white/10" style={{ width: 46, color: textColor, borderRadius: '0 8px 0 0' }}>
+          <X size={14} />
+        </div>
       </div>
     </div>
   );
@@ -159,24 +151,26 @@ function Win11TitleBar({
 /* ------------------------------------------------------------------ */
 
 function AmiBrokerWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  const windowStyle: React.CSSProperties = {
+    boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+    opacity: isActive ? 1 : 0.7,
+    transition: 'all 0.4s ease',
+  };
+
   return (
-    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
-      style={{
-        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
-        opacity: isActive ? 1 : 0.7,
-        transition: 'all 0.4s ease',
-      }}
-    >
+    <div className="flex flex-col h-full rounded-lg overflow-hidden" style={windowStyle}>
       <Win11TitleBar
         title="AmiBroker - [RWV] - Sprott Physical Gold Index CDE - [Daily]"
         icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#e8912d' }}><span style={{ fontSize: 8, fontWeight: 800, color: '#fff' }}>AB</span></div>}
         bgColor="#2d2d2d" textColor="#cccccc" isActive={isActive}
       />
+      {/* Menu bar */}
       <div className="flex items-center gap-0 px-1" style={{ background: '#383838', height: 24 }}>
         {['File', 'Edit', 'View', 'Insert', 'Symbol', 'Analysis', 'Window', 'Help'].map((m) => (
           <span key={m} className="px-2 py-0.5 text-[11px] cursor-default" style={{ color: '#ccc' }}>{m}</span>
         ))}
       </div>
+      {/* Tabs */}
       <div className="flex items-center gap-1 px-2" style={{ background: '#333', height: 28, borderBottom: '1px solid #222' }}>
         <div className="flex items-center px-2 rounded" style={{ background: '#444', height: 20 }}>
           <span style={{ fontSize: 9, color: '#aaa' }}>RWV (Daily)</span>
@@ -185,7 +179,9 @@ function AmiBrokerWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
           <span style={{ fontSize: 9, color: '#FFD700' }}>CI RWV (Daily)</span>
         </div>
       </div>
+      {/* Content */}
       <div className="flex flex-1 min-h-0" style={{ background: '#1a1a1a' }}>
+        {/* Indicator tree */}
         <div className="flex-shrink-0 overflow-y-auto" style={{ width: 150, background: '#252525', borderRight: '1px solid #333' }}>
           <div className="p-1.5 space-y-0.5">
             <div className="text-[9px] font-bold text-[#4ec9b0] pl-1">Formulas</div>
@@ -211,14 +207,18 @@ function AmiBrokerWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
             ))}
           </div>
         </div>
+        {/* Chart area */}
         <div className="flex-1 relative overflow-hidden" style={{ background: '#1e1e1e' }}>
+          {/* Y-axis labels */}
           <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-between py-2 pr-1" style={{ width: 36, fontSize: 8, color: '#777' }}>
             {['87', '81', '75', '69', '63', '57', '51'].map((p) => (<span key={p} className="text-right">{p}</span>))}
           </div>
+          {/* Grid */}
           <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.06 }}>
             {Array.from({ length: 10 }, (_, i) => (<line key={`v${i}`} x1={`${(i + 1) * 9}%`} y1="0" x2={`${(i + 1) * 9}%`} y2="100%" stroke="#fff" strokeWidth="0.5" />))}
             {Array.from({ length: 6 }, (_, i) => (<line key={`h${i}`} x1="0" y1={`${(i + 1) * 14}%`} x2="100%" y2={`${(i + 1) * 14}%`} stroke="#fff" strokeWidth="0.5" />))}
           </svg>
+          {/* Candlestick chart */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 400" preserveAspectRatio="none">
             <path d="M 50,350 Q 150,320 250,300 T 450,200 T 600,110 T 750,55" fill="none" stroke="#FFD700" strokeWidth="1.5" opacity="0.8" />
             <path d="M 50,360 Q 150,340 250,320 T 450,220 T 600,130 T 750,75" fill="none" stroke="#4ec9b0" strokeWidth="1" opacity="0.6" />
@@ -242,6 +242,7 @@ function AmiBrokerWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
               </g>
             ))}
           </svg>
+          {/* Bottom tabs */}
           <div className="absolute bottom-0 left-0 right-0 flex items-center" style={{ background: '#2a2a2a', height: 20, borderTop: '1px solid #444' }}>
             <span className="px-2 text-[9px]" style={{ color: '#aaa', background: '#3a3a3a' }}>Composite</span>
             <span className="px-2 text-[9px]" style={{ color: '#777' }}>Symbols</span>
@@ -255,6 +256,7 @@ function AmiBrokerWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
           )}
         </div>
       </div>
+      {/* Status bar */}
       <div className="flex items-center justify-between px-2 flex-shrink-0" style={{ background: '#2a2a2a', height: 20, borderTop: '1px solid #444' }}>
         <span style={{ fontSize: 8, color: '#777' }}>For Help, press F1</span>
         <span style={{ fontSize: 8, color: '#777' }}>NYSE Arca | S: 38.14300</span>
@@ -268,14 +270,14 @@ function AmiBrokerWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
 /* ------------------------------------------------------------------ */
 
 function AFLEditorWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  const windowStyle: React.CSSProperties = {
+    boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+    opacity: isActive ? 1 : 0.7,
+    transition: 'all 0.4s ease',
+  };
+
   return (
-    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
-      style={{
-        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
-        opacity: isActive ? 1 : 0.7,
-        transition: 'all 0.4s ease',
-      }}
-    >
+    <div className="flex flex-col h-full rounded-lg overflow-hidden" style={windowStyle}>
       <Win11TitleBar
         title="AFL Formula Editor - [RATED.afl] * RATED * AUTO-optimized"
         icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#e8912d' }}><FileCode size={10} color="#fff" /></div>}
@@ -297,36 +299,36 @@ function AFLEditorWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
         <div><span style={{ color: '#608b4e' }}>{'// Strategy: Freddy & Marla Bull Trading Algorithm'}</span></div>
         <div><span style={{ color: '#608b4e' }}>{'// Auto-optimized by Yang AI'}</span></div>
         <div style={{ height: 6 }} />
-        <div><span style={{ color: '#608b4e' }}>{'// Keep the ratio of RWI (Gold Floor Index) to Gold Futures to'}</span></div>
-        <div><span style={{ color: '#608b4e' }}>{'// act as a gauge for a global GT e.g. CRN.'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'// Keep the ratio of RWI (Gold Floor Index) to Gold Futures'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'// to act as a gauge for a global GT e.g. CRN.'}</span></div>
         <div style={{ height: 6 }} />
         <div><span style={{ color: '#608b4e' }}>{'// The model supports 4 variables:'}</span></div>
-        <div><span style={{ color: '#608b4e' }}>{'//   1. cMode : Upper Threshold Triggers:'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'//   1. cMode : Upper Threshold Triggers'}</span></div>
         <div><span style={{ color: '#608b4e' }}>{'//   2. nBand : Long-term bands (lower 2.5th)'}</span></div>
-        <div><span style={{ color: '#608b4e' }}>{'//   3. mBand : Short-term bands (lower 5.0) &'}</span></div>
+        <div><span style={{ color: '#608b4e' }}>{'//   3. mBand : Short-term bands (lower 5.0)'}</span></div>
         <div><span style={{ color: '#608b4e' }}>{'//   4. qEntry: entry UT upper-band entries'}</span></div>
         <div style={{ height: 6 }} />
         <div>
-          <span style={{ color: '#608b4e' }}>{'// '}</span>
-          <span style={{ color: '#608b4e' }}>{'Backtest Mode & Program Control Settings'}</span>
+          <span style={{ color: '#569cd6' }}>_SECTION_BEGIN</span>
+          <span style={{ color: '#ccc' }}>(</span>
+          <span style={{ color: '#ce9178' }}>{'"Test Mode"'}</span>
+          <span style={{ color: '#ccc' }}>);</span>
         </div>
-        <div style={{ height: 4 }} />
-        <div><span style={{ color: '#569cd6' }}>_SECTION_BEGIN</span><span style={{ color: '#ccc' }}>(</span><span style={{ color: '#ce9178' }}>{'"Test Mode"'}</span><span style={{ color: '#ccc' }}>);</span></div>
         <div style={{ height: 6 }} />
         <div><span style={{ color: '#608b4e' }}>{'// Two user-selectable backtest modes:'}</span></div>
         <div>
           <span style={{ color: '#569cd6' }}>TF_01</span>
-          <span style={{ color: '#ccc' }}> = </span>
-          <span style={{ color: '#ce9178' }}>{'"S1 Single"}</span>
+          <span style={{ color: '#ccc' }}>{' = '}</span>
+          <span style={{ color: '#ce9178' }}>{'"S1 Single"'}</span>
           <span style={{ color: '#ccc' }}>;</span>
-          <span style={{ color: '#608b4e' }}> {'// Single-symbol backtest (no portfolio logic)'}</span>
+          <span style={{ color: '#608b4e' }}>{' // Single-symbol backtest'}</span>
         </div>
         <div>
           <span style={{ color: '#569cd6' }}>TF_07</span>
-          <span style={{ color: '#ccc' }}> = </span>
-          <span style={{ color: '#ce9178' }}>{'"S1 Trades"}</span>
+          <span style={{ color: '#ccc' }}>{' = '}</span>
+          <span style={{ color: '#ce9178' }}>{'"S1 Trades"'}</span>
           <span style={{ color: '#ccc' }}>;</span>
-          <span style={{ color: '#608b4e' }}> {'// Multi-symbol with MasterPortfolio logic'}</span>
+          <span style={{ color: '#608b4e' }}>{' // Multi-symbol with MasterPortfolio'}</span>
         </div>
         <div style={{ height: 6 }} />
         <div><span style={{ color: '#608b4e' }}>{'// Starting capital for portfolio testing'}</span></div>
@@ -334,7 +336,7 @@ function AFLEditorWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
           <span style={{ color: '#569cd6' }}>SetOption</span>
           <span style={{ color: '#ccc' }}>(</span>
           <span style={{ color: '#ce9178' }}>{'"InitialEquity"'}</span>
-          <span style={{ color: '#ccc' }}>, </span>
+          <span style={{ color: '#ccc' }}>{', '}</span>
           <span style={{ color: '#b5cea8' }}>100000</span>
           <span style={{ color: '#ccc' }}>);</span>
         </div>
@@ -342,7 +344,7 @@ function AFLEditorWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
         <div><span style={{ color: '#608b4e' }}>{'// Fractional position size: 1000 / new positions'}</span></div>
         <div>
           <span style={{ color: '#569cd6' }}>PositionSize</span>
-          <span style={{ color: '#ccc' }}> = </span>
+          <span style={{ color: '#ccc' }}>{' = '}</span>
           <span style={{ color: '#b5cea8' }}>-2</span>
           <span style={{ color: '#ccc' }}>;</span>
         </div>
@@ -352,7 +354,7 @@ function AFLEditorWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
           <span style={{ color: '#569cd6' }}>SetOption</span>
           <span style={{ color: '#ccc' }}>(</span>
           <span style={{ color: '#ce9178' }}>{'"MaxOpenPositions"'}</span>
-          <span style={{ color: '#ccc' }}>, </span>
+          <span style={{ color: '#ccc' }}>{', '}</span>
           <span style={{ color: '#b5cea8' }}>15</span>
           <span style={{ color: '#ccc' }}>);</span>
         </div>
@@ -376,19 +378,20 @@ function AFLEditorWindow({ isActive, yangWorking }: { isActive: boolean; yangWor
 /* ------------------------------------------------------------------ */
 
 function OptumaWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  const windowStyle: React.CSSProperties = {
+    boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+    opacity: isActive ? 1 : 0.7,
+    transition: 'all 0.4s ease',
+  };
+
   return (
-    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
-      style={{
-        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
-        opacity: isActive ? 1 : 0.7,
-        transition: 'all 0.4s ease',
-      }}
-    >
+    <div className="flex flex-col h-full rounded-lg overflow-hidden" style={windowStyle}>
       <Win11TitleBar
         title="Optuma - Australian Dollar / US Dollar - AUDUSD (FX)"
         icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#1a5276' }}><span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>O</span></div>}
         bgColor="#1a5276" textColor="#ffffff" isActive={isActive}
       />
+      {/* Toolbar */}
       <div className="flex items-center gap-1 px-2" style={{ background: '#f0f0f0', height: 32, borderBottom: '1px solid #ccc' }}>
         {['File', 'New', 'Tools', 'Settings', 'Data', 'Alerts', 'Searches', 'Chat', 'Help'].map((t) => (
           <div key={t} className="flex flex-col items-center px-1.5 py-0.5 hover:bg-[#ddd] rounded cursor-default">
@@ -399,6 +402,7 @@ function OptumaWindow({ isActive, yangWorking }: { isActive: boolean; yangWorkin
           </div>
         ))}
       </div>
+      {/* Tabs */}
       <div className="flex items-center" style={{ background: '#e8e8e8', height: 24, borderBottom: '1px solid #ccc' }}>
         {[{ name: 'Single Charts', active: false }, { name: 'MultiCode', active: false }, { name: 'Scripting', active: false }, { name: 'TA', active: true }].map((tab) => (
           <div key={tab.name} className="flex items-center gap-1 px-3 py-1 cursor-default"
@@ -407,7 +411,9 @@ function OptumaWindow({ isActive, yangWorking }: { isActive: boolean; yangWorkin
           </div>
         ))}
       </div>
+      {/* Content */}
       <div className="flex flex-1 min-h-0" style={{ background: '#ffffff' }}>
+        {/* Properties panel */}
         <div className="flex-shrink-0 overflow-y-auto" style={{ width: 140, background: '#fafafa', borderRight: '1px solid #ddd' }}>
           <div className="p-2 space-y-1">
             <div style={{ fontSize: 10, fontWeight: 700, color: '#1a5276' }}>Fibonacci Retracements</div>
@@ -426,15 +432,18 @@ function OptumaWindow({ isActive, yangWorking }: { isActive: boolean; yangWorkin
             ))}
           </div>
         </div>
+        {/* Chart area */}
         <div className="flex-1 relative overflow-hidden" style={{ background: '#ffffff' }}>
           <div className="px-2 py-0.5" style={{ borderBottom: '1px solid #eee' }}>
             <span style={{ fontSize: 9, color: '#333' }}>AUD/USD (FX) - Daily CandleStick - No Layout</span>
           </div>
           <div className="absolute top-6 left-3" style={{ fontSize: 14, fontWeight: 300, color: '#333' }}>Daily</div>
           <div className="absolute top-6 right-12 text-right" style={{ fontSize: 11, fontWeight: 300, color: '#555' }}>Australian Dollar / US Dollar</div>
+          {/* Y-axis */}
           <div className="absolute right-0 top-6 bottom-14 flex flex-col justify-between pr-1" style={{ width: 40, fontSize: 7, color: '#777' }}>
             {['0.7200', '0.7000', '0.6800', '0.6600', '0.6400', '0.6200'].map((p) => (<span key={p} className="text-right">{p}</span>))}
           </div>
+          {/* Chart SVG */}
           <svg className="absolute" style={{ left: 0, top: 24, width: 'calc(100% - 40px)', height: 'calc(100% - 60px)' }} viewBox="0 0 700 350" preserveAspectRatio="none">
             <line x1="0" y1="25" x2="700" y2="25" stroke="#1a5276" strokeWidth="1" opacity="0.5" />
             <text x="615" y="22" fill="#1a5276" fontSize="8">{'End: 0.71574'}</text>
@@ -463,6 +472,7 @@ function OptumaWindow({ isActive, yangWorking }: { isActive: boolean; yangWorkin
               </g>
             ))}
           </svg>
+          {/* RSI panel */}
           <div className="absolute bottom-0 left-0 right-0" style={{ height: 36, borderTop: '2px solid #ddd', background: '#fafafa' }}>
             <span className="absolute top-1 left-2" style={{ fontSize: 7, color: '#333', fontWeight: 600 }}>14 Period RSI</span>
             <svg style={{ width: 'calc(100% - 40px)', height: '100%' }} viewBox="0 0 700 36" preserveAspectRatio="none">
@@ -489,14 +499,14 @@ function OptumaWindow({ isActive, yangWorking }: { isActive: boolean; yangWorkin
 /* ------------------------------------------------------------------ */
 
 function OutlookWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  const windowStyle: React.CSSProperties = {
+    boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+    opacity: isActive ? 1 : 0.7,
+    transition: 'all 0.4s ease',
+  };
+
   return (
-    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
-      style={{
-        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
-        opacity: isActive ? 1 : 0.7,
-        transition: 'all 0.4s ease',
-      }}
-    >
+    <div className="flex flex-col h-full rounded-lg overflow-hidden" style={windowStyle}>
       <Win11TitleBar
         title="Outlook - New Message"
         icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#0078d4' }}><Mail size={10} color="#fff" /></div>}
@@ -522,7 +532,7 @@ function OutlookWindow({ isActive, yangWorking }: { isActive: boolean; yangWorki
         <div className="px-4 py-2 space-y-2" style={{ borderBottom: '1px solid #eee' }}>
           <div className="flex items-center gap-2">
             <span style={{ fontSize: 11, color: '#777', width: 40 }}>To:</span>
-            <div className="flex-1 flex items-center gap-1">
+            <div className="flex-1 flex items-center gap-1 flex-wrap">
               <span className="px-2 py-0.5 rounded text-[10px] font-medium" style={{ background: '#e8f0fe', color: '#1a5276' }}>trading-team@yangcapital.com</span>
               <span className="px-2 py-0.5 rounded text-[10px] font-medium" style={{ background: '#e8f0fe', color: '#1a5276' }}>portfolio@yangcapital.com</span>
             </div>
@@ -538,7 +548,7 @@ function OutlookWindow({ isActive, yangWorking }: { isActive: boolean; yangWorki
         </div>
         <div className="px-4 py-3 space-y-2" style={{ fontSize: 11, color: '#333', lineHeight: 1.6 }}>
           <p>Hi Team,</p>
-          <p>Please find today{"'"}s market analysis summary below:</p>
+          <p>{"Please find today's market analysis summary below:"}</p>
           <p style={{ fontWeight: 600 }}>1. Gold Index (CDE) - Bullish</p>
           <p style={{ fontSize: 10, color: '#555' }}>- DEMA crossover confirmed on daily timeframe</p>
           <p style={{ fontSize: 10, color: '#555' }}>- Support at 69.40, resistance at 81.20</p>
@@ -580,14 +590,14 @@ function ExcelWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking
     ['EUR/USD', 'FX', '24,600', '4.9%', '-4.0%', '1.05', '-19.3%'],
   ];
 
+  const windowStyle: React.CSSProperties = {
+    boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+    opacity: isActive ? 1 : 0.7,
+    transition: 'all 0.4s ease',
+  };
+
   return (
-    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
-      style={{
-        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
-        opacity: isActive ? 1 : 0.7,
-        transition: 'all 0.4s ease',
-      }}
-    >
+    <div className="flex flex-col h-full rounded-lg overflow-hidden" style={windowStyle}>
       <Win11TitleBar
         title="Excel - Portfolio_Risk_2025.xlsx"
         icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#217346' }}><FileSpreadsheet size={10} color="#fff" /></div>}
@@ -606,7 +616,7 @@ function ExcelWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking
         <table className="w-full" style={{ borderCollapse: 'collapse', fontSize: 9 }}>
           <thead>
             <tr>
-              <th className="px-1 py-0.5 text-center" style={{ background: '#f0f0f0', border: '1px solid #ddd', color: '#777', width: 24 }} />
+              <th className="px-1 py-0.5 text-center" style={{ background: '#f0f0f0', border: '1px solid #ddd', color: '#777', width: 24 }}>{' '}</th>
               {headers.map((h, i) => (
                 <th key={i} className="px-2 py-1 text-left font-semibold" style={{ background: '#4472c4', border: '1px solid #3563a5', color: '#fff', fontSize: 8 }}>
                   {h}
@@ -621,15 +631,16 @@ function ExcelWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking
                 {row.map((cell, ci) => {
                   const isNeg = cell.startsWith('-');
                   const isHighSharpe = ci === 5 && parseFloat(cell) > 1.5;
+                  let bgCol = ri % 2 === 0 ? '#f8f9fc' : '#fff';
+                  if (ci === 4 && isNeg && parseFloat(cell) < -10) bgCol = '#fce4e4';
                   return (
                     <td key={ci} className="px-2 py-0.5"
                       style={{
                         border: '1px solid #e8e8e8',
                         color: isNeg ? '#c00' : isHighSharpe ? '#217346' : '#333',
-                        background: ci === 4 && isNeg && parseFloat(cell) < -10 ? '#fce4e4' : ri % 2 === 0 ? '#f8f9fc' : '#fff',
+                        background: bgCol,
                         fontWeight: isHighSharpe ? 700 : 400,
-                      }}
-                    >
+                      }}>
                       {cell}
                     </td>
                   );
@@ -671,14 +682,14 @@ function ExcelWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking
 /* ------------------------------------------------------------------ */
 
 function EdgeWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  const windowStyle: React.CSSProperties = {
+    boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+    opacity: isActive ? 1 : 0.7,
+    transition: 'all 0.4s ease',
+  };
+
   return (
-    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
-      style={{
-        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
-        opacity: isActive ? 1 : 0.7,
-        transition: 'all 0.4s ease',
-      }}
-    >
+    <div className="flex flex-col h-full rounded-lg overflow-hidden" style={windowStyle}>
       <Win11TitleBar
         title="Edge - RBA Interest Rate Decision | Reuters"
         icon={<div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0078d4, #00bcf2)' }}><Globe size={8} color="#fff" /></div>}
@@ -688,7 +699,7 @@ function EdgeWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking:
         <div className="flex items-center gap-1">
           <div className="w-6 h-6 rounded flex items-center justify-center hover:bg-[#444] cursor-default"><span style={{ color: '#aaa', fontSize: 12 }}>{'<'}</span></div>
           <div className="w-6 h-6 rounded flex items-center justify-center hover:bg-[#444] cursor-default"><span style={{ color: '#aaa', fontSize: 12 }}>{'>'}</span></div>
-          <div className="w-6 h-6 rounded flex items-center justify-center hover:bg-[#444] cursor-default"><span style={{ color: '#aaa', fontSize: 12 }}>{'R'}</span></div>
+          <div className="w-6 h-6 rounded flex items-center justify-center hover:bg-[#444] cursor-default"><span style={{ color: '#aaa', fontSize: 12 }}>R</span></div>
         </div>
         <div className="flex-1 flex items-center px-3 py-1 rounded-full" style={{ background: '#3a3a3a', border: '1px solid #555' }}>
           <span style={{ fontSize: 9, color: '#4caf50', marginRight: 4 }}>{'https://'}</span>
@@ -708,7 +719,7 @@ function EdgeWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking:
         <div className="p-4 space-y-3">
           <div className="flex items-center gap-2">
             <span style={{ fontSize: 18, fontWeight: 700, color: '#ff6600' }}>REUTERS</span>
-            <span style={{ fontSize: 9, color: '#888' }}>Markets {'>'} Rates {'>'} Australia</span>
+            <span style={{ fontSize: 9, color: '#888' }}>{'Markets > Rates > Australia'}</span>
           </div>
           <h2 style={{ fontSize: 16, fontWeight: 700, color: '#fff', lineHeight: 1.3 }}>
             RBA Holds Cash Rate at 4.35% with Dovish Forward Guidance
@@ -719,12 +730,12 @@ function EdgeWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking:
             <span style={{ fontSize: 9, color: '#888' }}>February 17, 2025</span>
           </div>
           <div className="space-y-2" style={{ fontSize: 11, color: '#ccc', lineHeight: 1.6 }}>
-            <p>The Reserve Bank of Australia maintained its cash rate target at 4.35% at its February meeting, matching market expectations. Governor Michele Bullock signalled a shift in language...</p>
+            <p>The Reserve Bank of Australia maintained its cash rate target at 4.35% at its February meeting, matching market expectations...</p>
             <div className="p-2 rounded" style={{ background: '#252525', border: '1px solid #333' }}>
               <div style={{ fontSize: 10, fontWeight: 600, color: '#4caf50' }}>Key Takeaways:</div>
               <div className="space-y-0.5 mt-1" style={{ fontSize: 9, color: '#bbb' }}>
                 <p>- Cash rate held at 4.35% (7th consecutive hold)</p>
-                <p>- Dovish language: "Board will respond to incoming data"</p>
+                <p>{'- Dovish language: "Board will respond to incoming data"'}</p>
                 <p>- Markets pricing 68% chance of cut by May 2025</p>
                 <p>- AUD weakened 0.3% post-announcement to 0.6520</p>
               </div>
@@ -747,14 +758,14 @@ function EdgeWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking:
 /* ------------------------------------------------------------------ */
 
 function WordWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking: boolean }) {
+  const windowStyle: React.CSSProperties = {
+    boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
+    opacity: isActive ? 1 : 0.7,
+    transition: 'all 0.4s ease',
+  };
+
   return (
-    <div className="flex flex-col h-full rounded-lg overflow-hidden transition-shadow duration-300"
-      style={{
-        boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' : '0 4px 16px rgba(0,0,0,0.3)',
-        opacity: isActive ? 1 : 0.7,
-        transition: 'all 0.4s ease',
-      }}
-    >
+    <div className="flex flex-col h-full rounded-lg overflow-hidden" style={windowStyle}>
       <Win11TitleBar
         title="Word - Weekly_Strategy_Report.docx"
         icon={<div className="w-4 h-4 rounded-sm flex items-center justify-center" style={{ background: '#2b579a' }}><FileText size={10} color="#fff" /></div>}
@@ -785,7 +796,7 @@ function WordWindow({ isActive, yangWorking }: { isActive: boolean; yangWorking:
             <h2 style={{ fontSize: 13, fontWeight: 700, color: '#2b579a' }}>1. Executive Summary</h2>
             <p>Gold continues its bullish trajectory with DEMA confirmation on the daily timeframe. The AFL strategy backtest returned +38.7% over the 2015-2025 period with a maximum drawdown of -12.3%.</p>
             <h2 style={{ fontSize: 13, fontWeight: 700, color: '#2b579a' }}>2. AUD/USD Technical Analysis</h2>
-            <p>Fibonacci retracement analysis shows key resistance at the 61.8% level (0.67803). RSI divergence at 42.31 suggests bearish momentum. RBA{"'"}s dovish guidance supports short AUD positions.</p>
+            <p>{"Fibonacci retracement analysis shows key resistance at the 61.8% level (0.67803). RSI divergence at 42.31 suggests bearish momentum. RBA's dovish guidance supports short AUD positions."}</p>
             <h2 style={{ fontSize: 13, fontWeight: 700, color: '#2b579a' }}>3. Portfolio Risk Assessment</h2>
             <p>Portfolio VaR (95%) stands at -4.88%. Sharpe ratio of 1.37 is within acceptable range. Recommend reducing FX exposure by 2% and increasing bond allocation.</p>
             <div className="mt-2 p-2 rounded" style={{ background: '#f0f4ff', border: '1px solid #d0daf0' }}>
@@ -827,10 +838,7 @@ function DesktopIcon({ label, color, letter }: { label: string; color: string; l
 /*  Determine visible windows per phase                                */
 /* ------------------------------------------------------------------ */
 
-type AppKey = 'amibroker' | 'afl-editor' | 'optuma' | 'outlook' | 'excel' | 'edge' | 'word';
-
-function getVisibleWindows(step: number): AppKey[] {
-  if (step < 2) return ['amibroker', 'optuma'];
+function getVisibleWindows(step: number): [AppKey, AppKey] {
   if (step < 5) return ['amibroker', 'optuma'];
   if (step < 10) return ['afl-editor', 'amibroker'];
   if (step < 14) return ['optuma', 'afl-editor'];
@@ -839,6 +847,82 @@ function getVisibleWindows(step: number): AppKey[] {
   if (step < 28) return ['edge', 'excel'];
   if (step < 31) return ['word', 'edge'];
   return ['amibroker', 'optuma'];
+}
+
+/* ------------------------------------------------------------------ */
+/*  Cursor targets per app                                             */
+/* ------------------------------------------------------------------ */
+
+const CURSOR_TARGETS: Record<string, { x: number; y: number }> = {
+  amibroker: { x: 18, y: 30 },
+  'afl-editor': { x: 18, y: 35 },
+  optuma: { x: 58, y: 30 },
+  outlook: { x: 18, y: 30 },
+  excel: { x: 18, y: 35 },
+  edge: { x: 58, y: 30 },
+  word: { x: 18, y: 30 },
+};
+
+/* ------------------------------------------------------------------ */
+/*  App label helper                                                   */
+/* ------------------------------------------------------------------ */
+
+function getAppLabel(app: string | null): string {
+  if (!app) return 'SYSTEM';
+  const labels: Record<string, string> = {
+    amibroker: 'AMIBROKER',
+    'afl-editor': 'AFL EDITOR',
+    optuma: 'OPTUMA',
+    outlook: 'OUTLOOK',
+    excel: 'EXCEL',
+    edge: 'EDGE',
+    word: 'WORD',
+  };
+  return labels[app] || 'SYSTEM';
+}
+
+function getAppTagColor(app: string): { bg: string; fg: string } {
+  const colors: Record<string, { bg: string; fg: string }> = {
+    amibroker: { bg: '#e8912d20', fg: '#e8912d' },
+    'afl-editor': { bg: '#e8912d20', fg: '#e8912d' },
+    optuma: { bg: '#1a527620', fg: '#1a5276' },
+    outlook: { bg: '#0078d420', fg: '#0078d4' },
+    excel: { bg: '#21734620', fg: '#217346' },
+    edge: { bg: '#0078d420', fg: '#0078d4' },
+    word: { bg: '#2b579a20', fg: '#2b579a' },
+  };
+  return colors[app] || { bg: '#33333320', fg: '#333' };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Taskbar apps config                                                */
+/* ------------------------------------------------------------------ */
+
+const TASKBAR_APPS: { key: AppKey; bg: string; icon: React.ReactNode }[] = [
+  { key: 'amibroker', bg: '#e8912d', icon: <span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>AB</span> },
+  { key: 'afl-editor', bg: '#e8912d', icon: <FileCode size={10} color="#fff" /> },
+  { key: 'optuma', bg: '#1a5276', icon: <span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>O</span> },
+  { key: 'outlook', bg: '#0078d4', icon: <Mail size={10} color="#fff" /> },
+  { key: 'excel', bg: '#217346', icon: <FileSpreadsheet size={10} color="#fff" /> },
+  { key: 'edge', bg: '#0078d4', icon: <Globe size={10} color="#fff" /> },
+  { key: 'word', bg: '#2b579a', icon: <FileText size={10} color="#fff" /> },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Window renderer                                                    */
+/* ------------------------------------------------------------------ */
+
+function renderWindow(appKey: AppKey, isActive: boolean, yangWorking: boolean): React.ReactNode {
+  switch (appKey) {
+    case 'amibroker': return <AmiBrokerWindow isActive={isActive} yangWorking={yangWorking} />;
+    case 'afl-editor': return <AFLEditorWindow isActive={isActive} yangWorking={yangWorking} />;
+    case 'optuma': return <OptumaWindow isActive={isActive} yangWorking={yangWorking} />;
+    case 'outlook': return <OutlookWindow isActive={isActive} yangWorking={yangWorking} />;
+    case 'excel': return <ExcelWindow isActive={isActive} yangWorking={yangWorking} />;
+    case 'edge': return <EdgeWindow isActive={isActive} yangWorking={yangWorking} />;
+    case 'word': return <WordWindow isActive={isActive} yangWorking={yangWorking} />;
+    default: return null;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -859,16 +943,15 @@ export default function AutopilotPage() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const logContainerRef = useRef<HTMLDivElement>(null);
 
-  const c = {
-    bg: isDark ? '#121212' : '#f5f5f5',
-    card: isDark ? '#1E1E1E' : '#ffffff',
-    border: isDark ? '#333' : '#e0e0e0',
-    text: isDark ? '#ffffff' : '#212121',
-    muted: isDark ? '#9E9E9E' : '#757575',
-    accent: '#FEC00F',
-    accentText: '#212121',
-  };
+  const bg = isDark ? '#121212' : '#f5f5f5';
+  const card = isDark ? '#1E1E1E' : '#ffffff';
+  const border = isDark ? '#333' : '#e0e0e0';
+  const text = isDark ? '#ffffff' : '#212121';
+  const muted = isDark ? '#9E9E9E' : '#757575';
+  const accent = '#FEC00F';
+  const accentText = '#212121';
 
+  // Clock
   useEffect(() => {
     const tick = () => setCurrentTime(new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }));
     tick();
@@ -876,12 +959,18 @@ export default function AutopilotPage() {
     return () => clearInterval(id);
   }, []);
 
+  // Auto-scroll log
   useEffect(() => {
-    if (logContainerRef.current) logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    if (logContainerRef.current) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
   }, [logs]);
 
+  // Cleanup on unmount
   useEffect(() => {
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, []);
 
   const startDemo = useCallback(() => {
@@ -892,6 +981,8 @@ export default function AutopilotPage() {
     setActiveApp(null);
     setCurrentStep(0);
     let step = 0;
+
+    if (intervalRef.current) clearInterval(intervalRef.current);
 
     intervalRef.current = setInterval(() => {
       if (step >= DEMO_ACTIONS.length) {
@@ -907,12 +998,7 @@ export default function AutopilotPage() {
       setCurrentStep(step);
       if (action.app) {
         setActiveApp(action.app);
-        const targets: Record<string, { x: number; y: number }> = {
-          amibroker: { x: 18, y: 30 }, 'afl-editor': { x: 18, y: 35 },
-          optuma: { x: 58, y: 30 }, outlook: { x: 18, y: 30 },
-          excel: { x: 18, y: 35 }, edge: { x: 58, y: 30 }, word: { x: 18, y: 30 },
-        };
-        const t = targets[action.app] ?? { x: 50, y: 50 };
+        const t = CURSOR_TARGETS[action.app] || { x: 50, y: 50 };
         setCursorPos({ x: t.x + Math.random() * 18, y: t.y + Math.random() * 15 });
       } else {
         setCursorPos({ x: 35 + Math.random() * 30, y: 25 + Math.random() * 35 });
@@ -922,7 +1008,10 @@ export default function AutopilotPage() {
   }, [isRunning]);
 
   const resetDemo = useCallback(() => {
-    if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
     setIsRunning(false);
     setDemoComplete(false);
     setLogs([]);
@@ -933,64 +1022,43 @@ export default function AutopilotPage() {
 
   const todayDate = new Date().toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' });
   const visibleWindows = getVisibleWindows(currentStep);
-
-  const windowComponents: Record<AppKey, (active: boolean, working: boolean) => React.ReactNode> = {
-    amibroker: (a, w) => <AmiBrokerWindow isActive={a} yangWorking={w} />,
-    'afl-editor': (a, w) => <AFLEditorWindow isActive={a} yangWorking={w} />,
-    optuma: (a, w) => <OptumaWindow isActive={a} yangWorking={w} />,
-    outlook: (a, w) => <OutlookWindow isActive={a} yangWorking={w} />,
-    excel: (a, w) => <ExcelWindow isActive={a} yangWorking={w} />,
-    edge: (a, w) => <EdgeWindow isActive={a} yangWorking={w} />,
-    word: (a, w) => <WordWindow isActive={a} yangWorking={w} />,
-  };
-
-  const taskbarApps: { key: AppKey; label: string; bg: string; icon: React.ReactNode }[] = [
-    { key: 'amibroker', label: 'AB', bg: '#e8912d', icon: <span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>AB</span> },
-    { key: 'afl-editor', label: 'AFL', bg: '#e8912d', icon: <FileCode size={10} color="#fff" /> },
-    { key: 'optuma', label: 'O', bg: '#1a5276', icon: <span style={{ fontSize: 7, fontWeight: 800, color: '#fff' }}>O</span> },
-    { key: 'outlook', label: 'OL', bg: '#0078d4', icon: <Mail size={10} color="#fff" /> },
-    { key: 'excel', label: 'XL', bg: '#217346', icon: <FileSpreadsheet size={10} color="#fff" /> },
-    { key: 'edge', label: 'E', bg: '#0078d4', icon: <Globe size={10} color="#fff" /> },
-    { key: 'word', label: 'W', bg: '#2b579a', icon: <FileText size={10} color="#fff" /> },
-  ];
-
   const progressPercent = DEMO_ACTIONS.length > 0 ? Math.round((logs.length / DEMO_ACTIONS.length) * 100) : 0;
 
   return (
-    <div className="min-h-screen p-4 lg:p-6" style={{ background: c.bg, color: c.text }}>
+    <div className="min-h-screen p-4 lg:p-6" style={{ background: bg, color: text }}>
       {/* Header */}
       <div className="max-w-[1440px] mx-auto mb-4">
         <div className="flex items-center justify-center mb-4">
           <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold tracking-wider shadow-lg"
-            style={{ background: c.accent, color: c.accentText }}>
+            style={{ background: accent, color: accentText }}>
             <Zap className="w-4 h-4" /> COMING SOON
           </div>
         </div>
         <h1 className="text-2xl lg:text-3xl font-bold text-center mb-1 text-balance" style={{ fontFamily: "'Rajdhani', sans-serif", letterSpacing: '1px' }}>
           Auto Pilot Preview
         </h1>
-        <p className="text-center text-sm mb-4" style={{ color: c.muted }}>
+        <p className="text-center text-sm mb-4" style={{ color: muted }}>
           Watch Yang autonomously manage 7 applications -- writing AFL code, composing emails, building spreadsheets, researching markets, and creating reports.
         </p>
 
         <div className="flex justify-center mb-6">
           <button
             onClick={isRunning ? undefined : demoComplete ? resetDemo : startDemo}
-            className="group relative flex items-center gap-3 px-10 py-4 rounded-xl text-lg font-bold tracking-wide transition-all duration-300"
+            disabled={isRunning}
+            className="group relative flex items-center gap-3 px-10 py-4 rounded-xl text-lg font-bold tracking-wide transition-all duration-300 disabled:cursor-not-allowed"
             style={{
-              background: isRunning ? (isDark ? '#333' : '#9E9E9E') : c.accent,
-              color: c.accentText,
+              background: isRunning ? (isDark ? '#333' : '#9E9E9E') : accent,
+              color: accentText,
               boxShadow: isRunning ? 'none' : '0 0 30px rgba(254, 192, 15, 0.45)',
-              cursor: isRunning ? 'not-allowed' : 'pointer',
               opacity: isRunning ? 0.6 : 1,
             }}
           >
             {isRunning ? (
-              <><Loader2 className="w-5 h-5 animate-spin" />Yang is Working...</>
+              <><Loader2 className="w-5 h-5 animate-spin" /> Yang is Working...</>
             ) : demoComplete ? (
-              <><RotateCcw className="w-5 h-5" />Replay Demo</>
+              <><RotateCcw className="w-5 h-5" /> Replay Demo</>
             ) : (
-              <><Play className="w-5 h-5" />Go into Autopilot</>
+              <><Play className="w-5 h-5" /> Go into Autopilot</>
             )}
             {!isRunning && !demoComplete && (
               <span className="absolute inset-0 rounded-xl animate-ping pointer-events-none" style={{ border: '2px solid #FEC00F', opacity: 0.35 }} />
@@ -1020,13 +1088,13 @@ export default function AutopilotPage() {
             {/* Left window */}
             <div className="absolute transition-all duration-700 ease-in-out"
               style={{ left: '7%', top: '2%', width: '48%', height: '84%', zIndex: activeApp === visibleWindows[0] ? 20 : 10 }}>
-              {windowComponents[visibleWindows[0]](activeApp === visibleWindows[0], isRunning && activeApp === visibleWindows[0])}
+              {renderWindow(visibleWindows[0], activeApp === visibleWindows[0], isRunning && activeApp === visibleWindows[0])}
             </div>
 
             {/* Right window */}
             <div className="absolute transition-all duration-700 ease-in-out"
               style={{ right: '1%', top: '4%', width: '46%', height: '82%', zIndex: activeApp === visibleWindows[1] ? 20 : 10 }}>
-              {windowComponents[visibleWindows[1]](activeApp === visibleWindows[1], isRunning && activeApp === visibleWindows[1])}
+              {renderWindow(visibleWindows[1], activeApp === visibleWindows[1], isRunning && activeApp === visibleWindows[1])}
             </div>
 
             {/* Cursor */}
@@ -1072,29 +1140,37 @@ export default function AutopilotPage() {
               <ChevronUp size={14} style={{ color: isDark ? '#aaa' : '#666' }} />
             </div>
             <div className="flex items-center gap-1">
-              {/* Windows */}
+              {/* Windows logo */}
               <div className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-white/10 cursor-default">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill={isDark ? '#fff' : '#0078d4'}>
-                  <rect x="0" y="0" width="7.2" height="7.2" rx="0.5" /><rect x="8.8" y="0" width="7.2" height="7.2" rx="0.5" />
-                  <rect x="0" y="8.8" width="7.2" height="7.2" rx="0.5" /><rect x="8.8" y="8.8" width="7.2" height="7.2" rx="0.5" />
+                  <rect x="0" y="0" width="7.2" height="7.2" rx="0.5" />
+                  <rect x="8.8" y="0" width="7.2" height="7.2" rx="0.5" />
+                  <rect x="0" y="8.8" width="7.2" height="7.2" rx="0.5" />
+                  <rect x="8.8" y="8.8" width="7.2" height="7.2" rx="0.5" />
                 </svg>
               </div>
+              {/* Search */}
               <div className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-white/10 cursor-default">
                 <Search size={16} style={{ color: isDark ? '#ccc' : '#555' }} />
               </div>
               {/* App icons */}
-              {taskbarApps.map((app) => (
-                <div key={app.key} className="relative w-10 h-10 flex items-center justify-center rounded-md cursor-default transition-colors"
-                  style={{ background: activeApp === app.key ? (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)') : 'transparent' }}>
-                  <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: app.bg }}>
-                    {app.icon}
+              {TASKBAR_APPS.map((app) => {
+                const isVisible = visibleWindows.includes(app.key);
+                const isActiveApp = activeApp === app.key;
+                return (
+                  <div key={app.key} className="relative w-10 h-10 flex items-center justify-center rounded-md cursor-default transition-colors"
+                    style={{ background: isActiveApp ? (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)') : 'transparent' }}>
+                    <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: app.bg }}>
+                      {app.icon}
+                    </div>
+                    {isVisible && (
+                      <div className="absolute bottom-1 rounded-full" style={{ width: isActiveApp ? 12 : 4, height: 2, background: isActiveApp ? '#FEC00F' : (isDark ? '#888' : '#aaa') }} />
+                    )}
                   </div>
-                  {visibleWindows.includes(app.key) && (
-                    <div className="absolute bottom-1 rounded-full" style={{ width: activeApp === app.key ? 12 : 4, height: 2, background: activeApp === app.key ? '#FEC00F' : isDark ? '#888' : '#aaa' }} />
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
+            {/* System tray */}
             <div className="flex items-center gap-2">
               <Wifi size={13} style={{ color: isDark ? '#ccc' : '#555' }} />
               <Volume2 size={13} style={{ color: isDark ? '#ccc' : '#555' }} />
@@ -1108,12 +1184,12 @@ export default function AutopilotPage() {
         </div>
 
         {/* Activity Log */}
-        <div className="rounded-xl overflow-hidden flex flex-col" style={{ background: c.card, border: `1px solid ${c.border}`, maxHeight: 660 }}>
-          <div className="flex items-center gap-2 px-4 py-3 flex-shrink-0" style={{ borderBottom: `1px solid ${c.border}` }}>
-            <Activity className="w-4 h-4" style={{ color: c.accent }} />
+        <div className="rounded-xl overflow-hidden flex flex-col" style={{ background: card, border: `1px solid ${border}`, maxHeight: 660 }}>
+          <div className="flex items-center gap-2 px-4 py-3 flex-shrink-0" style={{ borderBottom: `1px solid ${border}` }}>
+            <Activity className="w-4 h-4" style={{ color: accent }} />
             <span className="text-sm font-bold tracking-wide" style={{ fontFamily: "'Rajdhani', sans-serif" }}>ACTIVITY LOG</span>
             {logs.length > 0 && (
-              <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: isDark ? '#333' : '#e0e0e0', color: c.muted }}>
+              <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: isDark ? '#333' : '#e0e0e0', color: muted }}>
                 {logs.length}/{DEMO_ACTIONS.length}
               </span>
             )}
@@ -1121,63 +1197,53 @@ export default function AutopilotPage() {
 
           {/* Progress bar */}
           {logs.length > 0 && (
-            <div className="px-4 py-2 flex-shrink-0" style={{ borderBottom: `1px solid ${c.border}` }}>
+            <div className="px-4 py-2 flex-shrink-0" style={{ borderBottom: `1px solid ${border}` }}>
               <div className="flex items-center justify-between mb-1">
-                <span style={{ fontSize: 9, color: c.muted }}>Progress</span>
-                <span style={{ fontSize: 9, color: c.muted, fontWeight: 600 }}>{progressPercent}%</span>
+                <span style={{ fontSize: 9, color: muted }}>Progress</span>
+                <span style={{ fontSize: 9, color: muted, fontWeight: 600 }}>{progressPercent}%</span>
               </div>
               <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: isDark ? '#333' : '#e0e0e0' }}>
-                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progressPercent}%`, background: c.accent }} />
+                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progressPercent}%`, background: accent }} />
               </div>
-              {/* Phase indicator */}
               <div className="mt-1.5 flex items-center gap-1">
-                <span className="text-[8px] font-bold px-1.5 py-0.5 rounded" style={{
-                  background: isDark ? '#333' : '#e8e8e8',
-                  color: activeApp ? c.text : c.muted,
-                }}>
-                  {activeApp === 'amibroker' ? 'AMIBROKER' : activeApp === 'afl-editor' ? 'AFL EDITOR' :
-                   activeApp === 'optuma' ? 'OPTUMA' : activeApp === 'outlook' ? 'OUTLOOK' :
-                   activeApp === 'excel' ? 'EXCEL' : activeApp === 'edge' ? 'EDGE' :
-                   activeApp === 'word' ? 'WORD' : 'SYSTEM'}
+                <span className="text-[8px] font-bold px-1.5 py-0.5 rounded" style={{ background: isDark ? '#333' : '#e8e8e8', color: text }}>
+                  {getAppLabel(activeApp)}
                 </span>
               </div>
             </div>
           )}
 
+          {/* Log entries */}
           <div ref={logContainerRef} className="flex-1 overflow-y-auto p-3 space-y-2">
             {logs.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full py-12" style={{ color: c.muted }}>
+              <div className="flex flex-col items-center justify-center h-full py-12" style={{ color: muted }}>
                 <Clock className="w-8 h-8 mb-3 opacity-40" />
                 <p className="text-xs text-center">Activity will appear here once the demo starts.</p>
               </div>
             ) : (
-              logs.map((log) => (
-                <div key={log.id} className="flex items-start gap-2 p-2.5 rounded-lg text-xs transition-all duration-300"
-                  style={{
-                    background: isDark ? '#0d1117' : '#fafafa',
-                    border: `1px solid ${log.status === 'success' ? 'rgba(16, 185, 129, 0.4)' : log.status === 'active' ? 'rgba(254, 192, 15, 0.4)' : c.border}`,
-                  }}>
-                  <StatusDot status={log.status} />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 mb-0.5">
-                      <span className="font-semibold" style={{ color: c.muted, fontSize: 10 }}>{log.time}</span>
-                      {log.app && (
-                        <span className="text-[8px] font-bold px-1 py-0 rounded" style={{
-                          background: log.app === 'amibroker' || log.app === 'afl-editor' ? '#e8912d20' :
-                                     log.app === 'optuma' ? '#1a527620' : log.app === 'outlook' ? '#0078d420' :
-                                     log.app === 'excel' ? '#21734620' : log.app === 'edge' ? '#0078d420' : '#2b579a20',
-                          color: log.app === 'amibroker' || log.app === 'afl-editor' ? '#e8912d' :
-                                 log.app === 'optuma' ? '#1a5276' : log.app === 'outlook' ? '#0078d4' :
-                                 log.app === 'excel' ? '#217346' : log.app === 'edge' ? '#0078d4' : '#2b579a',
-                        }}>
-                          {log.app === 'afl-editor' ? 'AFL' : log.app.toUpperCase()}
-                        </span>
-                      )}
+              logs.map((log) => {
+                const tagColor = log.app ? getAppTagColor(log.app) : null;
+                return (
+                  <div key={log.id} className="flex items-start gap-2 p-2.5 rounded-lg text-xs transition-all duration-300"
+                    style={{
+                      background: isDark ? '#0d1117' : '#fafafa',
+                      border: `1px solid ${log.status === 'success' ? 'rgba(16, 185, 129, 0.4)' : log.status === 'active' ? 'rgba(254, 192, 15, 0.4)' : border}`,
+                    }}>
+                    <StatusDot status={log.status} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="font-semibold" style={{ color: muted, fontSize: 10 }}>{log.time}</span>
+                        {log.app && tagColor && (
+                          <span className="text-[8px] font-bold px-1 py-0 rounded" style={{ background: tagColor.bg, color: tagColor.fg }}>
+                            {log.app === 'afl-editor' ? 'AFL' : log.app.toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                      <span style={{ color: text, lineHeight: '1.4' }}>{log.action}</span>
                     </div>
-                    <span style={{ color: c.text, lineHeight: '1.4' }}>{log.action}</span>
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>
@@ -1191,10 +1257,10 @@ export default function AutopilotPage() {
           { icon: Brain, title: 'Skill Acquisition', desc: 'Learns new workflows by observing -- no manual programming required.' },
           { icon: Layers, title: 'Multi-App Orchestration', desc: 'Seamlessly manages AmiBroker, Optuma, Outlook, Excel, Edge, and Word.' },
         ].map((f) => (
-          <div key={f.title} className="p-4 rounded-xl" style={{ background: c.card, border: `1px solid ${c.border}` }}>
-            <f.icon className="w-5 h-5 mb-2" style={{ color: c.accent }} />
+          <div key={f.title} className="p-4 rounded-xl" style={{ background: card, border: `1px solid ${border}` }}>
+            <f.icon className="w-5 h-5 mb-2" style={{ color: accent }} />
             <h4 className="text-sm font-bold mb-1">{f.title}</h4>
-            <p className="text-xs leading-relaxed" style={{ color: c.muted }}>{f.desc}</p>
+            <p className="text-xs leading-relaxed" style={{ color: muted }}>{f.desc}</p>
           </div>
         ))}
       </div>
