@@ -28,7 +28,6 @@ import {
   Plus,
   Trash2,
   FileText,
-  ArrowRight as ArrowRightIcon,
   Laptop,
   ChevronLeft,
   ChevronUp,
@@ -2011,7 +2010,7 @@ fun AnalystTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
                   ].map((item) => (
                     <div key={item.lucide} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', borderRadius: '8px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}`, fontSize: '12px' }}>
                       <code style={{ color: '#FEC00F', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.lucide}</code>
-                      <ArrowRightIcon size={10} color={colors.textMuted} />
+                      <ArrowRight size={10} color={colors.textMuted} />
                       <code style={{ color: '#8ddb8c', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.native}</code>
                     </div>
                   ))}
@@ -2369,7 +2368,7 @@ fun AnalystTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
                   ].map((item) => (
                     <div key={item.lucide} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', borderRadius: '8px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}`, fontSize: '12px' }}>
                       <code style={{ color: '#FEC00F', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.lucide}</code>
-                      <ArrowRightIcon size={10} color={colors.textMuted} />
+                      <ArrowRight size={10} color={colors.textMuted} />
                       <code style={{ color: '#6cb6ff', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.native}</code>
                     </div>
                   ))}

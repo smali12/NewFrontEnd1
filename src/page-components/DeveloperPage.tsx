@@ -30,19 +30,17 @@ import {
   Plus,
   Trash2,
   FileText,
-  ArrowRight as ArrowRightIcon,
   Tablet,
   Laptop,
   ChevronLeft,
   Wifi,
   BatteryFull,
   Signal,
-  Watch,
+  Clock,
   Glasses,
   Mic,
   Bell,
   Activity,
-  Hand,
   ClipboardCopy,
   Volume2,
 } from 'lucide-react'
@@ -1076,7 +1074,7 @@ function VisionProFrame({
           {/* Eye tracking reticle hint */}
           <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', alignItems: 'center', gap: '4px', padding: '3px 8px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.06)' }}>
             <Eye size={8} color="#999" />
-            <Hand size={8} color="#999" />
+            <Sparkles size={8} color="#999" />
           </div>
         </div>
       </div>
@@ -1198,7 +1196,7 @@ function VisionProChatMockup({ colors }: { colors: Record<string, string> }) {
       </div>
       {/* Spatial keyboard hint */}
       <div style={{ padding: '10px 14px', borderRadius: '14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <Hand size={12} color="#666" />
+        <Sparkles size={12} color="#666" />
         <span style={{ fontSize: '10px', color: '#757575', flex: 1 }}>Ask Yang anything...</span>
         <Mic size={12} color="#FEC00F" />
         <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#FEC00F', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -1257,7 +1255,7 @@ function VisionProDataVizMockup({ colors }: { colors: Record<string, string> }) 
       </div>
       {/* Gesture hint */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '8px' }}>
-        <Hand size={10} color="#666" />
+        <Sparkles size={10} color="#666" />
         <span style={{ fontSize: '8px', color: '#555' }}>Pinch to zoom - Rotate to explore</span>
       </div>
     </div>
@@ -1491,7 +1489,7 @@ export function DeveloperPage() {
               { label: 'SwiftUI 5', icon: Code2 },
               { label: 'iOS 17+', icon: Smartphone },
               { label: 'iPad + Mac', icon: Tablet },
-              { label: 'Apple Watch', icon: Watch },
+              { label: 'Apple Watch', icon: Clock },
               { label: 'Vision Pro', icon: Glasses },
               { label: 'MVVM', icon: GitBranch },
             ].map((b) => {
@@ -1526,7 +1524,7 @@ export function DeveloperPage() {
               { id: 'iphone', label: 'iPhone 15 Pro', icon: Smartphone },
               { id: 'ipad', label: 'iPad Pro', icon: Tablet },
               { id: 'mac', label: 'Mac (Catalyst)', icon: Laptop },
-              { id: 'watch', label: 'Apple Watch', icon: Watch },
+              { id: 'watch', label: 'Apple Watch', icon: Clock },
               { id: 'visionpro', label: 'Vision Pro', icon: Glasses },
             ] as const).map((device) => {
               const Icon = device.icon
@@ -2620,7 +2618,7 @@ struct ChatInputView: View {
               ].map((item) => (
                 <div key={item.lucide} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', borderRadius: '8px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}`, fontSize: '12px' }}>
                   <code style={{ color: '#FEC00F', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.lucide}</code>
-                  <ArrowRightIcon size={10} color={colors.textMuted} />
+                  <ArrowRight size={10} color={colors.textMuted} />
                   <code style={{ color: '#8ddb8c', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.sf}</code>
                 </div>
               ))}
