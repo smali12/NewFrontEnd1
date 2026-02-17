@@ -1336,121 +1336,150 @@ function CopyAsMarkdownButton({
   )
 }
 
-// ─── CarPlay Mockup ───────────────────────────────────────────────────────
+// ─── CarPlay Vehicle Headunit Mockup ──────────────────────────────────────
 function CarPlayMockup({ colors }: { colors: Record<string, string> }) {
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'linear-gradient(180deg, #000 0%, #0a0a0a 100%)' }}>
-      {/* CarPlay Status Bar */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 16px', borderBottom: '1px solid #1a1a1a' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Clock size={10} color="#fff" />
-          <span style={{ fontSize: '11px', color: '#fff', fontWeight: 600 }}>{'2:30 PM'}</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Signal size={10} color="#fff" />
-          <Wifi size={10} color="#fff" />
-        </div>
-      </div>
-      
-      {/* Main Content Area */}
-      <div style={{ flex: 1, padding: '12px', display: 'flex', gap: '12px' }}>
-        {/* Left: App Grid */}
-        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-          {/* Navigation App */}
-          <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #4A90E2 0%, #357ABD 100%)', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 12px rgba(74,144,226,0.3)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ width: '20px', height: '20px', borderRadius: '6px', backgroundColor: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: '12px' }}>{'📍'}</span>
+    <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)', padding: '20px' }}>
+      {/* Vehicle Headunit Display - Widescreen Landscape */}
+      <div style={{ width: '100%', maxWidth: '900px', aspectRatio: '16/9', background: '#000', borderRadius: '8px', overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.05)' }}>
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'linear-gradient(180deg, #0a0a0a 0%, #000 100%)' }}>
+          
+          {/* Status Bar */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Clock size={16} color="#fff" />
+                <span style={{ fontSize: '16px', color: '#fff', fontWeight: 600 }}>{'2:30 PM'}</span>
               </div>
+              <div style={{ fontSize: '14px', color: '#999' }}>{'72°F'}</div>
             </div>
-            <div>
-              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.7)', marginBottom: '2px' }}>{'Navigation'}</div>
-              <div style={{ fontSize: '11px', color: '#fff', fontWeight: 700 }}>{'Home'}</div>
-              <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.6)', marginTop: '2px' }}>{'15 min'}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <Signal size={16} color="#5AC85A" />
+              <Wifi size={16} color="#fff" />
+              <span style={{ fontSize: '14px', color: '#fff', fontWeight: 600 }}>{'P'}</span>
             </div>
-          </div>
-
-          {/* Media/Music App */}
-          <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #E94E77 0%, #C93E68 100%)', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 12px rgba(233,78,119,0.3)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Volume2 size={16} color="#fff" />
-            </div>
-            <div>
-              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.7)', marginBottom: '2px' }}>{'Now Playing'}</div>
-              <div style={{ fontSize: '10px', color: '#fff', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{'Market Analysis Pod...'}</div>
-              <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.6)', marginTop: '2px' }}>{'Potomac Trading'}</div>
-            </div>
-          </div>
-
-          {/* Messages App */}
-          <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #5AC85A 0%, #49B449 100%)', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 12px rgba(90,200,90,0.3)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MessageCircle size={16} color="#fff" />
-              <div style={{ width: '16px', height: '16px', borderRadius: '50%', backgroundColor: '#ff3b30', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8px', color: '#fff', fontWeight: 700 }}>
-                {'3'}
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.7)', marginBottom: '2px' }}>{'Messages'}</div>
-              <div style={{ fontSize: '10px', color: '#fff', fontWeight: 700 }}>{'Yang'}</div>
-              <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.6)', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{'Trade alert: AAPL'}</div>
-            </div>
-          </div>
-
-          {/* Phone App */}
-          <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #FEC00F 0%, #E5AD00 100%)', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 12px rgba(254,192,15,0.3)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Mic size={16} color="#0a0a0a" />
-            </div>
-            <div>
-              <div style={{ fontSize: '9px', color: 'rgba(0,0,0,0.6)', marginBottom: '2px' }}>{'Siri'}</div>
-              <div style={{ fontSize: '10px', color: '#0a0a0a', fontWeight: 700 }}>{'Press to speak'}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Now Playing Card */}
-        <div style={{ width: '140px', borderRadius: '16px', background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)', padding: '14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', border: '1px solid #333' }}>
-          <div>
-            <div style={{ width: '100%', aspectRatio: '1', borderRadius: '12px', background: 'linear-gradient(135deg, #C93E68 0%, #E94E77 100%)', marginBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Volume2 size={32} color="#fff" />
-            </div>
-            <div style={{ fontSize: '10px', color: '#fff', fontWeight: 700, marginBottom: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{'Market Analysis Podcast'}</div>
-            <div style={{ fontSize: '8px', color: '#999', marginBottom: '8px' }}>{'Potomac Trading Insights'}</div>
           </div>
           
-          {/* Playback Controls */}
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '14px', marginBottom: '10px' }}>
-              <ChevronLeft size={18} color="#fff" style={{ cursor: 'pointer' }} />
-              <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                <span style={{ fontSize: '12px' }}>{'▶'}</span>
+          {/* Main Content - Split View */}
+          <div style={{ flex: 1, display: 'flex', gap: '1px', background: 'rgba(255,255,255,0.05)' }}>
+            
+            {/* Left: Navigation */}
+            <div style={{ flex: 2, background: '#000', position: 'relative', display: 'flex', flexDirection: 'column' }}>
+              {/* Map Simulation */}
+              <div style={{ flex: 1, background: 'linear-gradient(135deg, #1a4d2e 0%, #0d2818 100%)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ position: 'absolute', top: 20, left: 20, right: 20 }}>
+                  <div style={{ background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div style={{ width: '48px', height: '48px', borderRadius: '8px', background: 'linear-gradient(135deg, #4A90E2, #357ABD)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span style={{ fontSize: '24px' }}>{'🧭'}</span>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: '18px', color: '#fff', fontWeight: 700, marginBottom: '4px' }}>{'Main Street'}</div>
+                      <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>{'in 0.3 miles, turn right'}</div>
+                    </div>
+                    <div style={{ fontSize: '28px', fontWeight: 700, color: '#4A90E2' }}>{'15'}</div>
+                    <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>{'min'}</div>
+                  </div>
+                </div>
+                
+                {/* Route indicator */}
+                <div style={{ fontSize: '80px', opacity: 0.2 }}>{'➡️'}</div>
+                
+                {/* Bottom nav controls */}
+                <div style={{ position: 'absolute', bottom: 20, right: 20, display: 'flex', gap: '12px' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                    <span style={{ fontSize: '20px' }}>{'🔍'}</span>
+                  </div>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                    <span style={{ fontSize: '20px' }}>{'🏠'}</span>
+                  </div>
+                </div>
               </div>
-              <ChevronRightIcon size={18} color="#fff" style={{ cursor: 'pointer' }} />
             </div>
             
-            {/* Progress Bar */}
-            <div style={{ height: '3px', borderRadius: '2px', backgroundColor: '#333', overflow: 'hidden', marginBottom: '4px' }}>
-              <div style={{ width: '45%', height: '100%', backgroundColor: '#fff', borderRadius: '2px' }} />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '7px', color: '#999' }}>
-              <span>{'12:34'}</span>
-              <span>{'28:00'}</span>
+            {/* Right: App Drawer & Now Playing */}
+            <div style={{ width: '320px', background: '#0a0a0a', display: 'flex', flexDirection: 'column' }}>
+              
+              {/* App Grid */}
+              <div style={{ padding: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                
+                {/* Phone App */}
+                <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #34C759 0%, #30B352 100%)', padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', transition: 'transform 0.2s', boxShadow: '0 4px 12px rgba(52,199,89,0.3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '28px' }}>{'📞'}</span>
+                    <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#ff3b30', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: '#fff', fontWeight: 700 }}>{'2'}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '16px', color: '#fff', fontWeight: 700 }}>{'Phone'}</div>
+                    <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', marginTop: '2px' }}>{'2 missed calls'}</div>
+                  </div>
+                </div>
+                
+                {/* Messages App */}
+                <div style={{ aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #FFD60A 0%, #FFC400 100%)', padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', transition: 'transform 0.2s', boxShadow: '0 4px 12px rgba(255,214,10,0.3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <MessageCircle size={28} color="#000" />
+                    <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#ff3b30', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: '#fff', fontWeight: 700 }}>{'5'}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '16px', color: '#000', fontWeight: 700 }}>{'Messages'}</div>
+                    <div style={{ fontSize: '12px', color: 'rgba(0,0,0,0.6)', marginTop: '2px' }}>{'Yang: Trade alert'}</div>
+                  </div>
+                </div>
+                
+              </div>
+              
+              {/* Now Playing */}
+              <div style={{ flex: 1, background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)', margin: '0 20px 20px', borderRadius: '20px', padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.3)' }}>
+                <div>
+                  <div style={{ width: '100%', aspectRatio: '1', borderRadius: '16px', background: 'linear-gradient(135deg, #E94E77 0%, #C93E68 100%)', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(233,78,119,0.4)' }}>
+                    <Volume2 size={48} color="#fff" />
+                  </div>
+                  <div style={{ fontSize: '16px', color: '#fff', fontWeight: 700, marginBottom: '4px' }}>{'Market Analysis Podcast'}</div>
+                  <div style={{ fontSize: '14px', color: '#999', marginBottom: '16px' }}>{'Potomac Trading Insights'}</div>
+                </div>
+                
+                {/* Playback Controls */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '24px', marginBottom: '16px' }}>
+                    <div style={{ cursor: 'pointer' }}>
+                      <ChevronLeft size={32} color="#999" />
+                    </div>
+                    <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(255,255,255,0.2)' }}>
+                      <span style={{ fontSize: '20px', marginLeft: '4px' }}>{'▶'}</span>
+                    </div>
+                    <div style={{ cursor: 'pointer' }}>
+                      <ChevronRightIcon size={32} color="#999" />
+                    </div>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div style={{ height: '4px', borderRadius: '2px', background: '#333', overflow: 'hidden', marginBottom: '8px' }}>
+                    <div style={{ width: '45%', height: '100%', background: '#fff', borderRadius: '2px' }} />
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#666' }}>
+                    <span>{'12:34'}</span>
+                    <span>{'28:00'}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '10px 16px', borderTop: '1px solid #1a1a1a' }}>
-        <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-          <span style={{ fontSize: '16px' }}>{'🏠'}</span>
-        </div>
-        <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(254,192,15,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-          <Activity size={18} color="#FEC00F" />
-        </div>
-        <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-          <Bell size={18} color="#fff" />
+          
+          {/* Bottom Control Bar */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '16px 24px', borderTop: '1px solid rgba(255,255,255,0.08)', background: 'rgba(0,0,0,0.5)' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <span style={{ fontSize: '24px' }}>{'🏠'}</span>
+            </div>
+            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(254,192,15,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <Activity size={24} color="#FEC00F" />
+            </div>
+            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <Mic size={24} color="#fff" />
+            </div>
+            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <Bell size={24} color="#fff" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1690,7 +1719,7 @@ export function DeveloperPage() {
             />
           </div>
 
-          {/* ── iPhone View ───────────────────────────────────────────── */}
+          {/* ── iPhone View ─────────────────────────────────────────���─── */}
           {activeDevice === 'iphone' && (
             <>
               {/* Screen tabs */}
