@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import {
   Code2,
   ArrowRight,
@@ -28,14 +28,20 @@ import {
   Plus,
   Trash2,
   FileText,
-  ArrowRight as ArrowRightIcon,
   Laptop,
   ChevronLeft,
+  ChevronUp,
   Wifi,
   BatteryFull,
   Signal,
   Smartphone,
   Tablet,
+  Tv,
+  Mic,
+  ClipboardCopy,
+  Volume2,
+  Activity,
+  Bell,
 } from 'lucide-react'
 import { useTheme } from '@/contexts/ThemeContext'
 
@@ -186,6 +192,7 @@ function WindowsFrame({
   colors: Record<string, string>
   title?: string
 }) {
+  const [showSnap, setShowSnap] = useState(false)
   return (
     <div>
       <div
@@ -200,20 +207,43 @@ function WindowsFrame({
       >
         {/* Windows title bar */}
         <div style={{ display: 'flex', alignItems: 'center', padding: '0 12px', height: '36px', backgroundColor: '#202020', borderBottom: `1px solid ${colors.border}` }}>
-          {/* App icon + title */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
             <div style={{ width: '16px', height: '16px', borderRadius: '4px', overflow: 'hidden' }}>
               <img src="/potomac-icon.png" alt="Analyst" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             <span style={{ fontSize: '12px', color: '#ccc', fontFamily: "'Segoe UI', system-ui, sans-serif" }}>{title}</span>
           </div>
-          {/* Window controls: minimize, maximize, close */}
+          {/* Window controls with Snap Layout on maximize hover */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div style={{ width: '46px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
               <div style={{ width: '10px', height: '1px', backgroundColor: '#999' }} />
             </div>
-            <div style={{ width: '46px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+            <div
+              onMouseEnter={() => setShowSnap(true)}
+              onMouseLeave={() => setShowSnap(false)}
+              style={{ width: '46px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', position: 'relative' }}
+            >
               <div style={{ width: '9px', height: '9px', border: '1px solid #999', borderRadius: '1px' }} />
+              {/* Snap Layout popup */}
+              {showSnap && (
+                <div style={{ position: 'absolute', top: '34px', right: '0', width: '120px', padding: '8px', borderRadius: '6px', backgroundColor: '#2a2a2a', border: '1px solid #444', boxShadow: '0 8px 24px rgba(0,0,0,0.5)', zIndex: 100 }}>
+                  <span style={{ fontSize: '8px', color: '#999', display: 'block', marginBottom: '6px', fontWeight: 600 }}>Snap layouts</span>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px' }}>
+                    {[
+                      ['50%', '50%'],
+                      ['33%', '67%'],
+                      ['25%', '25%', '50%'],
+                      ['25%', '25%', '25%', '25%'],
+                    ].map((layout, i) => (
+                      <div key={i} style={{ display: 'flex', gap: '2px', padding: '4px', borderRadius: '3px', backgroundColor: i === 0 ? 'rgba(254,192,15,0.15)' : 'transparent', border: `1px solid ${i === 0 ? 'rgba(254,192,15,0.3)' : '#444'}`, cursor: 'pointer' }}>
+                        {layout.map((w, j) => (
+                          <div key={j} style={{ width: w, height: '12px', borderRadius: '1px', backgroundColor: i === 0 ? '#FEC00F' : '#555' }} />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div style={{ width: '46px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', borderRadius: '0 6px 0 0' }}>
               <span style={{ fontSize: '16px', color: '#999', fontFamily: 'system-ui', lineHeight: 1 }}>{'x'}</span>
@@ -223,6 +253,25 @@ function WindowsFrame({
         {/* Screen content */}
         <div style={{ height: '380px', overflow: 'hidden', backgroundColor: colors.screenBg }}>
           {children}
+        </div>
+        {/* Windows Taskbar */}
+        <div style={{ height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', backgroundColor: '#1a1a1a', borderTop: '1px solid #333', padding: '0 12px' }}>
+          <div style={{ width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+            <div style={{ width: '12px', height: '12px', background: 'linear-gradient(135deg, #0078d4 25%, #0050a0 25%, #0050a0 50%, #0078d4 50%, #0078d4 75%, #0050a0 75%)', borderRadius: '2px' }} />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '3px 10px', borderRadius: '4px', backgroundColor: '#262626', flex: 1, maxWidth: '160px' }}>
+            <Search size={10} color="#666" />
+            <span style={{ fontSize: '9px', color: '#666' }}>Search</span>
+          </div>
+          <div style={{ width: '16px', height: '16px', borderRadius: '3px', overflow: 'hidden', border: '1px solid rgba(254,192,15,0.3)' }}>
+            <img src="/potomac-icon.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
+          <div style={{ flex: 1 }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '9px', color: '#888' }}>
+            <Wifi size={9} color="#888" />
+            <Volume2 size={9} color="#888" />
+            <span>9:41</span>
+          </div>
         </div>
       </div>
       {label && (
@@ -753,6 +802,359 @@ function WindowsDashboardMockup({ colors }: { colors: Record<string, string> }) 
 }
 
 // ========================================================================
+// SAMSUNG TV (TIZEN) COMPONENTS
+// ========================================================================
+
+function SamsungTVFrame({
+  children,
+  label,
+  isActive,
+  colors,
+}: {
+  children: React.ReactNode
+  label: string
+  isActive?: boolean
+  colors: Record<string, string>
+}) {
+  return (
+    <div>
+      <div
+        style={{
+          width: '680px',
+          height: '400px',
+          borderRadius: '6px',
+          border: `3px solid ${isActive ? '#FEC00F' : '#333'}`,
+          backgroundColor: '#000',
+          padding: '4px',
+          position: 'relative',
+          boxShadow: isActive ? '0 0 40px rgba(254,192,15,0.08), 0 20px 60px rgba(0,0,0,0.5)' : '0 20px 60px rgba(0,0,0,0.4)',
+        }}
+      >
+        {/* Screen */}
+        <div style={{ width: '100%', height: '100%', borderRadius: '3px', overflow: 'hidden', backgroundColor: colors.screenBg }}>
+          {children}
+        </div>
+        {/* Samsung logo hint */}
+        <div style={{ position: 'absolute', bottom: '-2px', left: '50%', transform: 'translateX(-50)', width: '12px', height: '4px', borderRadius: '0 0 2px 2px', backgroundColor: '#333' }} />
+      </div>
+      {/* TV Stand */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '240px', marginTop: '-2px' }}>
+        <div style={{ width: '60px', height: '20px', background: 'linear-gradient(180deg, #333 0%, #222 100%)', clipPath: 'polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%)' }} />
+        <div style={{ width: '60px', height: '20px', background: 'linear-gradient(180deg, #333 0%, #222 100%)', clipPath: 'polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%)' }} />
+      </div>
+      {label && (
+        <p style={{ textAlign: 'center', marginTop: '10px', fontFamily: "'Rajdhani', sans-serif", fontSize: '14px', fontWeight: 600, letterSpacing: '1px', color: isActive ? '#FEC00F' : colors.textMuted }}>
+          {label}
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ─── Tizen Home Screen ──────────────────────────────────────────────────
+function TizenHomeMockup({ colors, focusIndex = 0 }: { colors: Record<string, string>; focusIndex?: number }) {
+  const cards = [
+    { icon: LayoutDashboard, label: 'Dashboard', color: '#FEC00F', desc: 'Trading overview' },
+    { icon: MessageCircle, label: 'AI Chat', color: '#8B5CF6', desc: 'Ask Yang' },
+    { icon: Code2, label: 'AFL Generator', color: '#3B82F6', desc: 'Create strategies' },
+    { icon: Database, label: 'Knowledge', color: '#22C55E', desc: '24 documents' },
+    { icon: TrendingUp, label: 'Backtest', color: '#F97316', desc: 'Analyze results' },
+  ]
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#0a0a0a' }}>
+      {/* TV status bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 24px', height: '36px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '22px', height: '22px', borderRadius: '4px', overflow: 'hidden' }}>
+            <img src="/potomac-icon.png" alt="Analyst" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
+          <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '14px', fontWeight: 700, color: '#fff', letterSpacing: '1px' }}>ANALYST</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Wifi size={12} color="#888" />
+          <span style={{ fontSize: '11px', color: '#888', fontFamily: 'system-ui' }}>9:41 PM</span>
+          <div style={{ width: '22px', height: '22px', borderRadius: '50%', background: 'linear-gradient(135deg, #FEC00F, #FFD740)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontWeight: 700, fontSize: '9px', color: '#212121' }}>S</span>
+          </div>
+        </div>
+      </div>
+      {/* Featured area */}
+      <div style={{ padding: '8px 24px 12px' }}>
+        <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '20px', fontWeight: 700, color: '#fff', letterSpacing: '1px' }}>
+          Welcome, <span style={{ color: '#FEC00F' }}>Trader</span>
+        </span>
+        <p style={{ fontSize: '10px', color: '#888', marginTop: '2px' }}>Potomac Analyst Workbench - Trading intelligence on the big screen</p>
+      </div>
+      {/* Horizontal card rail */}
+      <div style={{ padding: '0 24px', display: 'flex', gap: '12px', overflow: 'hidden' }}>
+        {cards.map((c, i) => {
+          const Icon = c.icon
+          const isFocused = i === focusIndex
+          return (
+            <div key={c.label} style={{
+              width: '120px',
+              height: '120px',
+              borderRadius: '12px',
+              backgroundColor: '#1a1a1a',
+              border: isFocused ? '3px solid #FEC00F' : '2px solid #2E2E2E',
+              padding: '14px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              flexShrink: 0,
+              transition: 'all 0.2s ease',
+              transform: isFocused ? 'scale(1.05)' : 'scale(1)',
+              boxShadow: isFocused ? '0 0 24px rgba(254,192,15,0.2)' : 'none',
+            }}>
+              <div style={{ width: '28px', height: '28px', borderRadius: '8px', backgroundColor: `${c.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Icon size={14} color={c.color} />
+              </div>
+              <div>
+                <span style={{ fontSize: '10px', fontWeight: 600, color: isFocused ? '#FEC00F' : '#E8E8E8', display: 'block' }}>{c.label}</span>
+                <span style={{ fontSize: '7px', color: '#757575' }}>{c.desc}</span>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+      {/* Recently used rail */}
+      <div style={{ padding: '16px 24px 0' }}>
+        <span style={{ fontSize: '10px', color: '#666', fontWeight: 600, letterSpacing: '0.5px', fontFamily: "'Rajdhani', sans-serif" }}>RECENTLY USED</span>
+        <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
+          {['AAPL Strategy', 'RSI Analysis', 'Portfolio Review'].map((item) => (
+            <div key={item} style={{ padding: '6px 12px', borderRadius: '6px', backgroundColor: '#1a1a1a', border: '1px solid #2E2E2E' }}>
+              <span style={{ fontSize: '9px', color: '#999' }}>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* D-pad hint */}
+      <div style={{ flex: 1 }} />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '8px', borderTop: '1px solid #1E1E1E' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <ChevronUp size={8} color="#555" />
+            <div style={{ display: 'flex', gap: '6px' }}>
+              <ChevronLeft size={8} color="#555" />
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#333', border: '1px solid #555' }} />
+              <ChevronRightIcon size={8} color="#555" />
+            </div>
+            <ChevronDown size={8} color="#555" />
+          </div>
+        </div>
+        <span style={{ fontSize: '8px', color: '#555' }}>D-pad navigation</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <Mic size={8} color="#555" />
+          <span style={{ fontSize: '8px', color: '#555' }}>Voice</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Tizen Dashboard ────────────────────────────────────────────────────
+function TizenDashboardMockup({ colors }: { colors: Record<string, string> }) {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#0a0a0a' }}>
+      {/* Top nav bar (no sidebar for 10-foot UI) */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '10px 24px', borderBottom: '1px solid #2E2E2E' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ width: '20px', height: '20px', borderRadius: '4px', overflow: 'hidden' }}>
+            <img src="/potomac-icon.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
+          <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '12px', fontWeight: 700, color: '#fff', letterSpacing: '0.5px' }}>ANALYST</span>
+        </div>
+        {['Dashboard', 'Chat', 'AFL', 'Knowledge', 'Backtest'].map((t, i) => (
+          <span key={t} style={{ fontSize: '11px', fontWeight: 600, color: i === 0 ? '#FEC00F' : '#888', cursor: 'pointer', padding: '4px 0', borderBottom: i === 0 ? '2px solid #FEC00F' : 'none' }}>{t}</span>
+        ))}
+      </div>
+      {/* Large cards */}
+      <div style={{ flex: 1, padding: '16px 24px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', overflow: 'hidden', alignContent: 'start' }}>
+        {[
+          { icon: TrendingUp, label: 'Portfolio Value', value: '$48,234', color: '#FEC00F', sub: '+2.3% today' },
+          { icon: Activity, label: 'Active Strategies', value: '3', color: '#3B82F6', sub: '2 profitable' },
+          { icon: Bell, label: 'Alerts', value: '5 new', color: '#F97316', sub: '2 momentum signals' },
+        ].map((c) => {
+          const Icon = c.icon
+          return (
+            <div key={c.label} style={{ padding: '16px', borderRadius: '12px', backgroundColor: '#1a1a1a', border: '2px solid #2E2E2E' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <Icon size={16} color={c.color} />
+                <span style={{ fontSize: '11px', color: '#999' }}>{c.label}</span>
+              </div>
+              <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '24px', fontWeight: 700, color: c.color, display: 'block' }}>{c.value}</span>
+              <span style={{ fontSize: '9px', color: '#666' }}>{c.sub}</span>
+            </div>
+          )
+        })}
+      </div>
+      {/* Bottom status */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 24px', borderTop: '1px solid #1E1E1E' }}>
+        <span style={{ fontSize: '9px', color: '#555' }}>Samsung Smart TV - Tizen 7</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Mic size={10} color="#555" />
+          <span style={{ fontSize: '9px', color: '#555' }}>{"'Hey Bixby' for voice"}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Tizen Chat View ────────────────────────────────────────────────────
+function TizenChatMockup({ colors }: { colors: Record<string, string> }) {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#0a0a0a' }}>
+      {/* Top bar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 24px', borderBottom: '1px solid #2E2E2E' }}>
+        <ChevronLeft size={18} color="#FEC00F" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ width: '20px', height: '20px', borderRadius: '6px', overflow: 'hidden' }}>
+            <img src="/potomac-icon.png" alt="Yang" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
+          <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '14px', fontWeight: 700, color: '#fff', letterSpacing: '0.5px' }}>AI CHAT</span>
+        </div>
+      </div>
+      {/* Messages - large text for 10-foot */}
+      <div style={{ flex: 1, padding: '16px 40px', display: 'flex', flexDirection: 'column', gap: '14px', overflow: 'hidden' }}>
+        <div style={{ alignSelf: 'flex-end', maxWidth: '45%' }}>
+          <div style={{ padding: '12px 18px', borderRadius: '20px 20px 4px 20px', backgroundColor: '#FEC00F', fontSize: '13px', color: '#0A0A0B', lineHeight: 1.4, fontWeight: 500 }}>
+            Analyze AAPL for a momentum strategy
+          </div>
+        </div>
+        <div style={{ alignSelf: 'flex-start', maxWidth: '55%' }}>
+          <div style={{ padding: '14px 18px', borderRadius: '4px 20px 20px 20px', backgroundColor: '#1E1E1E', border: '1px solid #2E2E2E' }}>
+            <p style={{ fontSize: '12px', color: '#d4d4d4', lineHeight: 1.5, margin: 0 }}>
+              Based on AAPL analysis, I recommend a dual moving average crossover with RSI confirmation. Strong buy signal detected at $198.45.
+            </p>
+          </div>
+        </div>
+      </div>
+      {/* Voice input prominently featured */}
+      <div style={{ padding: '12px 40px 16px', borderTop: '1px solid #2E2E2E', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+        <div style={{ flex: 1, padding: '10px 16px', borderRadius: '24px', backgroundColor: '#1E1E1E', border: '1px solid #2E2E2E' }}>
+          <span style={{ fontSize: '12px', color: '#757575' }}>Ask Yang anything...</span>
+        </div>
+        <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#FEC00F', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 16px rgba(254,192,15,0.2)' }}>
+          <Mic size={18} color="#0A0A0B" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Tizen Code View ────────────────────────────────────────────────────
+function TizenCodeMockup({ colors }: { colors: Record<string, string> }) {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#0d1117' }}>
+      {/* Toolbar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 24px', borderBottom: '1px solid #2E2E2E', backgroundColor: '#161b22' }}>
+        <ChevronLeft size={16} color="#FEC00F" />
+        <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '13px', fontWeight: 700, color: '#fff', letterSpacing: '0.5px' }}>AFL CODE EDITOR</span>
+        <div style={{ flex: 1 }} />
+        {['Run', 'Copy', 'Save'].map((a, i) => (
+          <div key={a} style={{ padding: '4px 12px', borderRadius: '6px', backgroundColor: i === 0 ? '#FEC00F' : 'rgba(255,255,255,0.06)', cursor: 'pointer' }}>
+            <span style={{ fontSize: '10px', fontWeight: 600, color: i === 0 ? '#0A0A0B' : '#999' }}>{a}</span>
+          </div>
+        ))}
+      </div>
+      {/* Large monospace code */}
+      <div style={{ flex: 1, padding: '20px 32px', fontFamily: "'Fira Code', 'Consolas', monospace", fontSize: '14px', lineHeight: 2, color: '#adbac7', overflow: 'hidden' }}>
+        <div><span style={{ color: '#f47067' }}>// </span><span style={{ color: '#768390' }}>Momentum Strategy - AAPL</span></div>
+        <div><span style={{ color: '#6cb6ff' }}>FastMA</span> = <span style={{ color: '#dcbdfb' }}>MA</span>(Close, <span style={{ color: '#6cb6ff' }}>10</span>);</div>
+        <div><span style={{ color: '#6cb6ff' }}>SlowMA</span> = <span style={{ color: '#dcbdfb' }}>MA</span>(Close, <span style={{ color: '#6cb6ff' }}>50</span>);</div>
+        <div><span style={{ color: '#6cb6ff' }}>RSIVal</span> = <span style={{ color: '#dcbdfb' }}>RSI</span>(<span style={{ color: '#6cb6ff' }}>14</span>);</div>
+        <div />
+        <div><span style={{ color: '#f47067' }}>Buy</span> = <span style={{ color: '#dcbdfb' }}>Cross</span>(FastMA, SlowMA)</div>
+        <div>  <span style={{ color: '#f47067' }}>AND</span> RSIVal {'<'} <span style={{ color: '#6cb6ff' }}>70</span>;</div>
+        <div><span style={{ color: '#f47067' }}>Sell</span> = <span style={{ color: '#dcbdfb' }}>Cross</span>(SlowMA, FastMA)</div>
+        <div>  <span style={{ color: '#f47067' }}>OR</span> RSIVal {'>'} <span style={{ color: '#6cb6ff' }}>80</span>;</div>
+      </div>
+      {/* Bottom status */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 24px', borderTop: '1px solid #2E2E2E', backgroundColor: '#161b22' }}>
+        <span style={{ fontSize: '9px', color: '#555' }}>strategy.afl - 9 lines</span>
+        <span style={{ fontSize: '9px', color: '#555' }}>AFL Language</span>
+      </div>
+    </div>
+  )
+}
+
+// ========================================================================
+// COPY AS MARKDOWN BUTTON (Non-Apple)
+// ========================================================================
+
+function CopyAsMarkdownButton({
+  activeDevice,
+  activeScreen,
+  screens,
+  deviceSpecs,
+  colors,
+}: {
+  activeDevice: string
+  activeScreen: string
+  screens: Array<{ id: string; label: string }>
+  deviceSpecs: Array<{ label: string; value: string }>
+  colors: Record<string, string>
+}) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = useCallback(() => {
+    const currentScreen = screens.find((s) => s.id === activeScreen)
+    const platformLabel = activeDevice === 'android' ? 'Android (Material 3)' : activeDevice === 'tablet' ? 'Android Tablet' : activeDevice === 'windows' ? 'Windows (WinUI 3)' : 'Samsung TV (Tizen)'
+    const lines = [
+      `# Device Mockup: ${platformLabel}`,
+      '',
+      `## Active Screen: ${currentScreen?.label || activeScreen}`,
+      '',
+      '## Device Specifications',
+      ...deviceSpecs.map((s) => `- **${s.label}**: ${s.value}`),
+      '',
+      '## All Available Screens',
+      ...screens.map((s) => `- ${s.label}${s.id === activeScreen ? ' (active)' : ''}`),
+      '',
+      '## UI Elements',
+      '- Navigation: Bottom nav / Navigation Rail / NavigationView (device adaptive)',
+      '- Primary Action: START GENERATING (brand yellow #FEC00F)',
+      '- Features: AFL Generator, AI Chat, Knowledge Base, Backtest, Content, Settings',
+      '- Brand: Potomac Analyst Workbench',
+      '- Typography: Rajdhani (headings), Quicksand (body)',
+      `- Design System: ${activeDevice === 'windows' ? 'WinUI 3 / Fluent' : activeDevice === 'tv' ? 'Tizen / 10-foot UI' : 'Material 3 / Material You'}`,
+      '',
+      `---`,
+      `*Exported from Potomac Analyst Non-Apple Developer Blueprint*`,
+    ]
+    navigator.clipboard.writeText(lines.join('\n'))
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2500)
+  }, [activeDevice, activeScreen, screens, deviceSpecs])
+
+  return (
+    <button
+      onClick={handleCopy}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '8px 16px',
+        borderRadius: '10px',
+        border: 'none',
+        backgroundColor: copied ? 'rgba(34,197,94,0.1)' : colors.cardBg,
+        color: copied ? '#22C55E' : colors.textMuted,
+        fontFamily: "'Rajdhani', sans-serif",
+        fontSize: '12px',
+        fontWeight: 600,
+        letterSpacing: '0.5px',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        outline: `1px solid ${copied ? 'rgba(34,197,94,0.3)' : colors.border}`,
+      }}
+    >
+      {copied ? <Check size={14} color="#22C55E" /> : <ClipboardCopy size={14} />}
+      {copied ? 'COPIED AS MARKDOWN' : 'COPY AS MARKDOWN'}
+    </button>
+  )
+}
+
+// ========================================================================
 // DOCUMENTATION COMPONENTS
 // ========================================================================
 
@@ -810,8 +1212,10 @@ export function NonAppleDeveloperPage() {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
   const [activeScreen, setActiveScreen] = useState('splash')
-  const [activeDevice, setActiveDevice] = useState<'android' | 'tablet' | 'windows'>('android')
+  const [activeDevice, setActiveDevice] = useState<'android' | 'tablet' | 'windows' | 'tv'>('android')
   const [activePlatform, setActivePlatform] = useState<'compose' | 'winui'>('compose')
+  const [activeTVScreen, setActiveTVScreen] = useState('home')
+  const [tvFocusIndex, setTVFocusIndex] = useState(0)
 
   const colors = {
     background: isDark ? '#0A0A0B' : '#ffffff',
@@ -843,7 +1247,11 @@ export function NonAppleDeveloperPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: colors.background, fontFamily: "'Quicksand', sans-serif", transition: 'background-color 0.3s ease' }}>
-      <style>{`@keyframes shimmer { 0% { left: -50%; } 100% { left: 100%; } }`}</style>
+      <style>{`
+  @keyframes shimmer { 0% { left: -50%; } 100% { left: 100%; } }
+  @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(254,192,15,0); } 50% { box-shadow: 0 0 12px 4px rgba(254,192,15,0.15); } }
+  @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+`}</style>
 
       {/* ── Hero Header ──────────────────────────────────────────────── */}
       <div style={{ background: isDark ? 'linear-gradient(135deg, #0A0A0B 0%, #1A1A1D 50%, #0A0A0B 100%)' : 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%)', borderBottom: `1px solid ${colors.border}`, padding: '48px 32px 40px', position: 'relative', overflow: 'hidden' }}>
@@ -859,13 +1267,14 @@ export function NonAppleDeveloperPage() {
             </div>
           </div>
           <p style={{ color: colors.textMuted, fontSize: '16px', lineHeight: 1.7, maxWidth: '700px', margin: 0 }}>
-            Full-scale visual mockups and comprehensive translation guides for rebuilding the Potomac Analyst Workbench as native apps on Android (Jetpack Compose) and Windows (WinUI 3) with 1:1 feature parity.
+            Full-scale interactive mockups and comprehensive translation guides for rebuilding the Potomac Analyst Workbench as native apps on Android (Jetpack Compose), Windows (WinUI 3), and Samsung TV (Tizen) with 1:1 feature parity. Includes high-fidelity device frames, interactive prototype elements, and markdown export.
           </p>
           <div style={{ display: 'flex', gap: '12px', marginTop: '24px', flexWrap: 'wrap' }}>
             {[
-              { label: '8 Screens', icon: Monitor },
+              { label: '8+ Screens', icon: Monitor },
               { label: 'Jetpack Compose', icon: Smartphone },
               { label: 'WinUI 3', icon: Laptop },
+              { label: 'Tizen TV', icon: Tv },
               { label: 'Material 3', icon: Paintbrush },
               { label: 'MVVM', icon: GitBranch },
             ].map((b) => {
@@ -894,12 +1303,13 @@ export function NonAppleDeveloperPage() {
             Interactive mockups across Android and Windows platforms. Select a device to preview with realistic device frames including punch-hole cameras, gesture navigation bars, safe areas, and platform-specific window controls.
           </p>
 
-          {/* Device type tabs */}
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+          {/* Device type tabs + Copy as Markdown */}
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
             {([
               { id: 'android', label: 'Android Phone', icon: Smartphone },
               { id: 'tablet', label: 'Android Tablet', icon: Tablet },
               { id: 'windows', label: 'Windows Desktop', icon: Laptop },
+              { id: 'tv', label: 'Samsung TV (Tizen)', icon: Tv },
             ] as const).map((device) => {
               const Icon = device.icon
               const isDeviceActive = activeDevice === device.id
@@ -910,6 +1320,27 @@ export function NonAppleDeveloperPage() {
                 </button>
               )
             })}
+            <div style={{ flex: 1 }} />
+            <CopyAsMarkdownButton
+              activeDevice={activeDevice}
+              activeScreen={activeDevice === 'tv' ? activeTVScreen : activeScreen}
+              screens={activeDevice === 'tv' ? [
+                { id: 'home', label: 'HOME SCREEN' },
+                { id: 'dashboard', label: 'DASHBOARD' },
+                { id: 'chat', label: 'CHAT VIEW' },
+                { id: 'code', label: 'CODE EDITOR' },
+              ] : androidScreens}
+              deviceSpecs={activeDevice === 'tv' ? [
+                { label: 'Platform', value: 'Tizen 7+' },
+                { label: 'UI', value: '10-foot UI' },
+                { label: 'Input', value: 'D-pad + Voice' },
+                { label: 'Resolution', value: '16:9 4K' },
+              ] : [
+                { label: 'Camera', value: 'Punch-hole' },
+                { label: 'Display', value: '6.1" AMOLED' },
+              ]}
+              colors={colors}
+            />
           </div>
 
           {/* ── Android Phone View ────────────────────────────────────── */}
@@ -996,17 +1427,77 @@ export function NonAppleDeveloperPage() {
           {activeDevice === 'windows' && (
             <div>
               <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '16px', fontWeight: 600, color: colors.textMuted, letterSpacing: '1px', marginBottom: '4px' }}>WINDOWS DESKTOP - WINUI 3 NAVIGATIONVIEW</h3>
-              <p style={{ fontSize: '12px', color: colors.textMuted, marginBottom: '20px', lineHeight: 1.6 }}>The Windows version uses WinUI 3 with a NavigationView control providing a persistent sidebar. The title bar integrates the standard minimize/maximize/close controls. Supports Mica material backdrop, keyboard shortcuts, and full DPI scaling across monitors.</p>
+              <p style={{ fontSize: '12px', color: colors.textMuted, marginBottom: '20px', lineHeight: 1.6 }}>The Windows version uses WinUI 3 with a NavigationView control providing a persistent sidebar. Hover over the maximize button to see Snap Layout options. The title bar integrates standard window controls, and the bottom taskbar shows the Windows experience. Supports Mica material backdrop, keyboard shortcuts, and full DPI scaling.</p>
               <WindowsFrame label="DASHBOARD - WINUI 3" colors={colors}>
                 <WindowsDashboardMockup colors={colors} />
               </WindowsFrame>
               <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '24px' }}>
                 {[
-                  { label: 'Title Bar', value: 'Minimize / Maximize / Close' },
+                  { label: 'Title Bar', value: 'Minimize / Snap / Close' },
                   { label: 'Backdrop', value: 'Mica material' },
                   { label: 'Navigation', value: 'WinUI NavigationView' },
                   { label: 'Minimum Size', value: '1024 x 768' },
                   { label: 'DPI Scaling', value: 'Per-monitor aware' },
+                  { label: 'Taskbar', value: 'Search + System tray' },
+                ].map((spec) => (
+                  <div key={spec.label} style={{ padding: '12px 16px', borderRadius: '10px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}>
+                    <span style={{ fontSize: '9px', color: colors.textMuted, display: 'block', letterSpacing: '0.5px', marginBottom: '4px' }}>{spec.label}</span>
+                    <span style={{ fontSize: '12px', color: colors.text, fontWeight: 600 }}>{spec.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Samsung TV (Tizen) View ──────────────────────────────── */}
+          {activeDevice === 'tv' && (
+            <div>
+              <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '16px', fontWeight: 600, color: colors.textMuted, letterSpacing: '1px', marginBottom: '4px' }}>SAMSUNG TV - TIZEN 7+ (10-FOOT UI)</h3>
+              <p style={{ fontSize: '12px', color: colors.textMuted, marginBottom: '20px', lineHeight: 1.6 }}>TV-optimized interface designed for the 10-foot viewing distance. Uses large text, high contrast, horizontal card rails with D-pad focus navigation, and prominent voice input. The yellow focus ring indicates the currently selected element, navigable with the Samsung remote D-pad. Click the arrow buttons on the home screen to simulate focus movement.</p>
+
+              {/* TV screen selector */}
+              <div style={{ display: 'flex', gap: '6px', marginBottom: '24px' }}>
+                {[
+                  { id: 'home', label: 'HOME SCREEN' },
+                  { id: 'dashboard', label: 'DASHBOARD' },
+                  { id: 'chat', label: 'CHAT VIEW' },
+                  { id: 'code', label: 'CODE EDITOR' },
+                ].map((s) => (
+                  <button key={s.id} onClick={() => setActiveTVScreen(s.id)} style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', backgroundColor: activeTVScreen === s.id ? '#FEC00F' : colors.cardBg, color: activeTVScreen === s.id ? '#0A0A0B' : colors.textMuted, fontFamily: "'Rajdhani', sans-serif", fontSize: '12px', fontWeight: 600, letterSpacing: '0.5px', cursor: 'pointer', transition: 'all 0.2s ease', outline: activeTVScreen === s.id ? 'none' : `1px solid ${colors.border}` }}>
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* D-pad focus controls for home screen */}
+              {activeTVScreen === 'home' && (
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', alignItems: 'center' }}>
+                  <span style={{ fontSize: '11px', color: colors.textMuted, fontWeight: 600 }}>D-pad Focus:</span>
+                  <button onClick={() => setTVFocusIndex(Math.max(0, tvFocusIndex - 1))} style={{ width: '32px', height: '32px', borderRadius: '8px', border: 'none', backgroundColor: colors.cardBg, color: colors.text, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', outline: `1px solid ${colors.border}` }}>
+                    <ChevronLeft size={14} />
+                  </button>
+                  <button onClick={() => setTVFocusIndex(Math.min(4, tvFocusIndex + 1))} style={{ width: '32px', height: '32px', borderRadius: '8px', border: 'none', backgroundColor: colors.cardBg, color: colors.text, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', outline: `1px solid ${colors.border}` }}>
+                    <ChevronRightIcon size={14} />
+                  </button>
+                  <span style={{ fontSize: '10px', color: '#FEC00F', fontWeight: 600 }}>Card {tvFocusIndex + 1} of 5</span>
+                </div>
+              )}
+
+              <SamsungTVFrame label={activeTVScreen === 'home' ? 'HOME - SMART HUB' : activeTVScreen === 'dashboard' ? 'DASHBOARD - 10FT UI' : activeTVScreen === 'chat' ? 'CHAT - VOICE INPUT' : 'AFL CODE EDITOR'} isActive colors={colors}>
+                {activeTVScreen === 'home' && <TizenHomeMockup colors={colors} focusIndex={tvFocusIndex} />}
+                {activeTVScreen === 'dashboard' && <TizenDashboardMockup colors={colors} />}
+                {activeTVScreen === 'chat' && <TizenChatMockup colors={colors} />}
+                {activeTVScreen === 'code' && <TizenCodeMockup colors={colors} />}
+              </SamsungTVFrame>
+
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '28px' }}>
+                {[
+                  { label: 'Platform', value: 'Tizen 7+' },
+                  { label: 'UI', value: '10-foot UI design' },
+                  { label: 'Input', value: 'D-pad + Voice (Bixby)' },
+                  { label: 'Resolution', value: '16:9 4K UHD' },
+                  { label: 'Smart Hub', value: 'Card rail navigation' },
+                  { label: 'Focus', value: 'Yellow ring indicator' },
                 ].map((spec) => (
                   <div key={spec.label} style={{ padding: '12px 16px', borderRadius: '10px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}>
                     <span style={{ fontSize: '9px', color: colors.textMuted, display: 'block', letterSpacing: '0.5px', marginBottom: '4px' }}>{spec.label}</span>
@@ -1056,7 +1547,7 @@ export function NonAppleDeveloperPage() {
 │   ├── model/
 │   │   ├── User.kt                 // From AuthContext
 │   │   ├── Conversation.kt         // From types/api.ts
-│   │   ├── Document.kt             // Knowledge base types
+��   │   ├── Document.kt             // Knowledge base types
 │   │   └── BacktestResult.kt       // Backtest types
 │   ├── remote/
 │   │   ├── ApiService.kt           // Retrofit interface (replaces api.ts)
@@ -1090,7 +1581,7 @@ export function NonAppleDeveloperPage() {
 │   │   ├── ChatScreen.kt           // ChatPage.tsx -> Compose
 │   │   ├── ChatViewModel.kt
 │   │   └── MessageBubble.kt        // AI message rendering
-│   ├── afl/
+│   ���── afl/
 │   │   ├── AFLScreen.kt            // AFLGeneratorPage.tsx -> Compose
 │   │   └── AFLViewModel.kt
 │   ├── knowledge/
@@ -1519,7 +2010,7 @@ fun AnalystTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
                   ].map((item) => (
                     <div key={item.lucide} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', borderRadius: '8px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}`, fontSize: '12px' }}>
                       <code style={{ color: '#FEC00F', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.lucide}</code>
-                      <ArrowRightIcon size={10} color={colors.textMuted} />
+                      <ArrowRight size={10} color={colors.textMuted} />
                       <code style={{ color: '#8ddb8c', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.native}</code>
                     </div>
                   ))}
@@ -1553,7 +2044,7 @@ fun AnalystTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 
           {/* ════════════════════════════════════════════════════════════ */}
           {/* WINUI 3 GUIDE                                               */}
-          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ════════════���═══════════════════════════════════════════════ */}
           {activePlatform === 'winui' && (
             <>
               <CollapsibleSection title="1. PROJECT ARCHITECTURE" defaultOpen colors={colors} badge="FOUNDATION">
@@ -1599,7 +2090,7 @@ fun AnalystTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 │   │   ├── NavigationHelper.cs      // Page navigation service
 │   │   └── WindowsHelloHelper.cs    // Windows Hello biometrics
 │   └── Assets/
-│       └── potomac-icon.png         // App icon
+│       └─�� potomac-icon.png         // App icon
 └── AnalystWorkbench.Tests/
     └── ViewModelTests.cs            // Unit tests`} />
               </CollapsibleSection>
@@ -1877,7 +2368,7 @@ fun AnalystTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
                   ].map((item) => (
                     <div key={item.lucide} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', borderRadius: '8px', backgroundColor: colors.cardBg, border: `1px solid ${colors.border}`, fontSize: '12px' }}>
                       <code style={{ color: '#FEC00F', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.lucide}</code>
-                      <ArrowRightIcon size={10} color={colors.textMuted} />
+                      <ArrowRight size={10} color={colors.textMuted} />
                       <code style={{ color: '#6cb6ff', fontFamily: 'monospace', flex: 1, fontSize: '11px' }}>{item.native}</code>
                     </div>
                   ))}
@@ -1912,7 +2403,7 @@ fun AnalystTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 
         {/* ── Footer ─────────────────────────────────────────────────── */}
         <footer style={{ padding: '32px 0', borderTop: `1px solid ${colors.border}`, textAlign: 'center' }}>
-          <p style={{ fontSize: '12px', color: colors.textMuted }}>Potomac Analyst Workbench - Non Apple Developer Blueprint v1.0</p>
+          <p style={{ fontSize: '12px', color: colors.textMuted }}>Potomac Analyst Workbench - Non-Apple Developer Blueprint v3.0 (Android, Windows, Samsung TV Tizen)</p>
         </footer>
       </div>
     </div>
